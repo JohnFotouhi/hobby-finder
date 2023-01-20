@@ -1,0 +1,14 @@
+THOUGHTS:
+You make an account and indicate your prefered method of communication. You create "hobby cards" of sorts for the hobbies you're looking to find partners for.
+Can search for other users with a number of filters applied.
+Map will be on left side of screen showing approximate location (AirBnB style), right side will be listed users.
+Top 3 relevant tags will be the details that appear.
+You have to click on the user to see their details. 
+If you are interested in connecting with a user after seeing their details, you can click some sort of "Reach Out" button. The user will receive a notificaiton on their end, and can indicate whether they wish to reach out or not. If the "yes" button of sorts, it will exchange contact information between the users.
+
+
+QUESTIONS:
+1. When a person clicks on a user for more details, do they get taken to a page/pop-up with the detials for just that hobby listing? Or to their account page will all their "hobby cards"?
+
+CONCERNS:
+1. Ethics wise, what's to stop people from getting a persons contact info via matching, but then sharing that all over the place? (this would be the benefit of on-site messaging, but that's a pain)
