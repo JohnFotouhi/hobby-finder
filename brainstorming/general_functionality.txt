@@ -9,6 +9,7 @@ If you are interested in connecting with a user after seeing their details, you 
 
 QUESTIONS:
 1. When a person clicks on a user for more details, do they get taken to a page/pop-up with the detials for just that hobby listing? Or to their account page will all their "hobby cards"?
+2. What did we decide that we wanted to do about insufficient tags? An "other" tag? A submission for a new tag?
 
 CONCERNS:
 1. Ethics wise, what's to stop people from getting a persons contact info via matching, but then sharing that all over the place? (this would be the benefit of on-site messaging, but that's a pain)
