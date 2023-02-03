@@ -23,6 +23,8 @@ function App() {
           <Route index element={<Explore />} />
           <Route path="search" element={<Search />} />
           <Route path="explore" element={<Explore />} />
+          <Route path="user_profile" element={<Explore />} />
+          <Route path="other_profile" element={<Explore />} />
         </Route>
       </Routes>
     </BrowserRouter>
