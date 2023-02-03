@@ -3,7 +3,7 @@ import React from "react";
 const Other_Profile = () => {
     return(
     <>
-        <div>Other_Profile Page</div>
+        <div>Other_Profile Pages</div>
     </>
     );
 }
