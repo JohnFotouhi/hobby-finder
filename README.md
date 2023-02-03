@@ -5,7 +5,8 @@
 1. Brach this repo and download a local copy.
 2. Install Yarn, instructions can be found from [this link](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable).
 3. In the `client` folder, run `yarn install`. This will install the packages used by the frontend such as react and react-bootstrap.
-4. You should now be able to use the scripts in the [Working with React App](#working-with-react-app) section (these scripts should also be run in the `client` folder).
+4. In the `server` folder, run `yarn install` again to install packages used by the backend.
+5. You should now be able to use the scripts in the [Working with React App](#working-with-react-app) section (these scripts should also be run in the `client` folder).
 
 
 
