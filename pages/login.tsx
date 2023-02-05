@@ -1,20 +1,20 @@
 import Link from "next/link";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export default function Login(){
-    //     function MyForm() {
-//         // const [name, setName] = useState("");
-
-//         // const handleSubmit = (event) => {
-//         //     event.preventDefault();
-//         //     alert(`The name you entered was: ${name}`)
-//     }
-//   }
-
-//     function checkValidUser() {
-//         //check user information against database
-//         //if valid then login 
-//         //otherwise, give warning that information is not valid
-//     }
+    function login(email, password){
+        const auth = getAuth();
+        signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            // ...
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+        });
+    }
     return(
         <>
             <div className="Registration text-center">
