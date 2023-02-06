@@ -36,7 +36,7 @@ export default function Login(){
 
 
                 </form>               
-                <p>Don't yet have an account? Register <Link href="/Registration">here</Link></p>
+                <p>New to Jam? Register <Link href="/Registration">here</Link></p>
 
             </div>
         </>
