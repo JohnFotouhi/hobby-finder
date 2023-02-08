@@ -21,8 +21,8 @@ export default function Login(){
                 <h1>Login</h1>
                 <form>
                     <label className = "container-md">
-                        <p>Username</p>
-                        <input type="text" name="username" />         
+                        <p>Email</p>
+                        <input type="email" name="email" />         
                     </label>
                     <label className = "container-md">
                         <p>Password</p>
