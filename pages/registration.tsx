@@ -1,7 +1,13 @@
 import Link from "next/link";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, EmailAuthCredential } from "firebase/auth";
+import FormInput from "./../components/formInput";
+import { Button } from "react-bootstrap";
 
 export default function Registration(){
+    type State = {
+        username: string;
+      };
+
     function createUser(email, password, username, location){
         const auth = getAuth();
         createUserWithEmailAndPassword(auth, email, password)
@@ -16,38 +22,18 @@ export default function Registration(){
             // ..
         });
     }
+    
     return(
         <>
         <div className="Registration text-center">
             <h1>Register</h1>
-            <form>
-                <label className = "container-md">
-                    <p>Username</p>
-                    <input type="text" name="username" />         
-                </label>
-                <label className = "container-md">
-                    <p>Email</p>
-                    <input type="email" name="email" />         
-                </label>
-                <label className = "container-md">
-                    <p>Location</p>
-                    <input type="text" name="location" />         
-                </label>
-                <label className = "container-md">
-                    <p>Password</p>
-                    <input type="text" name="password" />         
-                </label>
-                <label className = "container-md">
-                    <p>Verify Password</p>
-                    <input type="text" name="verify password" />         
-                </label>
 
-                <div className = "container-sm">
-                    <input type="submit" value="Create Account" />
-                </div>
-
-
-            </form>               
+            <FormInput controlId="displayName" label="Display Name" type="text" placeholder="Display Name" text=""/>
+            <FormInput controlId="email" label="Email" type="email" placeholder="youremail@example.com" text=""/>
+            <FormInput controlId="password" label="Password" type="password" placeholder="" text=""/>
+            <FormInput controlId="passwordVal" label="Re-type Password" type="password" placeholder="" text=""/>
+            {/* <Button onClick={createUser} className="mt-4">Create Account</Button> */}
+            
             <p>Already have an account? Login <Link href="/Login">here</Link></p>
 
         </div>
