@@ -1,15 +1,15 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import styles from '@/styles/Home.module.css'
-import Header from '@/components/header'
 
 export default function Home() {
-  fetch("/api/hello")
+  fetch("/api/search", {
+    method: "POST",
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({data: "Some Data"})
+  })
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
-    });
+  });
 
   return (
     <>
