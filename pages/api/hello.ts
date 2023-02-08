@@ -1,25 +1,30 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getDatabase, ref, set } from "firebase/database";
-import { initializeApp } from "firebase/app";
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, addDoc } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCDDJwfuw48sXBlh86e4_Q6upEous9Gbx8",
-  authDomain: "swe-jam-e48be.firebaseapp.com",
-  databaseURL: "https://swe-jam-e48be-default-rtdb.firebaseio.com",
-  projectId: "swe-jam-e48be",
-  storageBucket: "swe-jam-e48be.appspot.com",
-  messagingSenderId: "426619974603",
-  appId: "1:426619974603:web:111db4a801f2797f3e3c4e",
-  measurementId: "G-4CWH6WGMW8"
+  apiKey: "AIzaSyANQhKbnHwzW2SHI-GTPz3rH0X7InikKDo",
+  authDomain: "jamin-9ed6a.firebaseapp.com",
+  databaseURL: "https://jamin-9ed6a-default-rtdb.firebaseio.com",
+  projectId: "jamin-9ed6a",
+  storageBucket: "jamin-9ed6a.appspot.com",
+  messagingSenderId: "950884082294",
+  appId: "1:950884082294:web:40d61d4452f007c2f07557",
+  measurementId: "G-4HTBFDYZ1C"
 };
 const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
+const database = getFirestore(app);
 
-function writeData(){
-  set(ref(database, 'test/'), {
-    hello: "Hello World!"
-  });
+async function writeData(){
+  try{
+    const docRef = await addDoc(collection(database, 'test'), {
+      name: "Hello World!"
+    });
+    console.log(docRef.id);
+  }catch(e){
+    console.error("Error adding document: ", e);
+  }
 }
 
 type Data = {
@@ -30,6 +35,6 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  writeData();
+  // writeData();
   res.status(200).json({ name: 'John Doe' })
 }
