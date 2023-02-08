@@ -9,6 +9,8 @@ export default function Header() {
                 <Nav.Link href="/search">Home</Nav.Link>
                 <Nav.Link href="/login">Login</Nav.Link>
                 <Nav.Link href="/registration">Registration</Nav.Link>
+                <Nav.Link href="/user">Other User</Nav.Link>
+                <Nav.Link href="/profile">Profile</Nav.Link>
             </Nav>
             </Container>
         </Navbar>
