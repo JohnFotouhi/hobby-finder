@@ -4,7 +4,7 @@ export default function User() {
     
     return(
         <>  
-            <Container fluid className='bg-light' >
+            <Container fluid className ="bg-light">
                 {/* Name */}
                 <h1>Jane Doe</h1> 
                 {/* Username */}
