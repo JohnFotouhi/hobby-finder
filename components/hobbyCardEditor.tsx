@@ -30,7 +30,7 @@ export default function HobbyCardEditor({instrument, genre, experience, commitme
     return(
         // TO DO: Add inputs already there for if they're editing rather than creating
         <Modal show={show} onHide={handleClose}>
-            <Card style={{ width: '20rem' }}>
+            <Card style={{ width: "20rem" }}>
             <Card.Body>            
                 <Card.Title> 
                     <Dropdown>
@@ -56,7 +56,7 @@ export default function HobbyCardEditor({instrument, genre, experience, commitme
                         <Form.Group>
                             <Form.Control type="text"/>
                             <Form.Text className="text-muted">
-                            Any additional info you'd like to share with users about this hobby.
+                            Any additional info you wouldd like to share with users about this hobby.
                             </Form.Text>
                         </Form.Group>
                     </Form> </Col>
