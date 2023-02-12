@@ -3,8 +3,8 @@ import { init } from 'next-firebase-auth'
 
 const initAuth = () => {
   init({
-    authPageURL: '/auth',
-    appPageURL: '/',
+    authPageURL: '/login',
+    appPageURL: '/search',
     loginAPIEndpoint: '/api/login',
     logoutAPIEndpoint: '/api/logout',
     onLoginRequestError: (err) => {
@@ -13,22 +13,15 @@ const initAuth = () => {
     onLogoutRequestError: (err) => {
       console.error(err)
     },
-    firebaseAdminInitConfig: {
-      credential: {
-        projectId: 'my-example-app-id',
-        clientEmail: 'example-abc123@my-example-app.iam.gserviceaccount.com',
-        // The private key must not be accessible on the client side.
-        privateKey: process.env.FIREBASE_PRIVATE_KEY,
-      },
-      databaseURL: 'https://my-example-app.firebaseio.com',
-    },
-    // Use application default credentials (takes precedence over firebaseAdminInitConfig if set)
-    // useFirebaseAdminDefaultCredential: true,
     firebaseClientInitConfig: {
-      apiKey: 'MyExampleAppAPIKey123', // required
-      authDomain: 'my-example-app.firebaseapp.com',
-      databaseURL: 'https://my-example-app.firebaseio.com',
-      projectId: 'my-example-app-id',
+      apiKey: "AIzaSyANQhKbnHwzW2SHI-GTPz3rH0X7InikKDo",
+      authDomain: "jamin-9ed6a.firebaseapp.com",
+      databaseURL: "https://jamin-9ed6a-default-rtdb.firebaseio.com",
+      projectId: "jamin-9ed6a",
+      storageBucket: "jamin-9ed6a.appspot.com",
+      messagingSenderId: "950884082294",
+      appId: "1:950884082294:web:40d61d4452f007c2f07557",
+      measurementId: "G-4HTBFDYZ1C"
     },
     cookies: {
       name: 'ExampleApp', // required
@@ -44,7 +37,7 @@ const initAuth = () => {
       path: '/',
       sameSite: 'strict',
       secure: true, // set this to false in local (non-HTTPS) development
-      signed: true,
+      signed: true
     },
     onVerifyTokenError: (err) => {
       console.error(err)
