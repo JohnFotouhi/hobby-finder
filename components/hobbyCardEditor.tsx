@@ -4,6 +4,7 @@ import { BsPlayBtnFill } from "react-icons/bs";
 import { BsCheckSquareFill } from "react-icons/bs";
 import MultiselectInput from "./multiselectInput";
 import { useState } from "react";
+import SingleselectInput from "./singleselectinput";
 
 export default function HobbyCardEditor({instrument, genre, experience, commitment, info, clip}) {
 
@@ -33,16 +34,7 @@ export default function HobbyCardEditor({instrument, genre, experience, commitme
             <Card style={{ width: "20rem" }}>
             <Card.Body>            
                 <Card.Title> 
-                    <Dropdown>
-                        <Dropdown.Toggle>
-                            Instrument
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item>Bass</Dropdown.Item>
-                            <Dropdown.Item>Guitar</Dropdown.Item>
-                            <Dropdown.Item>Voice</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
+                    <SingleselectInput controlId={undefined} label={"Instrument"} text={""} options={instruments}/>
                 </Card.Title>
                 <Col><MultiselectInput
                             controlId="skillInput"
@@ -50,8 +42,12 @@ export default function HobbyCardEditor({instrument, genre, experience, commitme
                             text=""
                             options={genres}
                             /> </Col>
-                <Col> Dropdown for Instruments </Col>
-                <Col> Dropdown for Commitment Levels </Col>
+                <Col> 
+                    <SingleselectInput controlId={undefined} label={"Experience"} text={""} options={experienceLevels}/>
+                </Col>
+                <Col>
+                    <SingleselectInput controlId={undefined} label={"Commitment"} text={""} options={commitmentLevels}/>
+                </Col>
                 <Col><Form> 
                         <Form.Group>
                             <Form.Control type="text"/>
