@@ -1,15 +1,20 @@
-import React from "react";
-import { Form } from "react-bootstrap"
+import {useState} from "react"
+    
+function App() {
+    const [file, setFile] = useState("");
 
+    // Handles input change event and updates state
+    function handleChange(event) {
+    setFile(event.target.files[0]);
+    }
 
-
-export default function FormInput({controlId, label, type, placeholder, text}){
- return(
-    <Form.Group className="mb-3" controlId={controlId}>
-        <Form.Label>{label}</Form.Label>
-        <Form.Control type={type} placeholder={placeholder} />
-        <Form.Text className="text-muted">{text}</Form.Text>
-    </Form.Group>
- );
+    return (
+        <div>
+            <input type="file" accept="image/*" onChange={handleChange}/>
+            <button>Upload to Firebase</button>
+        </div>
+    );
 }
+
+export default App;
 
