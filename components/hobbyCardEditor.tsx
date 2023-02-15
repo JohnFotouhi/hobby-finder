@@ -2,6 +2,7 @@ import { Button, Col, Container, Row, Form, Card, Modal, Dropdown} from "react-b
 import MultiselectInput from "./multiselectInput";
 import { useState } from "react";
 import SingleselectInput from "./singleselectinput";
+import FormInput from "./formInput";
 
 export default function HobbyCardEditor({setShow, show, newCard, instrument, genre, experience, commitment, info}) {
     
@@ -11,7 +12,18 @@ export default function HobbyCardEditor({setShow, show, newCard, instrument, gen
     const [genreSelect, setGenre] = useState<any[]>([]);
     const [infoSelect, setInfo] = useState("");
 
+    type Data = {
+        commitment: string
+        experience: string
+        genre: string[]
+        info: string
+        instrument: string
+      }
+
     function createCard(){
+        //FIRST: make sure they've chosen something for everything but info
+
+
         /*fetch("/api/hobbyCardCreation", {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
@@ -21,11 +33,12 @@ export default function HobbyCardEditor({setShow, show, newCard, instrument, gen
             .then((data) => {
               console.log(data);
           });*/
+
         console.log(`instrument: ${instrumentSelect}`);
         console.log(`genres: ${genreSelect}`);
         console.log(`experience: ${experienceSelect}`);
         console.log(`commitment: ${commitmentSelect}`);
-        console.log(`instrument: ${instrumentSelect}`);
+        console.log(`info: ${infoSelect}`);
     }
 
     function saveCard(){
@@ -65,12 +78,10 @@ export default function HobbyCardEditor({setShow, show, newCard, instrument, gen
                     <SingleselectInput controlId={undefined} label={"Commitment"} text={""} options={commitmentLevels} setValue={setCommitment} value={commitmentSelect}/>
                 </Col>
                 <Col><Form> 
-                        <Form.Group>
-                            <Form.Control type="text"/>
-                            <Form.Text className="text-muted">
+                        <FormInput controlId="info" label="Details" type="text" placeholder="Im looking for..." text="" setValue={setInfo} value={infoSelect}/>
+                        <Form.Text className="text-muted">
                             Any additional info you would like to share with users about this hobby.
-                            </Form.Text>
-                        </Form.Group>
+                        </Form.Text>
                     </Form> </Col>
                 <Button onClick={newCard? createCard : saveCard}> {newCard ? "Create" : "Save"} </Button>
                 <Button onClick={cancelCard}>Cancel</Button>
@@ -79,5 +90,3 @@ export default function HobbyCardEditor({setShow, show, newCard, instrument, gen
         </Modal>
     );
 }
-
-

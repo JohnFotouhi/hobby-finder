@@ -15,11 +15,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getFirestore(app);
 
-type Data = {
-    instrument: string
-    genre: string[]
+type Card = {
     commitment: string
+    experience: string
+    genre: string[]
     info: string
+    instrument: string
   }
 
 export default async (req, res) =>{
