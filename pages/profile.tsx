@@ -4,7 +4,7 @@ import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "nex
 import { Button, Col, Container, Row, Form, Stack, Alert, Navbar } from "react-bootstrap";
 import FullPageLoader from "@/components/FullPageLoader";
 
-export default function Profile() {
+const Profile = () => {
 
     fetch("/api/hobbyCardCreation", {
         method: "POST",
@@ -28,9 +28,7 @@ export default function Profile() {
 
     }
     
-const Profile = () =>  {
     const AuthUser = useAuthUser();
-    console.log("");
     console.log(AuthUser);
     return(
         <>  

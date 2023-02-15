@@ -5,10 +5,31 @@ import SingleselectInput from "./singleselectinput";
 
 export default function HobbyCardEditor({setShow, show, newCard, instrument, genre, experience, commitment, info}) {
     
-    
+    const [instrumentSelect, setInstrument] = useState("");
+    const [experienceSelect, setExperience] = useState("");
+    const [commitmentSelect, setCommitment] = useState("");
+    const [genreSelect, setGenre] = useState<any[]>([]);
+    const [infoSelect, setInfo] = useState("");
+
+    function createCard(){
+        /*fetch("/api/hobbyCardCreation", {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({data: "Some Data"})
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              console.log(data);
+          });*/
+        console.log(`instrument: ${instrumentSelect}`);
+        console.log(`genres: ${genreSelect}`);
+        console.log(`experience: ${experienceSelect}`);
+        console.log(`commitment: ${commitmentSelect}`);
+        console.log(`instrument: ${instrumentSelect}`);
+    }
+
     function saveCard(){
         // replace with a HobbyCard that has current info filled in / update FireBase
-
         setShow(false);
     }
 
@@ -27,19 +48,21 @@ export default function HobbyCardEditor({setShow, show, newCard, instrument, gen
             <Card style={{ width: "20rem" }}>
             <Card.Body>            
                 <Card.Title> 
-                    <SingleselectInput controlId={undefined} label={"Instrument"} text={""} options={instruments}/>
+                    <SingleselectInput controlId={undefined} label={"Instrument"} text={""} options={instruments} setValue={setInstrument} value={instrumentSelect}/>
                 </Card.Title>
                 <Col><MultiselectInput
                             controlId="skillInput"
                             label="Genres"
                             text=""
+                            selected={genreSelect}
+                            setSelected={setGenre}
                             options={genres}
                             /> </Col>
                 <Col> 
-                    <SingleselectInput controlId={undefined} label={"Experience"} text={""} options={experienceLevels}/>
+                    <SingleselectInput controlId={undefined} label={"Experience"} text={""} options={experienceLevels} setValue={setExperience} value={experienceSelect}/>
                 </Col>
                 <Col>
-                    <SingleselectInput controlId={undefined} label={"Commitment"} text={""} options={commitmentLevels}/>
+                    <SingleselectInput controlId={undefined} label={"Commitment"} text={""} options={commitmentLevels} setValue={setCommitment} value={commitmentSelect}/>
                 </Col>
                 <Col><Form> 
                         <Form.Group>
@@ -49,7 +72,7 @@ export default function HobbyCardEditor({setShow, show, newCard, instrument, gen
                             </Form.Text>
                         </Form.Group>
                     </Form> </Col>
-                <Button onClick={saveCard}> {newCard ? "Create" : "Save"} </Button>
+                <Button onClick={newCard? createCard : saveCard}> {newCard ? "Create" : "Save"} </Button>
                 <Button onClick={cancelCard}>Cancel</Button>
             </Card.Body>
             </Card>
