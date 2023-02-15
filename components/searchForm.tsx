@@ -5,6 +5,7 @@ import { useState } from "react";
 import MultiselectInput from "./multiselectInput";
 
 export default function SearchForm(search){
+    const [distance, setDistance] = useState();
     const experienceLevels = [{name: "Low: Less than 3 years", id: "XP1"}, {name: "Medium: 3-6 years", id: "XP2"}, {name: "High: more than 6 years", id: "XP3"}];
     const skills = [{name: "Acapella", id: "skill1"}, {name: "Guitar", id: "skill2"}, {name: "Piano", id: "skill3"}, {name: "Other", id: "skill0"}];
     const genre = [{name: "Rock", id: "genre1"}, {name: "Jazz", id: "genre2"}, {name: "Classical", id: "genre3"}, {name: "Other", id: "genre0"}];
@@ -47,7 +48,7 @@ export default function SearchForm(search){
                         />
                     </Col>
                     <Col>
-                        <FormInput controlId="distanceInput" label="Distance" type="number" placeholder="" text="Max. distance in miles" />
+                        <FormInput controlId="distanceInput" label="Distance" type="number" placeholder="" text="Max. distance in miles" value={distance} setValue={setDistance} />
                     </Col>
                     <Col>
                         <Button onClick={search.search} className="mt-4"><BsSearch/></Button>
