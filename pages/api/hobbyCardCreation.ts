@@ -24,13 +24,18 @@ type Data = {
 
 export default async (req, res) =>{
     if(req.method === 'POST'){
-        let docs: any[] = [];
+        let docs: any;
         const querySnapshot = await getDocs(collection(database, "test"));
             querySnapshot.forEach((doc) => {
-            console.log(`${doc.id} => ${doc.data()}`);
-            docs.push(doc.data());
+                //if user id is our user's ID
+                if(doc.id == "FakeUser"){
+                    console.log(`${doc.id} => ${doc.data()}`);
+                    docs = (doc.data());
+                }
         });
         res.status(200).json(docs)
+        var cards : Array<any> = docs.hobbyCards;
+        console.log(`cards: ${cards}`);
     } else {
         res.status(405).end()
     }

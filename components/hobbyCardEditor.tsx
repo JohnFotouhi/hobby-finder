@@ -6,17 +6,13 @@ import MultiselectInput from "./multiselectInput";
 import { useState } from "react";
 import SingleselectInput from "./singleselectinput";
 
-export default function HobbyCardEditor({instrument, genre, experience, commitment, info, clip}) {
+export default function HobbyCardEditor({instrument, genre, experience, commitment, info}) {
 
     const [show, setShow] = useState(true);
 
     const handleClose = () => setShow(false);
 
     const handleShow = () => setShow(true);
-
-    function playClip(){
-        // Play sound clip
-    }
 
     function saveCard(){
         handleClose();
@@ -30,7 +26,7 @@ export default function HobbyCardEditor({instrument, genre, experience, commitme
     
     return(
         // TO DO: Add inputs already there for if they're editing rather than creating
-        <Modal show={show} onHide={handleClose}>
+        <Modal onHide={handleClose}>
             <Card style={{ width: "20rem" }}>
             <Card.Body>            
                 <Card.Title> 
@@ -52,11 +48,10 @@ export default function HobbyCardEditor({instrument, genre, experience, commitme
                         <Form.Group>
                             <Form.Control type="text"/>
                             <Form.Text className="text-muted">
-                            Any additional info you wouldd like to share with users about this hobby.
+                            Any additional info you would like to share with users about this hobby.
                             </Form.Text>
                         </Form.Group>
                     </Form> </Col>
-                <Col> <Button onClick={playClip}><BsPlayBtnFill/></Button> Play to hear attached clip. INSERT some sort of thing to change clip here. </Col>
                 <Button onClick={saveCard}><BsCheckSquareFill/></Button>
             </Card.Body>
             </Card>

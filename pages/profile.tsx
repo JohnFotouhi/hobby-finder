@@ -3,7 +3,7 @@ import { Button, Col, Container, Row, Form, Stack, Alert, Navbar } from "react-b
 
 export default function Profile() {
 
-    fetch("/api/search", {
+    fetch("/api/hobbyCardCreation", {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({data: "Some Data"})
@@ -15,7 +15,7 @@ export default function Profile() {
     
     return(
         <>  
-            <HobbyCardEditor instrument={undefined} genre={undefined} experience={undefined} commitment={undefined} info={undefined} clip={undefined}></HobbyCardEditor>
+            <HobbyCardEditor instrument={"Voice"} genre={"Rock"} experience={"Beginner"} commitment={"2 hours weekly"} info={"I dont care"}></HobbyCardEditor>
         </>
     );
 
