@@ -12,7 +12,7 @@ export default function HobbyCard({instrument, genre, experience, commitment, in
 
     function editCard(){
         // replace with a HobbyCardEditor that already has current info filled
-        var editor = <HobbyCardEditor instrument={undefined} genre={undefined} experience={undefined} commitment={undefined} info={undefined} clip={undefined}></HobbyCardEditor>                
+        var editor = <HobbyCardEditor instrument={null} genre={null} experience={null} commitment={null} info={null} clip={null}></HobbyCardEditor>                
     }
 
     return(
