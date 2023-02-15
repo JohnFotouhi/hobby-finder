@@ -11,8 +11,8 @@ export default function SingleselectInput({controlId, label, text, options}){
             <Form.Label>{label}</Form.Label>
             <Select
                 isSearchable={true} 
-                defaultValue={selectedOption}
-                onChange={setSelectedOption}
+                //defaultValue={selectedOption}
+                //onChange={setSelectedOption}
                 options={options}
                 />
             <Form.Text className="text-muted">{text}</Form.Text>
