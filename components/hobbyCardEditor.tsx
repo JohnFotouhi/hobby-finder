@@ -4,7 +4,7 @@ import { useState } from "react";
 import SingleselectInput from "./singleselectinput";
 import FormInput from "./formInput";
 
-export default function HobbyCardEditor({setShow, show, newCard, instrument, genre, experience, commitment, info}) {
+export default function HobbyCardEditor({setShow, show, newCard, oldInstrument, oldGenre, oldExperience, oldCommitment, oldInfo}) {
     
     const [instrumentSelect, setInstrument] = useState("");
     const [experienceSelect, setExperience] = useState("");
@@ -22,23 +22,23 @@ export default function HobbyCardEditor({setShow, show, newCard, instrument, gen
 
     function createCard(){
         //FIRST: make sure they've chosen something for everything but info
+        //var newCard = {}
 
-
-        /*fetch("/api/hobbyCardCreation", {
+        fetch("/api/hobbyCardCreation", {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({data: "Some Data"})
+            body: JSON.stringify({data:""})
           })
             .then((res) => res.json())
             .then((data) => {
               console.log(data);
-          });*/
+          });
 
-        console.log(`instrument: ${instrumentSelect}`);
+        /*console.log(`instrument: ${instrumentSelect}`);
         console.log(`genres: ${genreSelect}`);
         console.log(`experience: ${experienceSelect}`);
         console.log(`commitment: ${commitmentSelect}`);
-        console.log(`info: ${infoSelect}`);
+        console.log(`info: ${infoSelect}`);*/
     }
 
     function saveCard(){

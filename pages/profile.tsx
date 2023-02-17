@@ -33,7 +33,7 @@ const Profile = () => {
     return(
         <>  
             <Button onClick={handleCreate}>Create New Hobby Card</Button>
-            <HobbyCardEditor setShow={setShow} show={show} newCard={true} instrument={"Voice"} genre={"Rock"} experience={"Beginner"} commitment={"2 hours weekly"} info={"I dont care"}></HobbyCardEditor>
+            <HobbyCardEditor setShow={setShow} show={show} newCard={true} oldInstrument={"Voice"} oldGenre={"Rock"} oldExperience={"Beginner"} oldCommitment={"2 hours weekly"} oldInfo={"I dont care"}></HobbyCardEditor>
         </>
     );
 

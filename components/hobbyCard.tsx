@@ -4,11 +4,11 @@ import { BsPlayBtnFill } from "react-icons/bs";
 import { BsPencil } from "react-icons/bs";
 import HobbyCardEditor from "./hobbyCardEditor";
 
-export default function HobbyCard({instrument, genre, experience, commitment, info, clip, owner}) {
+export default function HobbyCard({instrument, genre, experience, commitment, info, owner}) {
 
-    function playClip(){
+   /* function playClip(){
         // Play sound clip
-    }
+    } */
 
     function editCard(){
         // replace with a HobbyCardEditor that already has current info filled
@@ -26,7 +26,7 @@ export default function HobbyCard({instrument, genre, experience, commitment, in
             <Col><BsRecordCircleFill/> {experience} </Col>
             <Col><BsRecordCircleFill/> {commitment} </Col>
             <Col><BsRecordCircleFill/> {info} </Col>
-            <Col> <Button onClick={playClip}><BsPlayBtnFill/></Button> Play to hear attached clip </Col>
+            {/*<Col> <Button onClick={playClip}><BsPlayBtnFill/></Button> Play to hear attached clip </Col>*/}
         </Card.Body>
         </Card>
     );
