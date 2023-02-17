@@ -3,6 +3,7 @@ import MultiselectInput from "./multiselectInput";
 import { useState } from "react";
 import SingleselectInput from "./singleselectinput";
 import FormInput from "./formInput";
+import { optionCSS } from "react-select/dist/declarations/src/components/Option";
 
 export default function HobbyCardEditor({setShow, show, newCard, oldInstrument, oldGenre, oldExperience, oldCommitment, oldInfo}) {
     
@@ -61,7 +62,7 @@ export default function HobbyCardEditor({setShow, show, newCard, oldInstrument, 
             <Card style={{ width: "20rem" }}>
             <Card.Body>            
                 <Card.Title> 
-                    <SingleselectInput controlId={undefined} label={"Instrument"} text={""} options={instruments} setValue={setInstrument} value={instrumentSelect}/>
+                    <SingleselectInput controlId={undefined} label={"Instrument"} text={""} options={instruments} setValue={setInstrument} value={oldInstrument? instruments.at(oldInstrument) : null}/>
                 </Card.Title>
                 <Col><MultiselectInput
                             controlId="skillInput"

@@ -3,19 +3,14 @@ import { BsRecordCircleFill } from "react-icons/bs";
 import { BsPlayBtnFill, BsPencil, BsTrash } from "react-icons/bs";
 import HobbyCardEditor from "./hobbyCardEditor";
 
-export default function HobbyCard({instrument, genre, experience, commitment, info, owner}) {
+export default function HobbyCard({instrument, genre, experience, commitment, info, owner, editCard}) {
 
    /* function playClip(){
         // Play sound clip
     } */
 
-    function editCard(){
-        // replace with a HobbyCardEditor that already has current info filled
-        //var editor = <HobbyCardEditor instrument={undefined} genre={undefined} experience={undefined} commitment={undefined} info={undefined} clip={undefined}></HobbyCardEditor>                
-    }
-
     function deleteCard(){
-        
+        //TODO: remove card from db
     }
 
     return(
