@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Form } from "react-bootstrap"
 import Multiselect from "multiselect-react-dropdown";
 
-export default function MultiselectInput({controlId, label, text, options}){
-    const [selected, setSelected] = useState<any[]>([]);
+export default function MultiselectInput({controlId, label, text, options, selected, setSelected}){
+
     function select(newItem){
         let newSelected = selected;
         newSelected.push(newItem);
