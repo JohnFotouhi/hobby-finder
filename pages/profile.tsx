@@ -3,6 +3,7 @@ import { useState } from "react";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { Button, Col, Container, Row, Form, Stack, Alert, Navbar } from "react-bootstrap";
 import FullPageLoader from "@/components/FullPageLoader";
+import HobbyCard from "@/components/hobbyCard";
 
 const Profile = () => {
 
@@ -32,8 +33,17 @@ const Profile = () => {
     console.log(AuthUser);
     return(
         <>  
-            <Button onClick={handleCreate}>Create New Hobby Card</Button>
-            <HobbyCardEditor setShow={setShow} show={show} newCard={true} oldInstrument={"Voice"} oldGenre={"Rock"} oldExperience={"Beginner"} oldCommitment={"2 hours weekly"} oldInfo={"I dont care"}></HobbyCardEditor>
+            <Col>
+                <Button onClick={handleCreate}>Create New Hobby Card</Button>
+                {/* TODO: populate hobby card section from database */}
+                <Row>
+                <HobbyCard instrument={"Drums"} genre={"rock"} experience={"2 years - Beginner"} commitment={"2-5 hours weekly"} 
+                    info={"Looking to join a chill band!"} owner={true}></HobbyCard>
+                <HobbyCard instrument={"Voice"} genre={"jazz"} experience={"7 years - Expererienced"} commitment={"1-2 hours weekly"} 
+                    info={"Looking to sing standards with any jazz group that happens to be gathering"} owner={true}></HobbyCard>
+                </Row>
+                <HobbyCardEditor setShow={setShow} show={show} newCard={true} oldInstrument={"Voice"} oldGenre={"Rock"} oldExperience={"Beginner"} oldCommitment={"2 hours weekly"} oldInfo={"I dont care"}></HobbyCardEditor>
+            </Col>
         </>
     );
 

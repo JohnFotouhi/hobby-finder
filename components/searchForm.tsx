@@ -17,10 +17,12 @@ export default function SearchForm(search){
                 <Row>
                     <Col>
                         <MultiselectInput
-                        controlId="skillInput"
-                        label="Skills"
-                        text=""
-                        options={skills}
+                            controlId="skillInput"
+                            label="Skills"
+                            text=""
+                            options={skills} 
+                            selected={undefined} 
+                            setSelected={undefined}                        
                         />
                     </Col>
                     <Col>
@@ -29,6 +31,8 @@ export default function SearchForm(search){
                         label="Genre of Music"
                         text=""
                         options={genre}
+                        selected={undefined} 
+                        setSelected={undefined}
                         />
                     </Col>
                     <Col>
@@ -37,6 +41,8 @@ export default function SearchForm(search){
                         label="Time Commitment"
                         text=""
                         options={commitmentLevels}
+                        selected={undefined} 
+                        setSelected={undefined}
                         />
                     </Col>
                     <Col>
@@ -45,6 +51,8 @@ export default function SearchForm(search){
                         label="Experience Level"
                         text=""
                         options={experienceLevels}
+                        selected={undefined} 
+                        setSelected={undefined}
                         />
                     </Col>
                     <Col>

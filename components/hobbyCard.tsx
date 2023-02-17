@@ -1,7 +1,6 @@
 import { Button, Col, Container, Row, Form, Card} from "react-bootstrap";
 import { BsRecordCircleFill } from "react-icons/bs";
-import { BsPlayBtnFill } from "react-icons/bs";
-import { BsPencil } from "react-icons/bs";
+import { BsPlayBtnFill, BsPencil, BsTrash } from "react-icons/bs";
 import HobbyCardEditor from "./hobbyCardEditor";
 
 export default function HobbyCard({instrument, genre, experience, commitment, info, owner}) {
@@ -15,12 +14,17 @@ export default function HobbyCard({instrument, genre, experience, commitment, in
         //var editor = <HobbyCardEditor instrument={undefined} genre={undefined} experience={undefined} commitment={undefined} info={undefined} clip={undefined}></HobbyCardEditor>                
     }
 
+    function deleteCard(){
+        
+    }
+
     return(
         <Card style={{ width: '18rem' }}>
         <Card.Body>
             <Card.Title> 
                 {instrument} 
                 { owner? <Button onClick={editCard}><BsPencil/></Button> : null}
+                { owner? <Button onClick={deleteCard}><BsTrash/></Button> : null}
             </Card.Title>
             <Col><BsRecordCircleFill/> {genre} </Col>
             <Col><BsRecordCircleFill/> {experience} </Col>
