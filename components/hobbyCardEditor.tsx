@@ -13,33 +13,34 @@ export default function HobbyCardEditor({setShow, show, newCard, oldInstrument, 
     const [genreSelect, setGenre] = useState<any[]>([]);
     const [infoSelect, setInfo] = useState("");
 
-    type Data = {
-        commitment: string
-        experience: string
-        genre: string[]
-        info: string
-        instrument: string
-      }
-
     function createCard(){
-        //FIRST: make sure they've chosen something for everything but info
-        //var newCard = {}
 
-        fetch("/api/hobbyCardCreation", {
-            method: "POST",
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({data:""})
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              console.log(data);
-          });
+        // console.log(instrumentSelect);
+        // console.log(experienceSelect);
+        // console.log(genreSelect);
+        // console.log(commitmentSelect);
+        // console.log(infoSelect);
 
-        /*console.log(`instrument: ${instrumentSelect}`);
-        console.log(`genres: ${genreSelect}`);
-        console.log(`experience: ${experienceSelect}`);
-        console.log(`commitment: ${commitmentSelect}`);
-        console.log(`info: ${infoSelect}`);*/
+        //Make sure they've selected all inputs
+        if(instrumentSelect && experienceSelect && genreSelect && commitmentSelect && infoSelect){
+            fetch("/api/hobbyCardCreation", { 
+                method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({data: {
+                    instrument: instrumentSelect, 
+                    experience: experienceSelect,
+                    genres: genreSelect,
+                    commitment: commitmentSelect,
+                    info: infoSelect}})
+              })
+                .then((res) => res.json())
+                .then((data) => {
+                  console.log(data);
+              });
+        }
+        else{
+            //some sort of error indicating they need to fill out all info
+        }
     }
 
     function saveCard(){

@@ -7,16 +7,6 @@ import HobbyCard from "@/components/hobbyCard";
 
 const Profile = () => {
 
-    fetch("/api/hobbyCardCreation", {
-        method: "POST",
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({data: "Some Data"})
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-      });
-
     //Hobby Card Functions
     const [show, setShow] = useState(false);
     const [newCard, setNewCard] = useState(true);

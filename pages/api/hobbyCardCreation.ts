@@ -25,18 +25,55 @@ type Card = {
 
 export default async (req, res) =>{
     if(req.method === 'POST'){
-        let docs: any;
+        //console.log(req.body); // successfully retrieves data from API call
+        //console.log(req.body.data.genres.at(0)); //For some reason, genres comes wrapped in an additional array??
+        
+        let userData: any;
+        let userDoc: any;
+        //LATER: database should be wherever our collection of users is
         const querySnapshot = await getDocs(collection(database, "test"));
-            querySnapshot.forEach((doc) => {
+        querySnapshot.forEach((doc) => {
                 //if user id is our user's ID
                 if(doc.id == "FakeUser"){
-                    console.log(`${doc.id} => ${doc.data()}`);
-                    docs = (doc.data());
+                    userData = (doc.data());
+                    userDoc = doc;
                 }
         });
-        res.status(200).json(docs)
-        var cards : Array<any> = docs.hobbyCards;
-        console.log(`cards: ${cards}`);
+        res.status(200).json(userData)
+        var cards : Array<any> = userData.hobbyCards;
+
+        //console.log(cards); //successfully gets array of hobbyCards from db
+        //console.log(cards.at(0).instrument)
+        
+        //catch if trying to make new card with duplicate instrument
+        const newInstrument = req.body.data.experience.label;
+        cards.forEach(async (card) => {
+            if(card.instrument == newInstrument){
+                res.status(409).end()
+            }
+        });
+
+        //make array of genre strings
+        let genreStrings : string[] = [];
+        req.body.data.genres.at(0).forEach((genre) => {
+            genreStrings.push(genre.name);
+        });
+
+        //new hobby card for db
+        const newCard : Card = {
+            commitment: req.body.data.commitment.label,
+            experience: req.body.data.experience.label,
+            genre: genreStrings,
+            info:req.body.data.info,
+            instrument: req.body.data.experience.label
+        };
+
+        //add new card to existing array
+        cards.push(newCard);
+
+        //CANNOT FIGURE OUT HOW TO ACCESS THE DOC
+        //const result = await userDoc.update({cards});       
+
     } else {
         res.status(405).end()
     }
