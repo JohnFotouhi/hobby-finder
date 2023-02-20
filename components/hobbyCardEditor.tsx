@@ -31,15 +31,26 @@ export default function HobbyCardEditor({setShow, show, newCard, oldInstrument, 
                     experience: experienceSelect,
                     genres: genreSelect,
                     commitment: commitmentSelect,
-                    info: infoSelect}})
+                    info: infoSelect,
+                    newCard: newCard}})
               })
                 .then((res) => {
-                    console.log(res.json());
-
+                    //console.log(res.json());
+                    if(res.status == 409 ){
+                        console.log("ERROR: Tried to make card w duplicate instrument");
+                        //TO DO: error message for user
+                    }
+                    else if(res.status == 200){
+                        console.log("SUCESSFUL CREATION");
+                        setShow(false);
+                    }
                 })
                 .then((data) => {
                   console.log(data);
-              });
+                })
+                .catch(error =>{
+                    console.error('Error:', error);
+                });     
         }
         else{
             console.log("NOT CREATING - empty inputs")
@@ -89,7 +100,7 @@ export default function HobbyCardEditor({setShow, show, newCard, oldInstrument, 
                             Any additional info you would like to share with users about this hobby.
                         </Form.Text>
                     </Form> </Col>
-                <Button onClick={newCard? createCard : saveCard}> {newCard ? "Create" : "Save"} </Button>
+                <Button onClick={newCard? createCard : createCard}> {newCard ? "Create" : "Save"} </Button>
                 <Button onClick={cancelCard}>Cancel</Button>
             </Card.Body>
             </Card>
