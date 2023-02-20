@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { addDoc, collection, doc, getDocs, getFirestore, setDoc } from "firebase/firestore"; 
+import { collection, doc, getDocs, getFirestore, setDoc } from "firebase/firestore"; 
 
 const firebaseConfig = {
     apiKey: "AIzaSyANQhKbnHwzW2SHI-GTPz3rH0X7InikKDo",
@@ -29,17 +29,15 @@ export default async (req, res) =>{
         //console.log(req.body.data.genres.at(0)); //For some reason, genres comes wrapped in an additional array??
         
         let userData: any;
-        let userDoc: any;
         //LATER: database should be wherever our collection of users is
         const querySnapshot = await getDocs(collection(database, "test"));
         querySnapshot.forEach((doc) => {
                 //if user id is our user's ID
                 if(doc.id == "FakeUser"){
                     userData = (doc.data());
-                    userDoc = doc;
                 }
         });
-        res.status(200).json(userData)
+        res.status(200).json("userData")
         var cards : Array<any> = userData.hobbyCards;
 
         //console.log(cards); //successfully gets array of hobbyCards from db

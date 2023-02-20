@@ -33,12 +33,16 @@ export default function HobbyCardEditor({setShow, show, newCard, oldInstrument, 
                     commitment: commitmentSelect,
                     info: infoSelect}})
               })
-                .then((res) => res.json())
+                .then((res) => {
+                    console.log(res.json());
+
+                })
                 .then((data) => {
                   console.log(data);
               });
         }
         else{
+            console.log("NOT CREATING - empty inputs")
             //some sort of error indicating they need to fill out all info
         }
     }
