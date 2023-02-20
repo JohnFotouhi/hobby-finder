@@ -1,11 +1,11 @@
 import {useState} from "react"
-    
-function App() {
+
+export default function UploadImage(image) {
     const [file, setFile] = useState("");
 
     // Handles input change event and updates state
     function handleChange(event) {
-    setFile(event.target.files[0]);
+        setFile(event.target.files[0]);
     }
 
     return (
@@ -16,5 +16,5 @@ function App() {
     );
 }
 
-export default App;
+
 

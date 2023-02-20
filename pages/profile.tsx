@@ -5,7 +5,11 @@ export default function Profile() {
     
     return(
         <>  
+            <div>
+
             <HobbyCardEditor instrument={undefined} genre={undefined} experience={undefined} commitment={undefined} info={undefined} clip={undefined}></HobbyCardEditor>
+            </div>
+            
         </>
     );
 
