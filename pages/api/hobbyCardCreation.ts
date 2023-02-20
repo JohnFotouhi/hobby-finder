@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { addDoc, collection, getDocs, getFirestore } from "firebase/firestore"; 
+import { addDoc, collection, doc, getDocs, getFirestore, setDoc } from "firebase/firestore"; 
 
 const firebaseConfig = {
     apiKey: "AIzaSyANQhKbnHwzW2SHI-GTPz3rH0X7InikKDo",
@@ -46,34 +46,38 @@ export default async (req, res) =>{
         //console.log(cards.at(0).instrument)
         
         //catch if trying to make new card with duplicate instrument
-        const newInstrument = req.body.data.experience.label;
+        const newInstrument = req.body.data.instrument.label;
+        let duplicate = false;
         cards.forEach(async (card) => {
             if(card.instrument == newInstrument){
+                duplicate = true;
                 res.status(409).end()
-            }
+            }        
         });
 
-        //make array of genre strings
-        let genreStrings : string[] = [];
-        req.body.data.genres.at(0).forEach((genre) => {
-            genreStrings.push(genre.name);
-        });
+        if(!duplicate){
+            //make array of genre strings
+            let genreStrings : string[] = [];
+            req.body.data.genres.at(0).forEach((genre) => {
+                genreStrings.push(genre.name);
+            });
 
-        //new hobby card for db
-        const newCard : Card = {
-            commitment: req.body.data.commitment.label,
-            experience: req.body.data.experience.label,
-            genre: genreStrings,
-            info:req.body.data.info,
-            instrument: req.body.data.experience.label
-        };
+            //new hobby card for db
+            const newCard : Card = {
+                commitment: req.body.data.commitment.label,
+                experience: req.body.data.experience.label,
+                genre: genreStrings,
+                info:req.body.data.info,
+                instrument: req.body.data.instrument.label
+            };
 
-        //add new card to existing array
-        cards.push(newCard);
-
-        //CANNOT FIGURE OUT HOW TO ACCESS THE DOC
-        //const result = await userDoc.update({cards});       
-
+            //add new card to existing array
+            cards.push(newCard);
+            const testRef = collection(database, "test")
+            
+            //update field with new array
+            setDoc(doc(testRef, "FakeUser"), {hobbyCards: cards});
+        }
     } else {
         res.status(405).end()
     }
