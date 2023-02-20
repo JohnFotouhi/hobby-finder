@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { addDoc, collection, getDocs, getFirestore } from "firebase/firestore"; 
+import { addDoc, collection, doc, getDocs, getFirestore, setDoc } from "firebase/firestore"; 
 
 const firebaseConfig = {
     apiKey: "AIzaSyANQhKbnHwzW2SHI-GTPz3rH0X7InikKDo",
@@ -25,18 +25,59 @@ type Card = {
 
 export default async (req, res) =>{
     if(req.method === 'POST'){
-        let docs: any;
+        //console.log(req.body); // successfully retrieves data from API call
+        //console.log(req.body.data.genres.at(0)); //For some reason, genres comes wrapped in an additional array??
+        
+        let userData: any;
+        let userDoc: any;
+        //LATER: database should be wherever our collection of users is
         const querySnapshot = await getDocs(collection(database, "test"));
-            querySnapshot.forEach((doc) => {
+        querySnapshot.forEach((doc) => {
                 //if user id is our user's ID
                 if(doc.id == "FakeUser"){
-                    console.log(`${doc.id} => ${doc.data()}`);
-                    docs = (doc.data());
+                    userData = (doc.data());
+                    userDoc = doc;
                 }
         });
-        res.status(200).json(docs)
-        var cards : Array<any> = docs.hobbyCards;
-        console.log(`cards: ${cards}`);
+        res.status(200).json(userData)
+        var cards : Array<any> = userData.hobbyCards;
+
+        //console.log(cards); //successfully gets array of hobbyCards from db
+        //console.log(cards.at(0).instrument)
+        
+        //catch if trying to make new card with duplicate instrument
+        const newInstrument = req.body.data.instrument.label;
+        let duplicate = false;
+        cards.forEach(async (card) => {
+            if(card.instrument == newInstrument){
+                duplicate = true;
+                res.status(409).end()
+            }        
+        });
+
+        if(!duplicate){
+            //make array of genre strings
+            let genreStrings : string[] = [];
+            req.body.data.genres.at(0).forEach((genre) => {
+                genreStrings.push(genre.name);
+            });
+
+            //new hobby card for db
+            const newCard : Card = {
+                commitment: req.body.data.commitment.label,
+                experience: req.body.data.experience.label,
+                genre: genreStrings,
+                info:req.body.data.info,
+                instrument: req.body.data.instrument.label
+            };
+
+            //add new card to existing array
+            cards.push(newCard);
+            const testRef = collection(database, "test")
+            
+            //update field with new array
+            setDoc(doc(testRef, "FakeUser"), {hobbyCards: cards});
+        }
     } else {
         res.status(405).end()
     }
