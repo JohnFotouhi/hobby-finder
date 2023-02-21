@@ -43,6 +43,7 @@ const Profile = () => {
     
     const AuthUser = useAuthUser();
     console.log(AuthUser);
+    
     return(
         <>  
             <Col>

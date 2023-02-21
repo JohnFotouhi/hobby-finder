@@ -4,6 +4,7 @@ import FormInput from "./../components/formInput";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from 'firebase/app';
 import { useState } from "react";
+import { collection, doc, getFirestore, setDoc } from "firebase/firestore";
 
 export default function Registration(){
     const [displayName, setDisplayName] = useState("");
@@ -24,6 +25,7 @@ export default function Registration(){
         };
         
         const app = initializeApp(firebaseConfig);
+        const database = getFirestore(app);
         const auth = getAuth();
         createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
@@ -31,7 +33,20 @@ export default function Registration(){
             const user = userCredential.user;
             console.log(userCredential);
             console.log(user);
-            // ...
+
+            //add new user info to users db collection
+            const data = {
+                name: displayName,
+                hobbyCards: [],
+                availability: {},
+                bio: "",
+                pronouns: "",
+                host: false,
+                equipment: ""
+            }
+            const userRef = collection(database, "users")
+            setDoc(doc(userRef, user.uid), {data});
+            
         })
         .catch((error) => {
             console.log(error);

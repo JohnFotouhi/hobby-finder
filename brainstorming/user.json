@@ -2,34 +2,34 @@
     "id": "asdf79sadf0a2834ijsdakf",
     "key": "89401324asdfjhasklfha",
     "name": "John Doe",
-    "skills": [
+    "hobbyCards": [
         {
-            "id": "12342351312523",
-            "name": "guitar",
+            "instrument": "guitar",
             "experience": "Intermediate",
-            "genre": [
+            "genres": [
                 "folk",
                 "Other - Norwegian Underwater Square Dance"
             ],
-            "commitment": "low"
+            "commitment": "low",
+            "info": ""
         },
         {
-            "id": "asdf780253",
-            "name": "Electric Guitar",
+            "instrument": "Electric Guitar",
             "experience": "Novice",
-            "genre": [
+            "genres": [
                 "rock"
             ],
-            "commitment": "moderate"
+            "commitment": "moderate",
+            "info": ""
         },
         {
-            "id": "asdfsadf798",
-            "name": "Acapella",
+            "instrument": "Acapella",
             "experience": "Expert",
-            "genre": [
+            "genres": [
                 "pop"
             ],
-            "commitment": "high"
+            "commitment": "high",
+            "info": ""
         }
     ],
     "availability": {
