@@ -2,7 +2,7 @@ import { Button, Col, Container, Row, Form, Card, Modal, Dropdown} from "react-b
 import {useState} from "react"
 import UploadImage from "./uploadImage";
 
-export default function UserInformation(){
+export default function UserInformation({canHost, hasEquipment, displayName, bio}){
     const [file, setFile] = useState("");
 
     // Handles input change event and updates state
@@ -17,20 +17,27 @@ export default function UserInformation(){
                     <UploadImage image = ""></UploadImage>
                 </Col>
                 <Col>
-                    {/* name
-                    bio */}
+                    <Col>
+                        hi this is my name
+                    </Col>
+                    <Col>
+                        some interesting facts about me
+                    </Col>
                 </Col>
             </Row>
 
             <Row>
                 <Col>
                     {/* Can host */}
+                    host button
                 </Col>
                 <Col>
                     {/* Equipment */}
+                    equipment button
                 </Col>
                 <Col>
                     {/* Schedule */}
+                    schedule button
                 </Col>
             </Row>
                 

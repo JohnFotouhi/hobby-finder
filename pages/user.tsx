@@ -1,17 +1,13 @@
 import { Button, Col, Container, Row, Form, Stack, Alert, Navbar } from "react-bootstrap";
 import HobbyCard from "@/components/hobbyCard";
 import UploadImage from "@/components/uploadImage";
+import UserInformation from "@/components/userInformation";
 
 export default function User() {
     
     return(
         <>  
-            <Container fluid className ="bg-light">
-
-                {/* TODO: Get personal information in the database associated with the user, populate user information */}
-                <UploadImage image = "dab"> </UploadImage>
-
-            </Container>
+            <UserInformation canHost={true} hasEquipment={true} displayName={"Larry"} bio={"I am good at music lmao"}></UserInformation>
             <Container fluid className ="bg-light">
 
                 {/* TODO: For each hobby card in the database associated with the user, populate a hobby card component */}
