@@ -15,7 +15,6 @@ export default function Search() {
         setEditFilters(!editFilters);
     }
     function handleSearch(){
-        console.log("HANDLE SEARCH IS TRIGGERED");
         fetch("/api/search", {
             method: "POST",
             headers: {'Content-Type': 'application/json'},

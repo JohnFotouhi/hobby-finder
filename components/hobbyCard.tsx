@@ -10,7 +10,15 @@ export default function HobbyCard({instrument, genre, experience, commitment, in
     } */
 
     function deleteCard(){
-        //TODO: remove card from db
+        fetch("/api/hobbyCardDeletion", { 
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({data: instrument})
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              console.log(data);
+          });
     }
 
     return(

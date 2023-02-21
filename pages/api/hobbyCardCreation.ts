@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { addDoc, collection, doc, getDocs, getFirestore, setDoc } from "firebase/firestore"; 
+import { collection, doc, getDocs, getFirestore, setDoc } from "firebase/firestore"; 
 
 const firebaseConfig = {
     apiKey: "AIzaSyANQhKbnHwzW2SHI-GTPz3rH0X7InikKDo",
@@ -27,19 +27,20 @@ export default async (req, res) =>{
     if(req.method === 'POST'){
         //console.log(req.body); // successfully retrieves data from API call
         //console.log(req.body.data.genres.at(0)); //For some reason, genres comes wrapped in an additional array??
-        
+        const newCard = req.body.data.newCard;
+
         let userData: any;
-        let userDoc: any;
         //LATER: database should be wherever our collection of users is
+        const testRef = collection(database, "test")
+
         const querySnapshot = await getDocs(collection(database, "test"));
         querySnapshot.forEach((doc) => {
                 //if user id is our user's ID
                 if(doc.id == "FakeUser"){
                     userData = (doc.data());
-                    userDoc = doc;
                 }
         });
-        res.status(200).json(userData)
+        //res.status(200).json("userData")
         var cards : Array<any> = userData.hobbyCards;
 
         //console.log(cards); //successfully gets array of hobbyCards from db
@@ -48,36 +49,52 @@ export default async (req, res) =>{
         //catch if trying to make new card with duplicate instrument
         const newInstrument = req.body.data.instrument.label;
         let duplicate = false;
-        cards.forEach(async (card) => {
+        let matchingIndex = -1;
+        cards.forEach(async (card, index) => {
             if(card.instrument == newInstrument){
-                duplicate = true;
-                res.status(409).end()
+                if(newCard){
+                    duplicate = true;
+                    res.status(409).end();
+                }
+                else{
+                    matchingIndex = index;
+                }
             }        
         });
 
-        if(!duplicate){
-            //make array of genre strings
-            let genreStrings : string[] = [];
-            req.body.data.genres.at(0).forEach((genre) => {
-                genreStrings.push(genre.name);
-            });
+        //make array of genre strings
+        let genreStrings : string[] = [];
+        req.body.data.genres.at(0).forEach((genre) => {
+            genreStrings.push(genre.name);
+        });
 
-            //new hobby card for db
-            const newCard : Card = {
-                commitment: req.body.data.commitment.label,
-                experience: req.body.data.experience.label,
-                genre: genreStrings,
-                info:req.body.data.info,
-                instrument: req.body.data.instrument.label
-            };
+        //hobby card for db with new inputs
+        const freshCard : Card = {
+            commitment: req.body.data.commitment.label,
+            experience: req.body.data.experience.label,
+            genre: genreStrings,
+            info:req.body.data.info,
+            instrument: req.body.data.instrument.label
+        };
 
+        //if we're making a new card and have passed duplicate check
+        if(newCard && !duplicate){           
             //add new card to existing array
-            cards.push(newCard);
+            cards.push(freshCard);
             const testRef = collection(database, "test")
             
             //update field with new array
             setDoc(doc(testRef, "FakeUser"), {hobbyCards: cards});
         }
+
+        //if we're updating a card
+        if(!newCard){
+            //replace array w updated card
+            cards[matchingIndex] = freshCard;
+            setDoc(doc(testRef, "FakeUser"), {hobbyCards: cards});
+        }
+
+        res.status(200).json("userData")
     } else {
         res.status(405).end()
     }
