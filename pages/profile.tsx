@@ -1,5 +1,5 @@
 import HobbyCardEditor from "@/components/hobbyCardEditor";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AuthAction, init, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { Button, Col, Container, Row, Form, Stack, Alert, Navbar } from "react-bootstrap";
 import FullPageLoader from "@/components/FullPageLoader";
@@ -14,6 +14,7 @@ const Profile = () => {
 
     //user's cards
     const [cards, setCards] = useState<any[]>([]);
+    const [cardComponents, setCardComponents] = useState<any[]>([]);
 
     //Hobby Card States
     const [show, setShow] = useState(false);
@@ -26,6 +27,10 @@ const Profile = () => {
     const [oldInfo, setOldInfo] = useState("");
 
     //get user's hobby cards
+    useEffect(() => {
+        getCards();
+    }, [cards]);
+
     const getGenreList = (genres : [string]) => {
         let genreList = "Genres: ";
         genres.forEach((genre, i) => {
@@ -51,9 +56,9 @@ const Profile = () => {
             setCards(data);
         });
         let map = cards.map((card, i) => (
-            <HobbyCard index={i} instrument={card.instrument} genre={getGenreList(card.genres)} experience={card.experience} commitment={card.commitment} info={card.info} owner={true} editCard={editCard}></HobbyCard>
+            <HobbyCard uid={AuthUser.id} index={i} instrument={card.instrument} genre={getGenreList(card.genres)} experience={card.experience} commitment={card.commitment} info={card.info} owner={true} editCard={editCard}></HobbyCard>
         ))
-        return map
+        setCardComponents(map);
     }
 
     function handleCreate(){
@@ -86,9 +91,9 @@ const Profile = () => {
                 <Button onClick={handleCreate}>Create New Hobby Card</Button>
                 {/* TODO: populate hobby card section from database */}
                 <Row>
-                {/* {getCards()} */}
+                {/* {cardComponents} */}
                 </Row>
-                <HobbyCardEditor setShow={setShow} show={show} newCard={newCard} oldInstrument={undefined} oldGenre={undefined} oldExperience={undefined} oldCommitment={undefined} oldInfo={undefined}></HobbyCardEditor>
+                <HobbyCardEditor uid={AuthUser.id} setShow={setShow} show={show} newCard={newCard} oldInstrument={undefined} oldGenre={undefined} oldExperience={undefined} oldCommitment={undefined} oldInfo={undefined}></HobbyCardEditor>
             </Col>
         </>
     );

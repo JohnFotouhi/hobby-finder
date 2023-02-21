@@ -6,12 +6,7 @@ import FormInput from "./formInput";
 import { optionCSS } from "react-select/dist/declarations/src/components/Option";
 import { useAuthUser } from "next-firebase-auth";
 
-export default function HobbyCardEditor({setShow, show, newCard, oldInstrument, oldGenre, oldExperience, oldCommitment, oldInfo}) {
-    
-    //user credentials
-    const AuthUser = useAuthUser();
-    console.log(AuthUser);
-    console.log(newCard);
+export default function HobbyCardEditor({uid, setShow, show, newCard, oldInstrument, oldGenre, oldExperience, oldCommitment, oldInfo}) {
     
     const [instrumentSelect, setInstrument] = useState("");
     const [experienceSelect, setExperience] = useState("");
@@ -33,7 +28,7 @@ export default function HobbyCardEditor({setShow, show, newCard, oldInstrument, 
                 method: "POST",
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
-                    uid: AuthUser.id,
+                    uid: uid,
                     instrument: instrumentSelect, 
                     experience: experienceSelect,
                     genres: genreSelect,
