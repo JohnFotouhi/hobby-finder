@@ -18,7 +18,7 @@ const database = getFirestore(app);
 type Card = {
     commitment: string
     experience: string
-    genre: string[]
+    genres: string[]
     info: string
     instrument: string
   }
@@ -77,7 +77,7 @@ export default async (req, res) =>{
         const freshCard : Card = {
             commitment: req.body.commitment.label,
             experience: req.body.experience.label,
-            genre: genreStrings,
+            genres: genreStrings,
             info:req.body.info,
             instrument: req.body.instrument.label
         };

@@ -2,9 +2,8 @@ import { Button, Col, Container, Row, Form, Card} from "react-bootstrap";
 import { BsRecordCircleFill } from "react-icons/bs";
 import { BsPlayBtnFill, BsPencil, BsTrash } from "react-icons/bs";
 import { useAuthUser } from "next-firebase-auth";
-import { Auth } from "firebase-admin/lib/auth/auth";
 
-export default function HobbyCard({instrument, genre, experience, commitment, info, owner, editCard}) {
+export default function HobbyCard({index, instrument, genre, experience, commitment, info, owner, editCard}) {
 
     //user credentials
     const AuthUser = useAuthUser();

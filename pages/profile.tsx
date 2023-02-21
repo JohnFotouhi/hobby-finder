@@ -1,9 +1,10 @@
 import HobbyCardEditor from "@/components/hobbyCardEditor";
 import { useState } from "react";
-import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
+import { AuthAction, init, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { Button, Col, Container, Row, Form, Stack, Alert, Navbar } from "react-bootstrap";
 import FullPageLoader from "@/components/FullPageLoader";
 import HobbyCard from "@/components/hobbyCard";
+import { initializeApp } from "firebase-admin";
 
 const Profile = () => {
 
@@ -11,15 +12,49 @@ const Profile = () => {
     const AuthUser = useAuthUser();
     console.log(AuthUser);
 
-    //Hobby Card Functions
+    //user's cards
+    const [cards, setCards] = useState<any[]>([]);
+
+    //Hobby Card States
     const [show, setShow] = useState(false);
     const [newCard, setNewCard] = useState(true);
+
     const [oldInstrumentId, setOldInstrumentId] = useState(0);
     const [oldGenres, setOldGenres] = useState<any[]>([]);
     const [oldExperience, setOldExperience] = useState("");
     const [oldCommitment, setOldCommitment] = useState("");
     const [oldInfo, setOldInfo] = useState("");
-    //this but for hobby cards
+
+    //get user's hobby cards
+    const getGenreList = (genres : [string]) => {
+        let genreList = "Genres: ";
+        genres.forEach((genre, i) => {
+            if(i==0){
+                genreList = genreList + genre;
+            }
+            else{
+                genreList = genreList + ", " + genre;
+            }
+        });
+        return genreList;
+    }
+
+    const getCards = () => {
+        fetch("/api/hobbyCardRetrieval", { 
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({uid: AuthUser.id})
+        })
+            .then((res) => res.json())
+            .then((data) => {
+            console.log(data)
+            setCards(data);
+        });
+        let map = cards.map((card, i) => (
+            <HobbyCard index={i} instrument={card.instrument} genre={getGenreList(card.genres)} experience={card.experience} commitment={card.commitment} info={card.info} owner={true} editCard={editCard}></HobbyCard>
+        ))
+        return map
+    }
 
     function handleCreate(){
         setNewCard(true);
@@ -39,7 +74,7 @@ const Profile = () => {
         setNewCard(false);
 
         //set state of existing parameters
-        setOldInstrumentId(2);
+        //setOldInstrumentId(2);
 
         //show editor modal
         setShow(true);
@@ -51,10 +86,7 @@ const Profile = () => {
                 <Button onClick={handleCreate}>Create New Hobby Card</Button>
                 {/* TODO: populate hobby card section from database */}
                 <Row>
-                <HobbyCard instrument={"Drums"} genre={"rock"} experience={"2 years - Beginner"} commitment={"2-5 hours weekly"} 
-                    info={"Looking to join a chill band!"} owner={true} editCard={editCard}></HobbyCard>
-                <HobbyCard instrument={"Voice"} genre={"jazz"} experience={"7 years - Expererienced"} commitment={"1-2 hours weekly"} 
-                    info={"Looking to sing standards with any jazz group that happens to be gathering"} owner={true} editCard={editCard}></HobbyCard>
+                {/* {getCards()} */}
                 </Row>
                 <HobbyCardEditor setShow={setShow} show={show} newCard={newCard} oldInstrument={undefined} oldGenre={undefined} oldExperience={undefined} oldCommitment={undefined} oldInfo={undefined}></HobbyCardEditor>
             </Col>
