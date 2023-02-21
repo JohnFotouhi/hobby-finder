@@ -15,6 +15,7 @@ const Profile = () => {
     const [oldExperience, setOldExperience] = useState("");
     const [oldCommitment, setOldCommitment] = useState("");
     const [oldInfo, setOldInfo] = useState("");
+    //this but for hobby cards
 
     function handleCreate(){
         setNewCard(true);
