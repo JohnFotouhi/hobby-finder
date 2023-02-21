@@ -18,7 +18,7 @@ const database = getFirestore(app);
 export default async (req, res) =>{
     if(req.method === 'POST'){
         let docs: any[] = [];
-        const querySnapshot = await getDocs(collection(database, "test"));
+        const querySnapshot = await getDocs(collection(database, "users"));
             querySnapshot.forEach((doc) => {
             console.log(`${doc.id} => ${doc.data()}`);
             docs.push(doc.data());
