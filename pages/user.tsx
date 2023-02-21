@@ -5,9 +5,14 @@ import UserInformation from "@/components/userInformation";
 
 export default function User() {
     
+
+    function editProfile(){
+        //need to fill in
+    }
+
     return(
         <>  
-            <UserInformation canHost={true} hasEquipment={true} displayName={"Larry"} bio={"I am good at music lmao"}></UserInformation>
+            <UserInformation canHost={true} hasEquipment={true} displayName={"Larry"} bio={"I am good at music lmao"} owner={false} editProfile={editProfile}></UserInformation>
             <Container fluid className ="bg-light">
 
                 <Col><Button>Reach Out</Button></Col>
