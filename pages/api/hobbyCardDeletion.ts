@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { collection, doc, getDocs, getFirestore, setDoc } from "firebase/firestore"; 
+import { collection, doc, getDocs, getFirestore, updateDoc } from "firebase/firestore"; 
 
 const firebaseConfig = {
     apiKey: "AIzaSyANQhKbnHwzW2SHI-GTPz3rH0X7InikKDo",
@@ -17,14 +17,13 @@ const database = getFirestore(app);
 
 export default async (req, res) =>{
     if(req.method === 'POST'){
-        //console.log(req.body.data); // successfully retrieves data from API call
         
         let userData: any;
         //LATER: database should be wherever our collection of users is
-        const querySnapshot = await getDocs(collection(database, "test"));
+        const querySnapshot = await getDocs(collection(database, "users"));
         querySnapshot.forEach((doc) => {
                 //if user id is our user's ID
-                if(doc.id == "FakeUser"){
+                if(doc.id == req.body.uid){
                     userData = (doc.data());
                 }
         });
@@ -36,17 +35,17 @@ export default async (req, res) =>{
         //find index of hobby card with matching instrument
         let deleteIndex;
         cards.forEach(async (card, index) => {
-            if(card.instrument == req.body.data){
+            if(card.instrument == req.body.instrument){
                 deleteIndex = index;
             }        
         });
 
         //delete card from existing array
         cards.splice(deleteIndex, 1);
-        const testRef = collection(database, "test")
+        const userRef = collection(database, "users")
 
         //update field with new array
-        setDoc(doc(testRef, "FakeUser"), {hobbyCards: cards});
+        updateDoc(doc(userRef, req.body.uid), {hobbyCards: cards});
     } else {
         res.status(405).end()
     }

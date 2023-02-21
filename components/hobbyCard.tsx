@@ -1,11 +1,16 @@
 import { Button, Col, Container, Row, Form, Card} from "react-bootstrap";
 import { BsRecordCircleFill } from "react-icons/bs";
 import { BsPlayBtnFill, BsPencil, BsTrash } from "react-icons/bs";
-import HobbyCardEditor from "./hobbyCardEditor";
+import { useAuthUser } from "next-firebase-auth";
+import { Auth } from "firebase-admin/lib/auth/auth";
 
 export default function HobbyCard({instrument, genre, experience, commitment, info, owner, editCard}) {
 
-   /* function playClip(){
+    //user credentials
+    const AuthUser = useAuthUser();
+    console.log(AuthUser);
+    
+    /* function playClip(){
         // Play sound clip
     } */
 
@@ -13,7 +18,7 @@ export default function HobbyCard({instrument, genre, experience, commitment, in
         fetch("/api/hobbyCardDeletion", { 
             method: "POST",
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({data: instrument})
+            body: JSON.stringify({instrument: instrument, uid: AuthUser.id})
           })
             .then((res) => res.json())
             .then((data) => {

@@ -4,8 +4,14 @@ import { useState } from "react";
 import SingleselectInput from "./singleselectinput";
 import FormInput from "./formInput";
 import { optionCSS } from "react-select/dist/declarations/src/components/Option";
+import { useAuthUser } from "next-firebase-auth";
 
 export default function HobbyCardEditor({setShow, show, newCard, oldInstrument, oldGenre, oldExperience, oldCommitment, oldInfo}) {
+    
+    //user credentials
+    const AuthUser = useAuthUser();
+    console.log(AuthUser);
+    console.log(newCard);
     
     const [instrumentSelect, setInstrument] = useState("");
     const [experienceSelect, setExperience] = useState("");
@@ -26,13 +32,14 @@ export default function HobbyCardEditor({setShow, show, newCard, oldInstrument, 
             fetch("/api/hobbyCardCreation", { 
                 method: "POST",
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({data: {
+                body: JSON.stringify({
+                    uid: AuthUser.id,
                     instrument: instrumentSelect, 
                     experience: experienceSelect,
                     genres: genreSelect,
                     commitment: commitmentSelect,
                     info: infoSelect,
-                    newCard: newCard}})
+                    newCard: newCard})
               })
                 .then((res) => {
                     //console.log(res.json());
@@ -56,11 +63,6 @@ export default function HobbyCardEditor({setShow, show, newCard, oldInstrument, 
             console.log("NOT CREATING - empty inputs")
             //some sort of error indicating they need to fill out all info
         }
-    }
-
-    function saveCard(){
-        // replace with a HobbyCard that has current info filled in / update FireBase
-        setShow(false);
     }
 
     function cancelCard(){
@@ -100,7 +102,7 @@ export default function HobbyCardEditor({setShow, show, newCard, oldInstrument, 
                             Any additional info you would like to share with users about this hobby.
                         </Form.Text>
                     </Form> </Col>
-                <Button onClick={newCard? createCard : createCard}> {newCard ? "Create" : "Save"} </Button>
+                <Button onClick={createCard}> {newCard ? "Create" : "Save"} </Button>
                 <Button onClick={cancelCard}>Cancel</Button>
             </Card.Body>
             </Card>

@@ -35,17 +35,14 @@ export default function Registration(){
             console.log(user);
 
             //add new user info to users db collection
-            const data = {
-                name: displayName,
+            const userRef = collection(database, "users")
+            setDoc(doc(userRef, user.uid), {name: displayName,
                 hobbyCards: [],
                 availability: {},
                 bio: "",
                 pronouns: "",
                 host: false,
-                equipment: ""
-            }
-            const userRef = collection(database, "users")
-            setDoc(doc(userRef, user.uid), {data});
+                equipment: ""});
             
         })
         .catch((error) => {

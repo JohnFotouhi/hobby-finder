@@ -7,6 +7,10 @@ import HobbyCard from "@/components/hobbyCard";
 
 const Profile = () => {
 
+    //user credentials
+    const AuthUser = useAuthUser();
+    console.log(AuthUser);
+
     //Hobby Card Functions
     const [show, setShow] = useState(false);
     const [newCard, setNewCard] = useState(true);
@@ -40,9 +44,6 @@ const Profile = () => {
         //show editor modal
         setShow(true);
     }
-    
-    const AuthUser = useAuthUser();
-    console.log(AuthUser);
     
     return(
         <>  
