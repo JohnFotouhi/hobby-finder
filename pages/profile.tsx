@@ -15,6 +15,7 @@ const Profile = () => {
     const [oldExperience, setOldExperience] = useState("");
     const [oldCommitment, setOldCommitment] = useState("");
     const [oldInfo, setOldInfo] = useState("");
+    //this but for hobby cards
 
     function handleCreate(){
         setNewCard(true);
@@ -53,7 +54,7 @@ const Profile = () => {
                 <HobbyCard instrument={"Voice"} genre={"jazz"} experience={"7 years - Expererienced"} commitment={"1-2 hours weekly"} 
                     info={"Looking to sing standards with any jazz group that happens to be gathering"} owner={true} editCard={editCard}></HobbyCard>
                 </Row>
-                <HobbyCardEditor setShow={setShow} show={show} newCard={newCard} oldInstrument={oldInstrumentId} oldGenre={"Rock"} oldExperience={"Beginner"} oldCommitment={"2 hours weekly"} oldInfo={"I dont care"}></HobbyCardEditor>
+                <HobbyCardEditor setShow={setShow} show={show} newCard={newCard} oldInstrument={undefined} oldGenre={undefined} oldExperience={undefined} oldCommitment={undefined} oldInfo={undefined}></HobbyCardEditor>
             </Col>
         </>
     );
