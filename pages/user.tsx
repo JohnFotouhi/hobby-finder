@@ -2,12 +2,18 @@ import { Button, Col, Container, Row, Form, Stack, Alert, Navbar } from "react-b
 import HobbyCard from "@/components/hobbyCard";
 import UploadImage from "@/components/uploadImage";
 import UserInformation from "@/components/userInformation";
+import perry from "@/public/User_images/perry.png";
 
 export default function User() {
     
+
+    function editProfile(){
+        //need to fill in
+    }
+
     return(
         <>  
-            <UserInformation canHost={true} hasEquipment={true} displayName={"Larry"} bio={"I am good at music lmao"}></UserInformation>
+            <UserInformation capacity={"2"} equipment={"a condenser mic and an interface"} schedule = {"Any morning before 11am"} displayName={"Perry the Platypus"} bio={"*chatter*"} owner={false} editProfile={editProfile} profilePicture={perry}></UserInformation>
             <Container fluid className ="bg-light">
 
                 <Col><Button>Reach Out</Button></Col>
