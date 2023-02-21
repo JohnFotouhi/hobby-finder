@@ -4,6 +4,10 @@ import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "nex
 import { Button, Col, Container, Row, Form, Stack, Alert, Navbar } from "react-bootstrap";
 import FullPageLoader from "@/components/FullPageLoader";
 import HobbyCard from "@/components/hobbyCard";
+import UserInformation from "@/components/userInformation";
+import Jon from "@/public/User_images/jon.jpg";
+import UserInformationEditor from '../components/userInformationEditor';
+import { updateProfile } from 'firebase/auth';
 
 const Profile = () => {
 
@@ -16,6 +20,10 @@ const Profile = () => {
     const [oldCommitment, setOldCommitment] = useState("");
     const [oldInfo, setOldInfo] = useState("");
     //this but for hobby cards
+
+    //User Info Functions
+    const [showProfileEditor, setShowProfileEditor] = useState(false);
+    const [oldBio, setNewBio] = useState("");
 
     function handleCreate(){
         setNewCard(true);
@@ -40,22 +48,41 @@ const Profile = () => {
         //show editor modal
         setShow(true);
     }
+
+    function editProfile(){
+
+        console.log("edit profile")
+        //show editor modal
+        setShowProfileEditor(true);
+    }
     
     const AuthUser = useAuthUser();
     console.log(AuthUser);
     return(
         <>  
-            <Col>
-                <Button onClick={handleCreate}>Create New Hobby Card</Button>
-                {/* TODO: populate hobby card section from database */}
+            <Container>
                 <Row>
-                <HobbyCard instrument={"Drums"} genre={"rock"} experience={"2 years - Beginner"} commitment={"2-5 hours weekly"} 
-                    info={"Looking to join a chill band!"} owner={true} editCard={editCard}></HobbyCard>
-                <HobbyCard instrument={"Voice"} genre={"jazz"} experience={"7 years - Expererienced"} commitment={"1-2 hours weekly"} 
-                    info={"Looking to sing standards with any jazz group that happens to be gathering"} owner={true} editCard={editCard}></HobbyCard>
+                    <Col>
+                        <UserInformation capacity={"4"} equipment={"two bass amps"} schedule = {"Tuedays after 8:30pm"} displayName={"Larry McGary"} bio={"I am good at music lmao"} owner={true} editProfile={editProfile} profilePicture={Jon}></UserInformation>
+                        <UserInformationEditor setShowProfileEditor={setShowProfileEditor} showProfileEditor={showProfileEditor} oldCapacity={undefined} oldBio={undefined} oldEquipment={undefined} oldSchedule={undefined}></UserInformationEditor>
+                    </Col>
                 </Row>
-                <HobbyCardEditor setShow={setShow} show={show} newCard={newCard} oldInstrument={undefined} oldGenre={undefined} oldExperience={undefined} oldCommitment={undefined} oldInfo={undefined}></HobbyCardEditor>
-            </Col>
+                <Row>
+                    <Col>
+                        <Button onClick={handleCreate}>Create New Hobby Card</Button>
+                        {/* TODO: populate hobby card section from database */}
+                        <Row>
+                        <HobbyCard instrument={"Drums"} genre={"rock"} experience={"2 years - Beginner"} commitment={"2-5 hours weekly"} 
+                            info={"Looking to join a chill band!"} owner={true} editCard={editCard}></HobbyCard>
+                        <HobbyCard instrument={"Voice"} genre={"jazz"} experience={"7 years - Expererienced"} commitment={"1-2 hours weekly"} 
+                            info={"Looking to sing standards with any jazz group that happens to be gathering"} owner={true} editCard={editCard}></HobbyCard>
+                        </Row>
+                        <HobbyCardEditor setShow={setShow} show={show} newCard={newCard} oldInstrument={undefined} oldGenre={undefined} oldExperience={undefined} oldCommitment={undefined} oldInfo={undefined}></HobbyCardEditor>
+                    </Col>
+                </Row>
+                    
+            </Container>
+            
         </>
     );
 
