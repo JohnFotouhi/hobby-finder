@@ -3,14 +3,16 @@ import {useState} from "react"
 import UploadImage from "./uploadImage";
 import Image from 'next/image';
 import { BsPlayBtnFill, BsPencil, BsTrash } from "react-icons/bs";
+import UserInfoModal from "./userInfoModal";
 
-export default function UserInformation({capacity, hasEquipment, displayName, bio, owner, editProfile, profilePicture}){
+export default function UserInformation({capacity, equipment, schedule, displayName, bio, owner, editProfile, profilePicture}){
     const [file, setFile] = useState("");
 
     // Handles input change event and updates state
     function handleChange(event) {
         setFile(event.target.files[0]);
     }
+
 
     return (
         <Container style={{padding: 10}}>
@@ -41,11 +43,12 @@ export default function UserInformation({capacity, hasEquipment, displayName, bi
             <Row className = "lg-3" style={{padding: 20}}>
                 <Col>
                     {/* Can host */}
-                    <Button className="square border border-dark">Host</Button>
+                    <Button className="square border border-dark">Host Capacity {capacity}</Button>
                 </Col>
                 <Col>
                     {/* Equipment */}
                     <Button className="square border border-dark">Equipment</Button>
+
                 </Col>
                 <Col>
                     {/* Schedule */}

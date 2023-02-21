@@ -23,6 +23,7 @@ const Profile = () => {
 
     //User Info Functions
     const [showProfileEditor, setShowProfileEditor] = useState(false);
+    const [oldBio, setNewBio] = useState("");
 
     function handleCreate(){
         setNewCard(true);
@@ -49,7 +50,10 @@ const Profile = () => {
     }
 
     function editProfile(){
-        //need to add functionality
+
+        console.log("edit profile")
+        //show editor modal
+        setShowProfileEditor(true);
     }
     
     const AuthUser = useAuthUser();
@@ -59,8 +63,8 @@ const Profile = () => {
             <Container>
                 <Row>
                     <Col>
-                        <UserInformation capacity={undefined} hasEquipment={undefined} displayName={"Larry McGary"} bio={"I am good at music lmao"} owner={true} editProfile={editProfile} profilePicture={Jon}></UserInformation>
-                        <UserInformationEditor setShowProfileEditor={setShowProfileEditor} showProfileEditor={showProfileEditor} updateProfile={updateProfile} oldCapacity={undefined} oldBio={undefined} oldEquipment={undefined} oldSchedule={undefined}></UserInformationEditor>
+                        <UserInformation capacity={"4"} equipment={"two bass amps"} schedule = {"Tuedays after 8:30pm"} displayName={"Larry McGary"} bio={"I am good at music lmao"} owner={true} editProfile={editProfile} profilePicture={Jon}></UserInformation>
+                        <UserInformationEditor setShowProfileEditor={setShowProfileEditor} showProfileEditor={showProfileEditor} oldCapacity={undefined} oldBio={undefined} oldEquipment={undefined} oldSchedule={undefined}></UserInformationEditor>
                     </Col>
                 </Row>
                 <Row>
