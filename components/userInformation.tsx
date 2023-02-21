@@ -8,10 +8,22 @@ import UserInfoModal from "./userInfoModal";
 export default function UserInformation({capacity, equipment, schedule, displayName, bio, owner, editProfile, profilePicture}){
     const [file, setFile] = useState("");
 
+    const [showEquipmentInfo, setShowEquipmentInfo] = useState(false);
+    const [showScheduleInfo, setShowScheduleInfo] = useState(false);
+
     // Handles input change event and updates state
     function handleChange(event) {
         setFile(event.target.files[0]);
     }
+
+    function equipmentInfoDisplay() {
+        setShowEquipmentInfo(true);
+    }
+
+    function scheduleInfoDisplay() {
+        setShowScheduleInfo(true);
+    }
+
 
 
     return (
@@ -47,12 +59,13 @@ export default function UserInformation({capacity, equipment, schedule, displayN
                 </Col>
                 <Col>
                     {/* Equipment */}
-                    <Button className="square border border-dark">Equipment</Button>
-
+                    <Button className="square border border-dark" onClick={equipmentInfoDisplay}>Equipment</Button>
+                    <UserInfoModal showInfo={showEquipmentInfo} setShowInfo = {setShowEquipmentInfo} infoTitle={"Equipment"} info={equipment}></UserInfoModal>
                 </Col>
                 <Col>
                     {/* Schedule */}
-                    <Button className="square border border-dark">Schedule</Button>
+                    <Button className="square border border-dark" onClick={scheduleInfoDisplay}>Schedule</Button>
+                    <UserInfoModal showInfo={showScheduleInfo} setShowInfo = {setShowScheduleInfo} infoTitle={"Availabilty"} info={schedule}></UserInfoModal>
                 </Col>
             </Row>
                 

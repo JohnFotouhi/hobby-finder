@@ -6,7 +6,7 @@ import FormInput from "./formInput";
 import { optionCSS } from "react-select/dist/declarations/src/components/Option";
 import { updateProfile } from "firebase/auth";
 
-export default function UserInfoModal({setShowInfo, infoTitle, info}) {
+export default function UserInfoModal({showInfo, setShowInfo, infoTitle, info}) {
     
     
     const [experienceSelect, setExperience] = useState("");
@@ -22,17 +22,19 @@ export default function UserInfoModal({setShowInfo, infoTitle, info}) {
 
     function updateProfile(){
         // replace with a HobbyCard that has current info filled in / update FireBase
-        setShowInfo(false);
+        showInfo(false);
     }
 
     function closeInfo(){
         setShowInfo(false);
     }
+
+    
    
 
     return(
         // TO DO: Add inputs already there for if they're editing rather than creating
-        <Modal show={setShowInfo}>
+        <Modal show={showInfo}>
             <Card style={{ width: "20rem" }}>
             <Card.Body>            
                 <Card.Title> 
@@ -41,7 +43,7 @@ export default function UserInfoModal({setShowInfo, infoTitle, info}) {
                 <Col> 
                     {info}
                 </Col>
-                <Button onClick={closeInfo}>Cancel</Button>
+                <Button onClick={closeInfo}>Close</Button>
             </Card.Body>
             </Card>
         </Modal>
