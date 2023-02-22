@@ -48,24 +48,6 @@ export default async (req, res) =>{
 
         //console.log(cards); //successfully gets array of hobbyCards from db
         //console.log(cards.at(0).instrument)
-        
-        //catch if trying to make new card with duplicate instrument
-        const newInstrument = req.body.instrument.label;
-        let duplicate = false;
-        let matchingIndex = -1;
-        if(cards.length >= 1) {
-            cards.forEach(async (card, index) => {
-                if(card.instrument == newInstrument){
-                    if(newCard){
-                        duplicate = true;
-                        res.status(409).end();
-                    }
-                    else{
-                        matchingIndex = index;
-                    }
-                }        
-            });
-        }
 
         //make array of genre strings
         let genreStrings : string[] = [];
@@ -81,7 +63,27 @@ export default async (req, res) =>{
             info:req.body.info,
             instrument: req.body.instrument.label
         };
-
+        
+        //catch if trying to make new card with duplicate instrument
+        const newInstrument = req.body.instrument.label;
+        let duplicate = false;
+        let trouble = false;
+        if(cards.length >= 1) {
+            cards.forEach(async (card, index) => {
+                if(card.instrument == newInstrument){
+                    if(newCard){
+                        duplicate = true;
+                        trouble = true;
+                    }
+                    else { //we are editing an existing card and found the one with the matching instrument
+                        //replace array w updated card
+                        cards[index] = freshCard;
+                        updateDoc(doc(userRef, uid), {hobbyCards: cards});
+                    }
+                }        
+            });
+        }
+       
         //if we're making a new card and have passed duplicate check
         if(newCard && !duplicate){           
             //add new card to existing array
@@ -90,15 +92,14 @@ export default async (req, res) =>{
             //update field with new array
             updateDoc(doc(userRef, uid), {hobbyCards: cards});
         }
-
-        //if we're updating a card
-        if(!newCard){
-            //replace array w updated card
-            cards[matchingIndex] = freshCard;
-            updateDoc(doc(userRef, uid), {hobbyCards: cards});
+        
+        if(trouble){
+            res.status(409).json("ERROR: duplicate");
         }
-
-        res.status(200).json("userData")
+        else{
+            res.status(200).json(cards);
+        }
+        
     } else {
         res.status(405).end()
     }

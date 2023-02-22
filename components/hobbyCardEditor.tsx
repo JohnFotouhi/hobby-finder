@@ -6,7 +6,7 @@ import FormInput from "./formInput";
 import { optionCSS } from "react-select/dist/declarations/src/components/Option";
 import { useAuthUser } from "next-firebase-auth";
 
-export default function HobbyCardEditor({uid, setShow, show, newCard, oldInstrument, oldGenre, oldExperience, oldCommitment, oldInfo}) {
+export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, oldInstrument, oldGenre, oldExperience, oldCommitment, oldInfo}) {
     
     const [instrumentSelect, setInstrument] = useState("");
     const [experienceSelect, setExperience] = useState("");
@@ -24,6 +24,7 @@ export default function HobbyCardEditor({uid, setShow, show, newCard, oldInstrum
 
         //Make sure they've selected all inputs
         if(instrumentSelect && experienceSelect && genreSelect && commitmentSelect && infoSelect){
+            let status;
             fetch("/api/hobbyCardCreation", { 
                 method: "POST",
                 headers: {'Content-Type': 'application/json'},
@@ -37,21 +38,22 @@ export default function HobbyCardEditor({uid, setShow, show, newCard, oldInstrum
                     newCard: newCard})
               })
                 .then((res) => {
-                    //console.log(res.json());
-                    if(res.status == 409 ){
-                        console.log("ERROR: Tried to make card w duplicate instrument");
-                        //TO DO: error message for user
-                    }
-                    else if(res.status == 200){
-                        console.log("SUCESSFUL CREATION");
-                        setShow(false);
-                    }
+                    status = res.status;
+                    return res.json();           
                 })
                 .then((data) => {
-                  console.log(data);
+                    if(status == 200){
+                        console.log("SUCESSFUL CREATION");
+                        setCards(data);
+                        setShow(false);
+                    }
+                    else if(status == 409){
+                        console.log(data);
+                        //TODO: error message for user
+                    }                
                 })
                 .catch(error =>{
-                    console.error('Error:', error);
+                    console.error('Error: ', error);
                 });     
         }
         else{

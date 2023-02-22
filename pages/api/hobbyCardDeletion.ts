@@ -27,7 +27,6 @@ export default async (req, res) =>{
                     userData = (doc.data());
                 }
         });
-        res.status(200).json(userData)
         var cards : Array<any> = userData.hobbyCards;
 
         //console.log(cards); //successfully gets array of hobbyCards from db
@@ -46,6 +45,7 @@ export default async (req, res) =>{
 
         //update field with new array
         updateDoc(doc(userRef, req.body.uid), {hobbyCards: cards});
+        res.status(200).json(cards);
     } else {
         res.status(405).end()
     }

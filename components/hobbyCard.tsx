@@ -3,21 +3,29 @@ import { BsRecordCircleFill } from "react-icons/bs";
 import { BsPlayBtnFill, BsPencil, BsTrash } from "react-icons/bs";
 import { useAuthUser } from "next-firebase-auth";
 
-export default function HobbyCard({uid, index, instrument, genre, experience, commitment, info, owner, editCard}) {
+export default function HobbyCard({uid, setCards, index, instrument, genre, experience, commitment, info, owner, editCard}) {
 
     /* function playClip(){
         // Play sound clip
     } */
 
     function deleteCard(){
+        let status;
         fetch("/api/hobbyCardDeletion", { 
             method: "POST",
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({instrument: instrument, uid: uid})
           })
-            .then((res) => res.json())
+            .then((res) => {
+                status = res.status;
+                return res.json();
+            })
             .then((data) => {
-              console.log(data);
+                console.log(data)
+                if(status == 200){
+                    console.log("SUCCESSFUL DELETION")
+                    setCards(data);
+                }
           });
     }
 

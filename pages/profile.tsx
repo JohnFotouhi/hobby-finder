@@ -14,7 +14,6 @@ const Profile = () => {
 
     //user's cards
     const [cards, setCards] = useState<any[]>([]);
-    const [cardComponents, setCardComponents] = useState<any[]>([]);
 
     //Hobby Card States
     const [show, setShow] = useState(false);
@@ -28,8 +27,9 @@ const Profile = () => {
 
     //get user's hobby cards
     useEffect(() => {
+        console.log("IN USE EFFECT");
         getCards();
-    }, [cards]);
+    }, []);
 
     const getGenreList = (genres : [string]) => {
         let genreList = "Genres: ";
@@ -55,10 +55,6 @@ const Profile = () => {
             console.log(data)
             setCards(data);
         });
-        let map = cards.map((card, i) => (
-            <HobbyCard uid={AuthUser.id} index={i} instrument={card.instrument} genre={getGenreList(card.genres)} experience={card.experience} commitment={card.commitment} info={card.info} owner={true} editCard={editCard}></HobbyCard>
-        ))
-        setCardComponents(map);
     }
 
     function handleCreate(){
@@ -91,9 +87,11 @@ const Profile = () => {
                 <Button onClick={handleCreate}>Create New Hobby Card</Button>
                 {/* TODO: populate hobby card section from database */}
                 <Row>
-                {/* {cardComponents} */}
+                {cards.map((card, i) => (
+                <HobbyCard uid={AuthUser.id} setCards={setCards} index={i} instrument={card.instrument} genre={getGenreList(card.genres)} experience={card.experience} commitment={card.commitment} info={card.info} owner={true} editCard={editCard}></HobbyCard>
+                ))}
                 </Row>
-                <HobbyCardEditor uid={AuthUser.id} setShow={setShow} show={show} newCard={newCard} oldInstrument={undefined} oldGenre={undefined} oldExperience={undefined} oldCommitment={undefined} oldInfo={undefined}></HobbyCardEditor>
+                <HobbyCardEditor uid={AuthUser.id} setCards={setCards} setShow={setShow} show={show} newCard={newCard} oldInstrument={undefined} oldGenre={undefined} oldExperience={undefined} oldCommitment={undefined} oldInfo={undefined}></HobbyCardEditor>
             </Col>
         </>
     );
