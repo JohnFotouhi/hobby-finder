@@ -4,8 +4,9 @@ import { useState } from "react";
 import SingleselectInput from "./singleselectinput";
 import FormInput from "./formInput";
 import { optionCSS } from "react-select/dist/declarations/src/components/Option";
+import { useAuthUser } from "next-firebase-auth";
 
-export default function HobbyCardEditor({setShow, show, newCard, oldInstrument, oldGenre, oldExperience, oldCommitment, oldInfo}) {
+export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, oldInstrument, oldGenre, oldExperience, oldCommitment, oldInfo}) {
     
     const [instrumentSelect, setInstrument] = useState("");
     const [experienceSelect, setExperience] = useState("");
@@ -23,44 +24,42 @@ export default function HobbyCardEditor({setShow, show, newCard, oldInstrument, 
 
         //Make sure they've selected all inputs
         if(instrumentSelect && experienceSelect && genreSelect && commitmentSelect && infoSelect){
+            let status;
             fetch("/api/hobbyCardCreation", { 
                 method: "POST",
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({data: {
+                body: JSON.stringify({
+                    uid: uid,
                     instrument: instrumentSelect, 
                     experience: experienceSelect,
                     genres: genreSelect,
                     commitment: commitmentSelect,
                     info: infoSelect,
-                    newCard: newCard}})
+                    newCard: newCard})
               })
                 .then((res) => {
-                    //console.log(res.json());
-                    if(res.status == 409 ){
-                        console.log("ERROR: Tried to make card w duplicate instrument");
-                        //TO DO: error message for user
-                    }
-                    else if(res.status == 200){
-                        console.log("SUCESSFUL CREATION");
-                        setShow(false);
-                    }
+                    status = res.status;
+                    return res.json();           
                 })
                 .then((data) => {
-                  console.log(data);
+                    if(status == 200){
+                        console.log("SUCESSFUL CREATION");
+                        setCards(data);
+                        setShow(false);
+                    }
+                    else if(status == 409){
+                        console.log(data);
+                        //TODO: error message for user
+                    }                
                 })
                 .catch(error =>{
-                    console.error('Error:', error);
+                    console.error('Error: ', error);
                 });     
         }
         else{
             console.log("NOT CREATING - empty inputs")
             //some sort of error indicating they need to fill out all info
         }
-    }
-
-    function saveCard(){
-        // replace with a HobbyCard that has current info filled in / update FireBase
-        setShow(false);
     }
 
     function cancelCard(){
@@ -100,7 +99,7 @@ export default function HobbyCardEditor({setShow, show, newCard, oldInstrument, 
                             Any additional info you would like to share with users about this hobby.
                         </Form.Text>
                     </Form> </Col>
-                <Button onClick={newCard? createCard : createCard}> {newCard ? "Create" : "Save"} </Button>
+                <Button onClick={createCard}> {newCard ? "Create" : "Save"} </Button>
                 <Button onClick={cancelCard}>Cancel</Button>
             </Card.Body>
             </Card>
