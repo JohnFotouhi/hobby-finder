@@ -51,6 +51,8 @@ export default async (req, res) =>{
 
         //make array of genre strings
         let genreStrings : string[] = [];
+        console.log(req.body)
+        console.log(req.body.genres);
         req.body.genres.at(0).forEach((genre) => {
             genreStrings.push(genre.name);
         });
@@ -99,7 +101,7 @@ export default async (req, res) =>{
         else{
             res.status(200).json(cards);
         }
-        
+
     } else {
         res.status(405).end()
     }

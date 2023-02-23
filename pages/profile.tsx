@@ -32,6 +32,8 @@ const Profile = () => {
     }, []);
 
     const getGenreList = (genres : [string]) => {
+        console.log("GENRES when making hobby card")
+        console.log(genres)
         let genreList = "Genres: ";
         genres.forEach((genre, i) => {
             if(i==0){
@@ -62,7 +64,10 @@ const Profile = () => {
 
         //empty params so the card starts blank
         setOldInstrumentId(-1);
+        console.log("old genres before and after:")
+        console.log(oldGenres)
         setOldGenres([])
+        console.log(oldGenres)
         setOldExperience("");
         setOldCommitment("");
         setOldInfo("");
