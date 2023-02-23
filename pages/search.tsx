@@ -3,108 +3,81 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { BsSearch } from "react-icons/bs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchForm from "@/components/searchForm";
 import SearchCard from "@/components/SearchCard";
 
-// style={{display: "flex", alignItems: "center"}}
-
 export default function Search() {
     const [editFilters, setEditFilters] = useState(false);
+    // const [users, setUsers] = useState<any[]>([]);
+
     function handleEditFilters(){
         setEditFilters(!editFilters);
     }
     function handleSearch(){
+        fetch("/api/search", {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({data: "Some Data"})
+          })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+                // setUsers(data.users);
+          });
         setEditFilters(false);
     }
 
-    const users = [
-        {
-            name: "John Doe",
-            experience: "high",
-            id: "1234",
-            skills: "guitar, piano",
-            distance: "4 miles",
-            commitment: "medium",
-            genre: "rock, pop"
+    const exampleUser = {
+        id: "asdf79sadf0a2834ijsdakf",
+        key: "89401324asdfjhasklfha",
+        name: "John Doe",
+        skills: [
+            {
+                id: "12342351312523",
+                name: "guitar",
+                experience: "Intermediate",
+                genre: [
+                    "folk",
+                    "Other - Norwegian Underwater Square Dance"
+                ],
+                commitment: "low"
+            },
+            {
+                id: "asdf780253",
+                name: "Electric Guitar",
+                experience: "Novice",
+                genre: [
+                    "rock"
+                ],
+                commitment: "moderate"
+            },
+            {
+                id: "asdfsadf798",
+                name: "Acapella",
+                experience: "Expert",
+                genre: [
+                    "pop"
+                ],
+                commitment: "high"
+            }
+        ],
+        availability: {
+            monday: [
+                "night"
+            ],
+            friday: [
+                "afternoon",
+                "night"
+            ]
         },
-        {
-            name: "John Doe",
-            experience: "high",
-            id: "1234",
-            skills: "guitar, piano",
-            distance: "4 miles",
-            commitment: "medium",
-            genre: "rock, pop"
-        },
-        {
-            name: "John Doe",
-            experience: "high",
-            id: "1234",
-            skills: "guitar, piano",
-            distance: "4 miles",
-            commitment: "medium",
-            genre: "rock, pop"
-        },
-        {
-            name: "John Doe",
-            experience: "high",
-            id: "1234",
-            skills: "guitar, piano",
-            distance: "4 miles",
-            commitment: "medium",
-            genre: "rock, pop"
-        },
-        {
-            name: "John Doe",
-            experience: "high",
-            id: "1234",
-            skills: "guitar, piano",
-            distance: "4 miles",
-            commitment: "medium",
-            genre: "rock, pop"
-        },{
-            name: "John Doe",
-            experience: "high",
-            id: "1234",
-            skills: "guitar, piano",
-            distance: "4 miles",
-            commitment: "medium",
-            genre: "rock, pop"
-        },{
-            name: "John Doe",
-            experience: "high",
-            id: "1234",
-            skills: "guitar, piano",
-            distance: "4 miles",
-            commitment: "medium",
-            genre: "rock, pop"
-        },{
-            name: "John Doe",
-            experience: "high",
-            id: "1234",
-            skills: "guitar, piano",
-            distance: "4 miles",
-            commitment: "medium",
-            genre: "rock, pop"
-        },{
-            name: "John Doe",
-            experience: "high",
-            id: "1234",
-            skills: "guitar, piano",
-            distance: "4 miles",
-            commitment: "medium",
-            genre: "rock, pop"
-        },{
-            name: "John Doe",
-            experience: "high",
-            id: "1234",
-            skills: "guitar, piano",
-            distance: "4 miles",
-            commitment: "medium",
-            genre: "rock, pop"
-        },
-    ]
+        bio: "I'm a really cool guy who likes music.",
+        pronouns: "he/him",
+        host: false,
+        equipment: "I have my own guitar and electric guitar, as well as amps. I also know a park where we could go with good acoustics but I don't want to host anything at my apartment."
+    }
+
+    const users = Array(12).fill(exampleUser);
 
     return(
         <>  
@@ -122,8 +95,8 @@ export default function Search() {
             </Container>
             <Container className="mt-3">
                 <Row className='m-auto'>
-                    {users.map(user =>(
-                        <Col md="4" key={user.id}>
+                    {users?.map((user, index )=>(
+                        <Col md="4" key={index + "userCard"}>
                             <SearchCard {...user} />
                         </Col>
                     ))}

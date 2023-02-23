@@ -5,6 +5,10 @@ import { Button, Col, Container, Row, Form, Stack, Alert, Navbar } from "react-b
 import FullPageLoader from "@/components/FullPageLoader";
 import HobbyCard from "@/components/hobbyCard";
 import { initializeApp } from "firebase-admin";
+import UserInformation from "@/components/userInformation";
+import Jon from "@/public/User_images/jon.jpg";
+import UserInformationEditor from '../components/userInformationEditor';
+import { updateProfile } from 'firebase/auth';
 
 const Profile = () => {
 
@@ -59,6 +63,10 @@ const Profile = () => {
         });
     }
 
+    //User Info Functions
+    const [showProfileEditor, setShowProfileEditor] = useState(false);
+    const [oldBio, setNewBio] = useState("");
+
     function handleCreate(){
         setNewCard(true);
 
@@ -85,19 +93,34 @@ const Profile = () => {
         //show editor modal
         setShow(true);
     }
+
+    function editProfile(){
+
+        console.log("edit profile")
+        //show editor modal
+        setShowProfileEditor(true);
+    }
     
     return(
         <>  
-            <Col>
-                <Button onClick={handleCreate}>Create New Hobby Card</Button>
-                {/* TODO: populate hobby card section from database */}
+            <Container>
+                <Row>
+                    <Col>
+                        <UserInformation capacity={"4"} equipment={"two bass amps"} schedule = {"Tuedays after 8:30pm"} displayName={"Larry McGary"} bio={"I am good at music lmao"} owner={true} editProfile={editProfile} profilePicture={Jon}></UserInformation>
+                        <UserInformationEditor setShowProfileEditor={setShowProfileEditor} showProfileEditor={showProfileEditor} oldCapacity={undefined} oldBio={undefined} oldEquipment={undefined} oldSchedule={undefined}></UserInformationEditor>
+                    </Col>
+                </Row>
                 <Row>
                 {cards.map((card, i) => (
                 <HobbyCard uid={AuthUser.id} setCards={setCards} index={i} instrument={card.instrument} genre={getGenreList(card.genres)} experience={card.experience} commitment={card.commitment} info={card.info} owner={true} editCard={editCard}></HobbyCard>
                 ))}
                 </Row>
+                <Row>
                 <HobbyCardEditor uid={AuthUser.id} setCards={setCards} setShow={setShow} show={show} newCard={newCard} oldInstrument={undefined} oldGenre={undefined} oldExperience={undefined} oldCommitment={undefined} oldInfo={undefined}></HobbyCardEditor>
-            </Col>
+                </Row>
+                    
+            </Container>
+            
         </>
     );
 
