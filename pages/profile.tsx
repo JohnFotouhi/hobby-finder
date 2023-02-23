@@ -112,6 +112,7 @@ const Profile = () => {
                 </Row>
 
                 <Container className="mt-3">
+                    <Button onClick={handleCreate}>New Hobby Card</Button>
                     <Row className='m-auto'>
                         {cards.map( (card, index) => (
                             <Col md="4" key={index+"hobbyCard"}>
