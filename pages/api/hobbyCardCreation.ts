@@ -23,7 +23,7 @@ type Card = {
     instrument: string
   }
 
-export default async (req, res) =>{
+export default async (req, res) => {
     if(req.method === 'POST'){
         
         const newCard = req.body.newCard;

@@ -110,20 +110,24 @@ const Profile = () => {
                         <UserInformationEditor setShowProfileEditor={setShowProfileEditor} showProfileEditor={showProfileEditor} oldCapacity={undefined} oldBio={undefined} oldEquipment={undefined} oldSchedule={undefined}></UserInformationEditor>
                     </Col>
                 </Row>
-                <Row>
-                {cards.map((card, i) => (
-                <HobbyCard uid={AuthUser.id} setCards={setCards} index={i} instrument={card.instrument} genre={getGenreList(card.genres)} experience={card.experience} commitment={card.commitment} info={card.info} owner={true} editCard={editCard}></HobbyCard>
-                ))}
-                </Row>
+
+                <Container className="mt-3">
+                    <Row className='m-auto'>
+                        {cards.map( (card, index) => (
+                            <Col md="4" key={index+"hobbyCard"}>
+                                <HobbyCard uid={AuthUser.id} setCards={setCards} index={index} instrument={card.instrument} genre={getGenreList(card.genres)} experience={card.experience} commitment={card.commitment} info={card.info} owner={true} editCard={editCard}></HobbyCard>
+                            </Col>
+                        ))}
+                    </Row>
+                </Container>
+
                 <Row>
                 <HobbyCardEditor uid={AuthUser.id} setCards={setCards} setShow={setShow} show={show} newCard={newCard} oldInstrument={undefined} oldGenre={undefined} oldExperience={undefined} oldCommitment={undefined} oldInfo={undefined}></HobbyCardEditor>
-                </Row>
-                    
-            </Container>
-            
+                </Row> 
+
+            </Container>           
         </>
     );
-
 }
 
 // export const getServerSideProps = withAuthUserTokenSSR({
