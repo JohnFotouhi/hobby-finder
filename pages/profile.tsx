@@ -78,7 +78,7 @@ const Profile = () => {
         console.log(oldGenres)
         setOldExperience("");
         setOldCommitment("");
-        setOldInfo("");
+        setOldInfo("s");
 
         setShow(true);
     }
