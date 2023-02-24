@@ -3,7 +3,7 @@ import { AuthAction, withAuthUser, withAuthUserTokenSSR } from "next-firebase-au
 
 const Login = () => (
     <>  
-        <h3 className="text-center">Login</h3>
+        <h3 className="text-center mt-3">Jam</h3>
         <FirebaseAuth />
     </>
 )

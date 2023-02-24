@@ -6,8 +6,10 @@ import { BsSearch } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import SearchForm from "@/components/searchForm";
 import SearchCard from "@/components/SearchCard";
+import FullPageLoader from "@/components/FullPageLoader";
+import { withAuthUser, AuthAction } from "next-firebase-auth";
 
-export default function Search() {
+function Search() {
     const [editFilters, setEditFilters] = useState(false);
     // const [users, setUsers] = useState<any[]>([]);
 
@@ -106,3 +108,9 @@ export default function Search() {
         </>
     );
 }
+
+export default withAuthUser({
+    whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
+    whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+    LoaderComponent: FullPageLoader,
+})(Search)
