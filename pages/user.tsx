@@ -1,10 +1,15 @@
 import { Button, Col, Container, Row, Form, Stack, Alert, Navbar } from "react-bootstrap";
 import HobbyCard from "@/components/hobbyCard";
+import { useAuthUser } from "next-firebase-auth";
 import UploadImage from "@/components/uploadImage";
 import UserInformation from "@/components/userInformation";
 import perry from "@/public/User_images/perry.png";
 
 export default function User() {
+
+    //user credentials
+    const AuthUser = useAuthUser();
+    console.log(AuthUser);
     
 
     function editProfile(){
@@ -19,7 +24,7 @@ export default function User() {
                 <Col><Button>Reach Out</Button></Col>
 
                 {/* TODO: For each hobby card in the database associated with the user, populate a hobby card component */}
-                <HobbyCard instrument={"Bass"} genre={"rock"} experience={"2 years - Beginner"} commitment={"Looking to join a band"} 
+                <HobbyCard uid={AuthUser.id} setCards={null} index={0} instrument={"Bass"} genre={"rock"} experience={"2 years - Beginner"} commitment={"Looking to join a band"} 
                 info={"Id really love to join a band, but I dont care if we are trash!"} owner={false} editCard={null}></HobbyCard>
 
             </Container>

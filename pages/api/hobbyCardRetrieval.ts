@@ -17,7 +17,7 @@ const database = getFirestore(app);
 
 export default async (req, res) =>{
     if(req.method === 'POST'){
-        
+
         let userData: any;
 
         const querySnapshot = await getDocs(collection(database, "users"));
@@ -27,25 +27,8 @@ export default async (req, res) =>{
                     userData = (doc.data());
                 }
         });
-        var cards : Array<any> = userData.hobbyCards;
-
-        //console.log(cards); //successfully gets array of hobbyCards from db
-
-        //find index of hobby card with matching instrument
-        let deleteIndex;
-        cards.forEach(async (card, index) => {
-            if(card.instrument == req.body.instrument){
-                deleteIndex = index;
-            }        
-        });
-
-        //delete card from existing array
-        cards.splice(deleteIndex, 1);
-        const userRef = collection(database, "users")
-
-        //update field with new array
-        updateDoc(doc(userRef, req.body.uid), {hobbyCards: cards});
-        res.status(200).json(cards);
+        res.status(200).json(userData.hobbyCards)
+        
     } else {
         res.status(405).end()
     }

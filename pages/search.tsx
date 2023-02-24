@@ -93,6 +93,7 @@ export default function Search() {
                     </Col>
                 </Row>}
             </Container>
+            
             <Container className="mt-3">
                 <Row className='m-auto'>
                     {users?.map((user, index )=>(
