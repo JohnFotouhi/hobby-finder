@@ -6,20 +6,21 @@ import { useRouter } from "next/router";
 
 export default function SearchCard(props){
     const router = useRouter();
-    const [skills, setSkills] = useState([]);
+    const [cards, setCards] = useState([]);
     const [genres, setGenres] = useState([]);
     const [availability, setAvailability] = useState<any[]>([]);
-    // const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     function visitProfile(){
         //visit profile of user
         router.push('/user');
     }
 
     useEffect(() => {
-        let skills = props.skills.map(skill => skill.name);
-        setSkills(skills);
 
-        let genres = props.skills.map(skill => skill.genre);
+        console.log(props);
+        let instruments = props.instruments.map(card => card.instrument);
+        setCards(instruments);
+
+        let genres = props.instruments.map(card => card.genres);
         setGenres(genres);
 
         var days: any[] = [];
@@ -40,7 +41,7 @@ export default function SearchCard(props){
                     {props.bio}
                 </Card.Text>
                 <ListGroup variant="flush">
-                    <ListGroup.Item>Skills: {skills.join(', ')}</ListGroup.Item>
+                    <ListGroup.Item>Instruments: {cards.join(', ')}</ListGroup.Item>
                     <ListGroup.Item>Genres: {genres.join(', ')}</ListGroup.Item>
                     <ListGroup.Item>Availability: {availability.join(', ')}</ListGroup.Item>
                 </ListGroup>

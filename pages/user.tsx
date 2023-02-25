@@ -1,11 +1,11 @@
 import { Button, Col, Container, Row, Form, Stack, Alert, Navbar } from "react-bootstrap";
 import HobbyCard from "@/components/hobbyCard";
-import { useAuthUser } from "next-firebase-auth";
+import { useAuthUser, AuthAction, withAuthUser } from "next-firebase-auth";
 import UploadImage from "@/components/uploadImage";
 import UserInformation from "@/components/userInformation";
 import perry from "@/public/User_images/perry.png";
 
-export default function User() {
+function User() {
 
     //user credentials
     const AuthUser = useAuthUser();
@@ -32,3 +32,8 @@ export default function User() {
     );
 
 }
+export default withAuthUser({
+    whenAuthed: AuthAction.REDIRECT_TO_APP,
+    whenUnauthedBeforeInit: AuthAction.RETURN_NULL,
+    whenUnauthedAfterInit: AuthAction.RENDER,
+  })(User)
