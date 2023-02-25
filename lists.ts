@@ -1,4 +1,5 @@
-declare var instruments: [
+
+const instruments = [
     "Accordian",
     "Accoustic guitar",
     "Bagpipe",
@@ -47,7 +48,7 @@ declare var instruments: [
 ]
 
 
-declare var genres: [
+const genres = [
     "A cappella",
     "Acoustic",
     "Afrobeat",
@@ -131,10 +132,12 @@ declare var genres: [
     "Other"
 ]
 
-declare var experiences: [
+const experiences = [
     "Just starting",
     "Beginner",
     "Intermediate",
     "Advanced",
     "Expert"
 ]
+
+export {experiences, genres, instruments}
