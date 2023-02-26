@@ -9,6 +9,8 @@ import UserInformation from "@/components/userInformation";
 import Jon from "@/public/User_images/jon.jpg";
 import UserInformationEditor from '../components/userInformationEditor';
 import { updateProfile } from 'firebase/auth';
+import {instrumentList, experienceList, genreList} from "lists"
+
 
 const Profile = () => {
 
@@ -35,9 +37,11 @@ const Profile = () => {
         getCards();
     }, []);
 
+    function clearCardFields(){
+        
+    } 
+
     const getGenreList = (genres : [string]) => {
-        console.log("GENRES when making hobby card")
-        console.log(genres)
         let genreList = "Genres: ";
         genres.forEach((genre, i) => {
             if(i==0){

@@ -1,10 +1,10 @@
-import { Button, Col, Container, Row, Form, Card, Modal, Dropdown} from "react-bootstrap";
+import { Button, Col, Container, Row, Form, Card, Modal, Dropdown, InputGroup} from "react-bootstrap";
 import MultiselectInput from "./multiselectInput";
 import { useState } from "react";
 import SingleselectInput from "./singleselectinput";
 import FormInput from "./formInput";
 import { optionCSS } from "react-select/dist/declarations/src/components/Option";
-import { useAuthUser } from "next-firebase-auth";
+import {instrumentList, experienceList, genreList} from "lists"
 
 export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, oldInstrument, oldGenre, oldExperience, oldCommitment, oldInfo}) {
     
@@ -63,12 +63,13 @@ export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, 
     }
 
     function cancelCard(){
+        setGenre([]);
+        setExperience("");
+        
         setShow(false);
     }
 
-    const experienceLevels = [{label: "Low: Less than 3 years", value: "XP1"}, {label: "Medium: 3-6 years", value: "XP2"}, {label: "High: more than 6 years", value: "XP3"}];
-    const instruments = [{value:'voice', label:'Voice'}, {value:'bass', label:'Bass'}, {value:'drums', label:'Drums'}]
-    const genres = [{name: "Rock", id: "genre1"}, {name: "Jazz", id: "genre2"}, {name: "Classical", id: "genre3"}, {name: "Other", id: "genre0"}];
+    
     const commitmentLevels = [{label: "Low: Less than 3 hours per week", value: "commit1"}, {label: "Medium: 3-7 hours per week", value: "commit2"}, {label: "High: more than 7 hours per week", value: "commit3"}];    
     
     return(
@@ -77,21 +78,32 @@ export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, 
             <Card style={{ width: "20rem" }}>
             <Card.Body>            
                 <Card.Title> 
-                    <SingleselectInput controlId={undefined} label={"Instrument"} text={""} options={instruments} setValue={setInstrument} value={oldInstrument? instruments.at(oldInstrument) : null}/>
+                    <SingleselectInput controlId={undefined} label={"Instrument"} text={""} options={instrumentList} setValue={setInstrument} value={null} multi={false}/>
                 </Card.Title>
-                <Col><MultiselectInput
+                <Col>
+                    {/* <MultiselectInput
                             controlId="skillInput"
                             label="Genres"
                             text=""
                             selected={genreSelect}
                             setSelected={setGenre}
-                            options={genres}
-                            /> </Col>
+                            options={genreList}
+                            />  */}
+                    <SingleselectInput controlId={undefined} label={"Genre"} text={""} options={instrumentList} setValue={setGenre} value={genreSelect} multi={true} />
+                </Col>
                 <Col> 
-                    <SingleselectInput controlId={undefined} label={"Experience"} text={""} options={experienceLevels} setValue={setExperience} value={experienceSelect}/>
+                    <SingleselectInput controlId={undefined} label={"Experience"} text={""} options={experienceList} setValue={setExperience} value={experienceSelect} multi={false}/>
                 </Col>
                 <Col>
-                    <SingleselectInput controlId={undefined} label={"Commitment"} text={""} options={commitmentLevels} setValue={setCommitment} value={commitmentSelect}/>
+                    {/* <SingleselectInput controlId={undefined} label={"Commitment"} text={""} options={commitmentLevels} setValue={setCommitment} value={commitmentSelect} multi={false}/> */}
+                    <Form>                  
+                        <Form.Label>Commitment</Form.Label>
+                        <Form.Text>Range of hours you are looking to commit weekly.</Form.Text>
+                        <InputGroup className="col-sm-2">
+                        <FormInput controlId={"commiteLow"} label={undefined} type={"number"} placeholder={undefined} text={undefined} setValue={undefined} value={undefined}/>
+                        <FormInput controlId={"commitHigh"} label={undefined} type={"number"} placeholder={undefined} text={undefined} setValue={undefined} value={undefined}/>
+                        </InputGroup>
+                    </Form>       
                 </Col>
                 <Col><Form> 
                         <FormInput controlId="info" label="Details" type="text" placeholder="Im looking for..." text="" setValue={setInfo} value={infoSelect}/>

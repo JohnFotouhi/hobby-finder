@@ -3,7 +3,7 @@ import { Form } from "react-bootstrap"
 import Select from "react-select"
 
 
-export default function SingleselectInput({controlId, label, text, options, setValue, value}){
+export default function SingleselectInput({controlId, label, text, options, setValue, value, multi}){
 
     return(
         <Form.Group className="mb-3" controlId={controlId}>
@@ -13,6 +13,7 @@ export default function SingleselectInput({controlId, label, text, options, setV
                 defaultValue={value}
                 onChange={setValue}
                 options={options}
+                isMulti={multi}
                 />
             <Form.Text className="text-muted">{text}</Form.Text>
         </Form.Group>
