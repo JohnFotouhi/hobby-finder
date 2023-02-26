@@ -1,15 +1,15 @@
-import HobbyCardEditor from "@/components/hobbyCardEditor";
+import HobbyCardEditor from "../components/hobbyCardEditor";
 import { useEffect, useState } from "react";
 import { AuthAction, init, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { Button, Col, Container, Row, Form, Stack, Alert, Navbar } from "react-bootstrap";
-import FullPageLoader from "@/components/FullPageLoader";
-import HobbyCard from "@/components/hobbyCard";
+import FullPageLoader from "../components/FullPageLoader";
+import HobbyCard from "../components/hobbyCard";
 import { initializeApp } from "firebase-admin";
-import UserInformation from "@/components/userInformation";
-import Jon from "@/public/User_images/jon.jpg";
+import UserInformation from "../components/userInformation";
+// import Jon from "../public/User_images/jon.jpg"; //image won't import, idk why. I imagine we're changing this funcitonality anyway
 import UserInformationEditor from '../components/userInformationEditor';
 import { updateProfile } from 'firebase/auth';
-import {instrumentList, experienceList, genreList} from "lists"
+import {instrumentList, experienceList, genreList} from "../lists"
 
 
 const Profile = () => {
@@ -110,7 +110,7 @@ const Profile = () => {
             <Container>
                 <Row>
                     <Col>
-                        <UserInformation capacity={"4"} equipment={"two bass amps"} schedule = {"Tuedays after 8:30pm"} displayName={"Larry McGary"} bio={"I am good at music lmao"} owner={true} editProfile={editProfile} profilePicture={Jon}></UserInformation>
+                        <UserInformation capacity={"4"} equipment={"two bass amps"} schedule = {"Tuedays after 8:30pm"} displayName={"Larry McGary"} bio={"I am good at music lmao"} owner={true} editProfile={editProfile} profilePicture={null}></UserInformation>
                         <UserInformationEditor setShowProfileEditor={setShowProfileEditor} showProfileEditor={showProfileEditor} oldCapacity={undefined} oldBio={undefined} oldEquipment={undefined} oldSchedule={undefined}></UserInformationEditor>
                     </Col>
                 </Row>

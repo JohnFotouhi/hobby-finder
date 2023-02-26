@@ -4,7 +4,7 @@ import { useState } from "react";
 import SingleselectInput from "./singleselectinput";
 import FormInput from "./formInput";
 import { optionCSS } from "react-select/dist/declarations/src/components/Option";
-import {instrumentList, experienceList, genreList} from "lists"
+import {instrumentList, genreList, experienceList} from "../lists"
 
 export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, oldInstrument, oldGenre, oldExperience, oldCommitment, oldInfo}) {
     
