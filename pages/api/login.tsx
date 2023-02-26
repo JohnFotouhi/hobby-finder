@@ -5,7 +5,7 @@ initAuth();
 
 export default async function handler(req, res){
     try{
-        await setAuthCookies(req, res)
+        await setAuthCookies(req, res);
     } catch(e){
         return res.status(500).json({error: e})
     }

@@ -22,10 +22,10 @@ const firebaseAuthConfig = {
     signInOptions: [
         {
             provider: EmailAuthProvider.PROVIDER_ID,
-            requireDisplayName: false,
+            requireDisplayName: true,
         },
     ],
-    signInSuccessUrl: '/',
+    signInSuccessUrl: '/search',
     credentialHelper: 'none',
     callbacks: {
         signInSuccessWithAuthResult: () => false,
@@ -42,7 +42,7 @@ export default function FirebaseAuth(){
 return(
     <>{
         renderAuth &&
-        <StyledFirebaseAuth uiConfig={firebaseAuthConfig} firebaseAuth={getAuth(app)} />
+        <StyledFirebaseAuth uiConfig={firebaseAuthConfig} firebaseAuth={getAuth(app)} className="mt-5"/>
     }
     </>
 );
