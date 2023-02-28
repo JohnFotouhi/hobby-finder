@@ -3,7 +3,7 @@ import { BsRecordCircleFill } from "react-icons/bs";
 import { BsPlayBtnFill, BsPencil, BsTrash } from "react-icons/bs";
 import { useAuthUser } from "next-firebase-auth";
 
-export default function HobbyCard({uid, setCards, index, instrument, genre, experience, commitment, info, owner, editCard}) {
+export default function HobbyCard({uid, setCards, index, instrument, genre, experience, commitMin, commitMax, info, owner, editCard}) {
 
     /* function playClip(){
         // Play sound clip
@@ -29,6 +29,19 @@ export default function HobbyCard({uid, setCards, index, instrument, genre, expe
           });
     }
 
+    const getGenreList = (genres : [string]) => {
+        let genreList = "";
+        genres.forEach((genre, i) => {
+            if(i==0){
+                genreList = genreList + genre;
+            }
+            else{
+                genreList = genreList + ", " + genre;
+            }
+        });
+        return genreList;
+    }
+
     return(
         <Card style={{ width: '18rem' }}>
         <Card.Body>
@@ -37,11 +50,11 @@ export default function HobbyCard({uid, setCards, index, instrument, genre, expe
                 { owner? <Button onClick={editCard}><BsPencil/></Button> : null}
                 { owner? <Button onClick={deleteCard}><BsTrash/></Button> : null}
             </Card.Title>
-            <Col><BsRecordCircleFill/> {genre} </Col>
-            <Col><BsRecordCircleFill/> {experience} </Col>
-            <Col><BsRecordCircleFill/> {commitment} </Col>
-            <Col><BsRecordCircleFill/> {info} </Col>
-            {/*<Col> <Button onClick={playClip}><BsPlayBtnFill/></Button> Play to hear attached clip </Col>*/}
+            <Col> <span style={{fontWeight: 'bold'}}>Genres: </span>{getGenreList(genre)} </Col>
+            <Col> <span style={{fontWeight: 'bold'}}>Experience:</span> {experience} </Col>
+            <Col> <span style={{fontWeight: 'bold'}}>Commitment:</span> {commitMin!=commitMax? `${commitMin} to ${commitMax} hours weekly` : `${commitMin} hours weekly`}</Col>
+            <Col> <span style={{fontWeight: 'bold'}}>Details:</span> {info} </Col> 
+            {/* <Col> <Button onClick={playClip}><BsPlayBtnFill/></Button> Play to hear attached clip </Col> */}
         </Card.Body>
         </Card>
     );

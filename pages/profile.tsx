@@ -1,14 +1,18 @@
-import HobbyCardEditor from "@/components/hobbyCardEditor";
+import HobbyCardEditor from "../components/hobbyCardEditor";
 import { useEffect, useState } from "react";
 import { AuthAction, init, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { Button, Col, Container, Row, Form, Stack, Alert, Navbar } from "react-bootstrap";
-import FullPageLoader from "@/components/FullPageLoader";
-import HobbyCard from "@/components/hobbyCard";
+import FullPageLoader from "../components/FullPageLoader";
+import HobbyCard from "../components/hobbyCard";
 import { initializeApp } from "firebase-admin";
-import UserInformation from "@/components/userInformation";
-import Jon from "@/public/User_images/jon.jpg";
+import UserInformation from "../components/userInformation";
+//import Jon from "@/public/User_images/jon.jpg"; //image won't import, idk why. I imagine we're changing this funcitonality anyway
 import UserInformationEditor from '../components/userInformationEditor';
 import { updateProfile } from 'firebase/auth';
+import {instrumentList, experienceList, genreList} from "../lists"
+import { getCipherInfo } from "crypto";
+import FormInput from "../components/formInput";
+
 
 const Profile = () => {
 
@@ -45,20 +49,9 @@ const Profile = () => {
         getProfile();
     }, []);
 
-    const getGenreList = (genres : [string]) => {
-        console.log("GENRES when making hobby card")
-        console.log(genres)
-        let genreList = "Genres: ";
-        genres.forEach((genre, i) => {
-            if(i==0){
-                genreList = genreList + genre;
-            }
-            else{
-                genreList = genreList + ", " + genre;
-            }
-        });
-        return genreList;
-    }
+    function clearCardFields(){
+        
+    } 
 
     const getCards = () => {
         fetch("/api/hobbyCardRetrieval", { 
@@ -97,14 +90,17 @@ const Profile = () => {
     const [oldBio, setNewBio] = useState("");
 
     function handleCreate(){
+        console.log("SETTING card bool in create")
         setNewCard(true);
+        console.log(newCard)
 
         //empty params so the card starts blank
+        console.log("SETTING old instrument in create")
         setOldInstrumentId(-1);
-        console.log("old genres before and after:")
-        console.log(oldGenres)
+        console.log(oldInstrumentId)
+
         setOldGenres([])
-        console.log(oldGenres)
+
         setOldExperience("");
         setOldCommitment("");
         setOldInfo("");
@@ -113,11 +109,17 @@ const Profile = () => {
     }
 
     //in future, will likely take parameters of current settings and ID
-    function editCard(){
+    function editCard(instrument, genres, experience, min, max, info){
+        console.log("SETTING new card bool in edit")
         setNewCard(false);
+        console.log(newCard)
 
-        //set state of existing parameters
-        //setOldInstrumentId(2);
+        console.log("SETTING old instrument in edit")
+        setOldInstrumentId(2);
+        console.log(oldInstrumentId);
+
+        setOldExperience(experience);
+        console.log(oldExperience)
 
         //show editor modal
         setShow(true);
@@ -143,29 +145,36 @@ const Profile = () => {
                     <Col>
                         {isEditing?
                         <UserInformationEditor setShowProfileEditor={setShowProfileEditor} showProfileEditor={showProfileEditor} oldCapacity={capacity} oldBio={undefined} oldEquipment={undefined} oldSchedule={undefined} oldName={displayName} setName={setDisplayName} setCapacity={setCapacity} setBio={setBio} setEquipment={setEquipment} setSchedule={undefined}></UserInformationEditor>
-                        :  <UserInformation owner={true} name={displayName} bio={bio} equipment={equipment} capacity={capacity} availability={undefined} profilePicture={Jon}></UserInformation> }
+                        :  <UserInformation owner={true} name={displayName} bio={bio} equipment={equipment} capacity={capacity} availability={undefined} profilePicture={undefined}></UserInformation> }
                     </Col>
                 </Row>
 
                 <Container className="mt-3">
-                    <Button onClick={handleCreate}>New Hobby Card</Button>
+                    <h2>Hobbies</h2>
+                    <Button onClick={handleCreate}>New Hobby</Button>
                     <Row className='m-auto'>
                         {cards.map( (card, index) => (
                             <Col md="4" key={index+"hobbyCard"}>
-                                <HobbyCard uid={AuthUser.id} setCards={setCards} index={index} instrument={card.instrument} genre={getGenreList(card.genres)} experience={card.experience} commitment={card.commitment} info={card.info} owner={true} editCard={editCard}></HobbyCard>
+                                <HobbyCard uid={AuthUser.id} setCards={setCards} index={index} instrument={card.instrument} genre={card.genres} 
+                                experience={card.experience} commitMin={card.commitMin} commitMax={card.commitMax} info={card.info} owner={true} 
+                                editCard={() => editCard(card.instrument, card.genres, card.experience, card.commitMin, card.commitMax, card.info)}></HobbyCard>
                             </Col>
                         ))}
                     </Row>
                 </Container>
 
                 <Row>
+                { show && 
                 <HobbyCardEditor uid={AuthUser.id} setCards={setCards} setShow={setShow} show={show} newCard={newCard} oldInstrument={undefined} oldGenre={undefined} oldExperience={undefined} oldCommitment={undefined} oldInfo={undefined}></HobbyCardEditor>
+                }
                 </Row> 
 
             </Container>           
         </>
     );
 }
+
+//editCard(card.instrument, card.genres, card.experience, card.commitMin, card.commitMax, card.info)
 
 // export const getServerSideProps = withAuthUserTokenSSR({
 //     whenUnauthed: AuthAction.REDIRECT_TO_LOGIN
