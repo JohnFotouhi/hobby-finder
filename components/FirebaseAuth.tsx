@@ -1,6 +1,6 @@
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
 import { getApp } from 'firebase/app'
-import { getAuth, EmailAuthProvider } from 'firebase/auth'
+import { getAuth, EmailAuthProvider, sendEmailVerification } from 'firebase/auth'
 import { initializeApp } from 'firebase/app';
 import { useEffect, useState } from 'react';
 
@@ -15,24 +15,54 @@ const firebaseConfig = {
     measurementId: "G-4HTBFDYZ1C"
 };
 const app = initializeApp(firebaseConfig);
+const auth = getAuth();
 
-// https://github.com/gladly-team/next-firebase-auth/blob/v1.x/example/components/FirebaseAuth.js
-const firebaseAuthConfig = {
-    signInFlow: 'popup',
-    signInOptions: [
-        {
-            provider: EmailAuthProvider.PROVIDER_ID,
-            requireDisplayName: true,
+export default function FirebaseAuth(setVerifyEmail){
+    function verifyEmail(){
+        setVerifyEmail.setVerifyEmail.setVerifyEmail(true);
+    }
+
+    // https://github.com/gladly-team/next-firebase-auth/blob/v1.x/example/components/FirebaseAuth.js
+    const firebaseAuthConfig = {
+        signInFlow: 'popup',
+        signInOptions: [
+            {
+                provider: EmailAuthProvider.PROVIDER_ID,
+                requireDisplayName: true,
+            },
+        ],
+        signInSuccessUrl: '/search',
+        credentialHelper: 'none',
+        callbacks: {
+            signInSuccessWithAuthResult: (signInData) => {
+                if(signInData.additionalUserInfo.isNewUser){
+                    let user = auth.currentUser;
+                    console.log(auth.currentUser);
+                    if(user !== null){
+                        sendEmailVerification(user)
+                        .then(() => {
+                            verifyEmail();
+                            console.log("Sent email verification!");
+                        });
+                    }
+                    // provision database
+                    // uid = signInData.user.uid
+                }
+                else{
+                    if(! signInData.user.emailVerified){
+                        console.log(setVerifyEmail);
+                        verifyEmail();
+                    }
+                    else{
+                        verifyEmail();
+                    }
+                }
+                return true;
+            },
+            
         },
-    ],
-    signInSuccessUrl: '/search',
-    credentialHelper: 'none',
-    callbacks: {
-        signInSuccessWithAuthResult: () => false,
-    },
-}
+    }
 
-export default function FirebaseAuth(){
     const [renderAuth, setRenderAuth] = useState(false);
     useEffect(() => {
         if(typeof window !== 'undefined'){
@@ -42,7 +72,7 @@ export default function FirebaseAuth(){
 return(
     <>{
         renderAuth &&
-        <StyledFirebaseAuth uiConfig={firebaseAuthConfig} firebaseAuth={getAuth(app)} className="mt-5"/>
+        <StyledFirebaseAuth uiConfig={firebaseAuthConfig} firebaseAuth={getAuth(app)} className="mt-5" />
     }
     </>
 );

@@ -1,10 +1,10 @@
 import FirebaseAuth from "../components/FirebaseAuth";
 import { AuthAction, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 
-const Login = () => (
+const Login = (setVerifyEmail) => (
     <>  
         <h3 className="text-center mt-3">Jam</h3>
-        <FirebaseAuth />
+        <FirebaseAuth setVerifyEmail={setVerifyEmail} />
     </>
 )
 
@@ -12,7 +12,7 @@ export default withAuthUser({
     whenAuthed: AuthAction.REDIRECT_TO_APP,
     whenUnauthedBeforeInit: AuthAction.RETURN_NULL,
     whenUnauthedAfterInit: AuthAction.RENDER,
-  })(Login)
+})(Login)
 
 // export const getServerSideProps = withAuthUserTokenSSR({
 //     whenAuthed: AuthAction.REDIRECT_TO_APP
