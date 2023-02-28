@@ -16,6 +16,15 @@ const Profile = () => {
     const AuthUser = useAuthUser();
     console.log(AuthUser);
 
+    //Profile states
+    const [isEditing, setIsEditing] = useState(false);
+    const [capacity, setCapacity] = useState("");
+    const [bio, setBio] = useState("");
+    const [equipment, setEquipment] = useState("");
+    const [schedule, setSchedule] = useState("");
+    const [displayName, setDisplayName] = useState("");
+
+
     //user's cards
     const [cards, setCards] = useState<any[]>([]);
 
@@ -29,10 +38,11 @@ const Profile = () => {
     const [oldCommitment, setOldCommitment] = useState("");
     const [oldInfo, setOldInfo] = useState("");
 
-    //get user's hobby cards
+    //get user's hobby cards and profile information
     useEffect(() => {
         console.log("IN USE EFFECT");
         getCards();
+        getProfile();
     }, []);
 
     const getGenreList = (genres : [string]) => {
@@ -60,6 +70,25 @@ const Profile = () => {
             .then((data) => {
             console.log(data)
             setCards(data);
+        });
+    }
+
+    const getProfile = () => {
+        console.log("getting profile");
+        fetch("/api/userProfileRetrieval", { 
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({uid: AuthUser.id})
+        })
+            .then((res) => res.json())
+            .then((data) => {
+            console.log("user data")
+            console.log(data)
+            setDisplayName(data.name);
+            setBio(data.bio);
+            //setAvailability(data.availability);
+            setCapacity(data.host);
+            setEquipment(data[4]);
         });
     }
 
@@ -94,20 +123,27 @@ const Profile = () => {
         setShow(true);
     }
 
-    function editProfile(){
+    function handleEditChange(){
+        if(!isEditing){
+            setIsEditing(true);
+        }
+        else{ //user has saved new information
+            //function for updating db
 
-        console.log("edit profile")
-        //show editor modal
-        setShowProfileEditor(true);
+            setIsEditing(false);
+        }
     }
-    
+
+
     return(
         <>  
             <Container>
                 <Row>
+                    <Button onClick={handleEditChange}>{isEditing? "Save" : "Edit"}</Button>
                     <Col>
-                        <UserInformation capacity={"4"} equipment={"two bass amps"} schedule = {"Tuedays after 8:30pm"} displayName={"Larry McGary"} bio={"I am good at music lmao"} owner={true} editProfile={editProfile} profilePicture={Jon}></UserInformation>
-                        <UserInformationEditor setShowProfileEditor={setShowProfileEditor} showProfileEditor={showProfileEditor} oldCapacity={undefined} oldBio={undefined} oldEquipment={undefined} oldSchedule={undefined}></UserInformationEditor>
+                        {isEditing?
+                        <UserInformationEditor setShowProfileEditor={setShowProfileEditor} showProfileEditor={showProfileEditor} oldCapacity={capacity} oldBio={undefined} oldEquipment={undefined} oldSchedule={undefined} oldName={displayName} setName={setDisplayName} setCapacity={setCapacity} setBio={setBio} setEquipment={setEquipment} setSchedule={undefined}></UserInformationEditor>
+                        :  <UserInformation owner={true} name={displayName} bio={bio} equipment={equipment} capacity={capacity} availability={undefined} profilePicture={Jon}></UserInformation> }
                     </Col>
                 </Row>
 
