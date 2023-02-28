@@ -36,7 +36,7 @@ export default function UserInformation({capacity, equipment, schedule, displayN
                     <Col>
                         <span className="fw-bold fs-2">{displayName}</span>
                     </Col>
-                    <Col style = {{background: "green", height: "100%", border: "solid"}}>
+                    <Col style = {{height: "100%", border: "solid"}}>
                         <span>{bio}</span>
                     </Col>
                     {/* <div className="fluid square border border-dark" style={{maxHeight: "100%"}}>
@@ -58,11 +58,11 @@ export default function UserInformation({capacity, equipment, schedule, displayN
             
 
             <Row className = "lg-3" style={{padding: 20}}>
-                <Col>
+                <Col className="col-md-3">
                     {/* Can host */}
-                    <Button className="square border border-dark">Host Capacity {capacity}</Button>
+                    <div className="square border border-dark"> Jam Session Host Capacity: {capacity} people</div>
                 </Col>
-                <Col>
+                <Col className="col-md-3">
                     {/* Equipment */}
                     <Button className="square border border-dark" onClick={equipmentInfoDisplay}>Equipment</Button>
                     <UserInfoModal showInfo={showEquipmentInfo} setShowInfo = {setShowEquipmentInfo} infoTitle={"Equipment"} info={equipment}></UserInfoModal>

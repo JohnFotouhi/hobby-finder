@@ -17,6 +17,7 @@ const database = getFirestore(app);
 
 export default async (req, res) =>{
     if(req.method === 'POST'){
+        console.log("getting info")
 
         let userData: any;
 

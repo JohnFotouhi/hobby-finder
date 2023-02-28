@@ -29,11 +29,11 @@ const Profile = () => {
     const [oldCommitment, setOldCommitment] = useState("");
     const [oldInfo, setOldInfo] = useState("");
 
-    //get user's hobby cards
+    //get user's hobby cards and profile information
     useEffect(() => {
         console.log("IN USE EFFECT");
         getCards();
-        getProfile();
+        // getProfile();
     }, []);
 
     const getGenreList = (genres : [string]) => {
@@ -122,7 +122,7 @@ const Profile = () => {
             <Container>
                 <Row>
                     <Col>
-                        <UserInformation capacity={"4"} equipment={"two bass amps"} schedule = {"Tuedays after 8:30pm"} displayName={"Larry McGary"} bio={"I am good at music lmao"} owner={true} editProfile={editProfile} profilePicture={Jon}></UserInformation>
+                        <UserInformation capacity={"4"} equipment={"two bass amps"} schedule = {"Tuedays after 8:30pm"} displayName={"Larry McGary"} bio={"I am good at music!"} owner={true} editProfile={editProfile} profilePicture={Jon}></UserInformation>
                         <UserInformationEditor setShowProfileEditor={setShowProfileEditor} showProfileEditor={showProfileEditor} oldCapacity={undefined} oldBio={undefined} oldEquipment={undefined} oldSchedule={undefined}></UserInformationEditor>
                     </Col>
                 </Row>
