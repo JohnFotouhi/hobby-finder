@@ -19,6 +19,7 @@ function User() {
     return(
         <>  
             {/*<UserInformation capacity={"2"} equipment={"a condenser mic and an interface"} schedule = {"Any morning before 11am"} displayName={"Perry the Platypus"} bio={"*chatter*"} owner={false} editProfile={editProfile} profilePicture={perry}></UserInformation>*/}
+            
             <Container fluid className ="bg-light">
 
                 <Col><Button>Reach Out</Button></Col>

@@ -1,10 +1,10 @@
 import FirebaseAuth from "../components/FirebaseAuth";
 import { AuthAction, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 
-const Login = (setVerifyEmail) => (
+const Login = () => (
     <>  
         <h3 className="text-center mt-3">Jam</h3>
-        <FirebaseAuth setVerifyEmail={setVerifyEmail} />
+        <FirebaseAuth/>
     </>
 )
 

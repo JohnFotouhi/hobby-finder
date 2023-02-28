@@ -41,7 +41,7 @@ export default function Registration(){
                 availability: {},
                 bio: "",
                 pronouns: "",
-                host: false,
+                host: 0,
                 equipment: ""});
             
         })

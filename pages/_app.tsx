@@ -6,21 +6,17 @@ import Layout from "../components/layout";
 import initAuth from '../initAuth';
 import { useState } from 'react';
 import { Modal } from 'react-bootstrap';
+import { getAuth } from 'firebase/auth';
+import { initializeApp } from 'firebase/app';
+import { useAuthUser } from 'next-firebase-auth';
 
 
 initAuth();
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [verifyEmail, setVerifyEmail] = useState(false);
   return (
     <Layout>
-      <Component {...pageProps} setVerifyEmail={setVerifyEmail} />
-      <Modal show={verifyEmail}>
-        <Modal.Header >
-          <Modal.Title>Please check your email and follow the verification link to verify your account.</Modal.Title>
-          {/* TODO: Add link to resend verification email and prevent refresh workaround*/}
-        </Modal.Header>
-      </Modal>
+      <Component {...pageProps} />
     </Layout>
   );
 }
