@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Search from './search'
 
 export default function Home() {
 
@@ -11,7 +12,7 @@ export default function Home() {
         <link rel="icon" href="/jam-jar.jpg" />
       </Head>
       <main>
-        
+        <Search />
       </main>
     </>
   )

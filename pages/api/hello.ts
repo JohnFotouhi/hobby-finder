@@ -16,25 +16,21 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getFirestore(app);
 
-async function writeData(){
+export default async function writeData(req, res){
+  // req.body
   try{
-    const docRef = await addDoc(collection(database, 'test'), {
-      name: "Hello World!"
+    const docRef = await addDoc(collection(database, 'users'), {
+      key: req.body.uid,
+      name: req.body.displayName,
+      hobbyCards: [],
+      availability: {},
+      bio: "",
+      pronouns: "",
+      host: 0,
+      equipment: ""
     });
-    console.log(docRef.id);
   }catch(e){
     console.error("Error adding document: ", e);
   }
 }
 
-type Data = {
-  name: string
-}
-
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
-  // writeData();
-  res.status(200).json({ name: 'John Doe' })
-}

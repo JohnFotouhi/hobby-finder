@@ -3,6 +3,7 @@ import { getApp } from 'firebase/app'
 import { getAuth, EmailAuthProvider, sendEmailVerification } from 'firebase/auth'
 import { initializeApp } from 'firebase/app';
 import { useEffect, useState } from 'react';
+import { getFirestore, collection } from 'firebase/firestore';
 
 const firebaseConfig = {
     apiKey: "AIzaSyANQhKbnHwzW2SHI-GTPz3rH0X7InikKDo",
@@ -15,13 +16,10 @@ const firebaseConfig = {
     measurementId: "G-4HTBFDYZ1C"
 };
 const app = initializeApp(firebaseConfig);
-const auth = getAuth();
+const database = getFirestore(app);
 
-export default function FirebaseAuth(setVerifyEmail){
-    function verifyEmail(){
-        setVerifyEmail.setVerifyEmail.setVerifyEmail(true);
-    }
-
+export default function FirebaseAuth(){
+    const usersCollection = collection(database, "users");
     // https://github.com/gladly-team/next-firebase-auth/blob/v1.x/example/components/FirebaseAuth.js
     const firebaseAuthConfig = {
         signInFlow: 'popup',
@@ -35,26 +33,34 @@ export default function FirebaseAuth(setVerifyEmail){
         credentialHelper: 'none',
         callbacks: {
             signInSuccessWithAuthResult: (signInData) => {
+                console.log(signInData);
+                const user = signInData.user;
                 if(signInData.additionalUserInfo.isNewUser){
-                    let user = auth.currentUser;
-                    console.log(auth.currentUser);
+                    console.log("add");
                     if(user !== null){
                         sendEmailVerification(user)
                         .then(() => {
-                            verifyEmail();
                             console.log("Sent email verification!");
                         });
                     }
-                    // provision database
-                    // uid = signInData.user.uid
+                    // TODO: change name from hello
+                    fetch("/api/hello", {
+                        method: "POST",
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({uid: user.uid, displayName: user.displayName})
+                      })
+                        .then((res) => res.json())
+                        .then((data) => {
+                            console.log("done");
+                      });
+                    
                 }
                 else{
                     if(! signInData.user.emailVerified){
-                        console.log(setVerifyEmail);
-                        verifyEmail();
+                        // make them verify email
                     }
                     else{
-                        verifyEmail();
+                        // they verified email
                     }
                 }
                 return true;
@@ -72,7 +78,7 @@ export default function FirebaseAuth(setVerifyEmail){
 return(
     <>{
         renderAuth &&
-        <StyledFirebaseAuth uiConfig={firebaseAuthConfig} firebaseAuth={getAuth(app)} className="mt-5" />
+        <StyledFirebaseAuth uiConfig={firebaseAuthConfig} firebaseAuth={getAuth(app)} className="mt-5"/>
     }
     </>
 );
