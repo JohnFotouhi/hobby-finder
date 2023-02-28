@@ -41,7 +41,7 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
                 <Card.Title> 
                     Edit Profile
                 </Card.Title>
-                <SingleselectInput controlId={undefined} label={"Capacity to Host"} text={""} options={capacity} setValue={setCapacity} value={oldCapacity? capacity.at(oldCapacity) : null}/>
+                <SingleselectInput controlId={undefined} label={"Capacity to Host"} text={""} options={capacity} setValue={setCapacity} value={oldCapacity} multi={false}/>
                 <Col><Form> 
                         <FormInput controlId="bio" label="Bio" type="text" placeholder={oldBio} text="" setValue={setBio} value={bioSelect}/>
                         <Form.Text className="text-muted">

@@ -10,6 +10,8 @@ import UserInformation from "../components/userInformation";
 import UserInformationEditor from '../components/userInformationEditor';
 import { updateProfile } from 'firebase/auth';
 import {instrumentList, experienceList, genreList} from "../lists"
+import { getCipherInfo } from "crypto";
+import FormInput from "../components/formInput";
 
 
 const Profile = () => {
