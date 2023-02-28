@@ -10,20 +10,15 @@ export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, 
     
     const [instrumentSelect, setInstrument] = useState("");
     const [experienceSelect, setExperience] = useState("");
-    const [commitmentSelect, setCommitment] = useState("");
+    const [commitMinSelect, setCommitMin] = useState(0);
+    const [commitMaxSelect, setCommitMax] = useState(0);
     const [genreSelect, setGenre] = useState<any[]>([]);
     const [infoSelect, setInfo] = useState("");
 
     function createCard(){
 
-        // console.log(instrumentSelect);
-        // console.log(experienceSelect);
-        // console.log(genreSelect);
-        // console.log(commitmentSelect);
-        // console.log(infoSelect);
-
         //Make sure they've selected all inputs
-        if(instrumentSelect && experienceSelect && genreSelect && commitmentSelect && infoSelect){
+        if(instrumentSelect && experienceSelect && genreSelect && commitMinSelect && commitMaxSelect && infoSelect){
             let status;
             fetch("/api/hobbyCardCreation", { 
                 method: "POST",
@@ -33,7 +28,8 @@ export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, 
                     instrument: instrumentSelect, 
                     experience: experienceSelect,
                     genres: genreSelect,
-                    commitment: commitmentSelect,
+                    commitMin: commitMinSelect,
+                    commitMax: commitMaxSelect,
                     info: infoSelect,
                     newCard: newCard})
               })
@@ -45,6 +41,14 @@ export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, 
                     if(status == 200){
                         console.log("SUCESSFUL CREATION");
                         setCards(data);
+
+                        setGenre([]);
+                        setExperience("");
+                        setCommitMin(0);
+                        setCommitMax(0);
+                        setInstrument("");
+                        setInfo("");
+
                         setShow(false);
                     }
                     else if(status == 409){
@@ -65,43 +69,35 @@ export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, 
     function cancelCard(){
         setGenre([]);
         setExperience("");
-        
+        setCommitMin(0);
+        setCommitMax(0);
+        setInstrument("");
+        setInfo("");
         setShow(false);
     }
 
-    
-    const commitmentLevels = [{label: "Low: Less than 3 hours per week", value: "commit1"}, {label: "Medium: 3-7 hours per week", value: "commit2"}, {label: "High: more than 7 hours per week", value: "commit3"}];    
-    
+        
     return(
         // TO DO: Add inputs already there for if they're editing rather than creating
         <Modal show={show}>
             <Card style={{ width: "20rem" }}>
             <Card.Body>            
                 <Card.Title> 
-                    <SingleselectInput controlId={undefined} label={"Instrument"} text={""} options={instrumentList} setValue={setInstrument} value={null} multi={false}/>
+                    {newCard? <SingleselectInput controlId={undefined} label={"Instrument"} text={""} options={instrumentList} setValue={setInstrument} value={instrumentSelect} multi={false}/> : oldInstrument}
                 </Card.Title>
                 <Col>
-                    {/* <MultiselectInput
-                            controlId="skillInput"
-                            label="Genres"
-                            text=""
-                            selected={genreSelect}
-                            setSelected={setGenre}
-                            options={genreList}
-                            />  */}
-                    <SingleselectInput controlId={undefined} label={"Genre"} text={""} options={instrumentList} setValue={setGenre} value={genreSelect} multi={true} />
+                    <SingleselectInput controlId={undefined} label={"Genre"} text={""} options={genreList} setValue={setGenre} value={genreSelect} multi={true} />
                 </Col>
                 <Col> 
                     <SingleselectInput controlId={undefined} label={"Experience"} text={""} options={experienceList} setValue={setExperience} value={experienceSelect} multi={false}/>
                 </Col>
                 <Col>
-                    {/* <SingleselectInput controlId={undefined} label={"Commitment"} text={""} options={commitmentLevels} setValue={setCommitment} value={commitmentSelect} multi={false}/> */}
                     <Form>                  
                         <Form.Label>Commitment</Form.Label>
                         <Form.Text>Range of hours you are looking to commit weekly.</Form.Text>
                         <InputGroup className="col-sm-2">
-                        <FormInput controlId={"commiteLow"} label={undefined} type={"number"} placeholder={undefined} text={undefined} setValue={undefined} value={undefined}/>
-                        <FormInput controlId={"commitHigh"} label={undefined} type={"number"} placeholder={undefined} text={undefined} setValue={undefined} value={undefined}/>
+                        <FormInput controlId={"commiteLow"} label={undefined} type={"number"} placeholder={undefined} text={undefined} setValue={setCommitMin} value={commitMinSelect} min={1} max={50}/> to
+                        <FormInput controlId={"commitHigh"} label={undefined} type={"number"} placeholder={undefined} text={undefined} setValue={setCommitMax} value={commitMaxSelect} min={commitMinSelect} max={50}/>
                         </InputGroup>
                     </Form>       
                 </Col>
@@ -118,3 +114,13 @@ export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, 
         </Modal>
     );
 }
+
+//OLD GENRE SELECT
+/* <MultiselectInput
+        controlId="skillInput"
+        label="Genres"
+        text=""
+        selected={genreSelect}
+        setSelected={setGenre}
+        options={genreList}
+        />  */

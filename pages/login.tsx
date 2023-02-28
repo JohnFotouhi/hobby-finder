@@ -1,4 +1,4 @@
-import FirebaseAuth from "@/components/FirebaseAuth";
+import FirebaseAuth from "../components/FirebaseAuth";
 import { AuthAction, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 
 const Login = () => (

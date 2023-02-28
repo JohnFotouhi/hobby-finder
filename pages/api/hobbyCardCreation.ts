@@ -16,7 +16,8 @@ const app = initializeApp(firebaseConfig);
 const database = getFirestore(app);
 
 type Card = {
-    commitment: string
+    commitMin: number,
+    commitMax: number,
     experience: string
     genres: string[]
     info: string
@@ -53,13 +54,14 @@ export default async (req, res) => {
         let genreStrings : string[] = [];
         console.log(req.body)
         console.log(req.body.genres);
-        req.body.genres.at(0).forEach((genre) => {
-            genreStrings.push(genre.name);
+        req.body.genres.forEach((genre) => {
+            genreStrings.push(genre.label);
         });
 
         //hobby card for db with new inputs
         const freshCard : Card = {
-            commitment: req.body.commitment.label,
+            commitMin: +req.body.commitMin,
+            commitMax: +req.body.commitMax,
             experience: req.body.experience.label,
             genres: genreStrings,
             info:req.body.info,
