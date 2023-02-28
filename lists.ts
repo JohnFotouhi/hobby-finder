@@ -1,7 +1,7 @@
 
 const instruments = [
     "Accordian",
-    "Accoustic guitar",
+    "Acoustic guitar",
     "Bagpipe",
     "Banjo",
     "Bass guitar",
