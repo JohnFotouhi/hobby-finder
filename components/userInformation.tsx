@@ -29,21 +29,26 @@ export default function UserInformation({capacity, equipment, schedule, displayN
     return (
         <Container style={{padding: 10}}>
             <Row style={{padding: 60}}>
-                <Col className="col-md-4">
-                    <Image className= "square bg-primary rounded-pill" src={profilePicture} alt="profile_picture" width="256" height = "256"></Image>
+                <Col className="col-md-3">
+                    <Image className= "square bg-primary rounded-pill" src={profilePicture} alt="profile_picture" width="200" height = "200"></Image>
                 </Col>
-                <Col className="col-md-5">
+                <Col className="col-md-4">
                     <Col>
                         <span className="fw-bold fs-2">{displayName}</span>
                     </Col>
-                    <Card>
+                    <Col style = {{background: "green", height: "100%", border: "solid"}}>
                         <span>{bio}</span>
-                    </Card>
+                    </Col>
                     {/* <div className="fluid square border border-dark" style={{maxHeight: "100%"}}>
                         <span>{bio}</span>
                     </div> */}
                 </Col>
-                <Col className="col-md-2">
+                <Col className="col-md-4" style ={{background: "yellow"}}>
+                    {/* Schedule */}
+                    <Button className="square border border-dark" onClick={scheduleInfoDisplay}>Schedule</Button>
+                    <UserInfoModal showInfo={showScheduleInfo} setShowInfo = {setShowScheduleInfo} infoTitle={"Availabilty"} info={schedule}></UserInfoModal>
+                </Col>
+                <Col className="col-md-1">
                     { owner? <Button onClick={editProfile}><BsPencil/></Button> : null}
                 </Col>
                 
@@ -61,11 +66,6 @@ export default function UserInformation({capacity, equipment, schedule, displayN
                     {/* Equipment */}
                     <Button className="square border border-dark" onClick={equipmentInfoDisplay}>Equipment</Button>
                     <UserInfoModal showInfo={showEquipmentInfo} setShowInfo = {setShowEquipmentInfo} infoTitle={"Equipment"} info={equipment}></UserInfoModal>
-                </Col>
-                <Col>
-                    {/* Schedule */}
-                    <Button className="square border border-dark" onClick={scheduleInfoDisplay}>Schedule</Button>
-                    <UserInfoModal showInfo={showScheduleInfo} setShowInfo = {setShowScheduleInfo} infoTitle={"Availabilty"} info={schedule}></UserInfoModal>
                 </Col>
             </Row>
                 

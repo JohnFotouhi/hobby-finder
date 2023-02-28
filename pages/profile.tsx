@@ -33,6 +33,7 @@ const Profile = () => {
     useEffect(() => {
         console.log("IN USE EFFECT");
         getCards();
+        getProfile();
     }, []);
 
     const getGenreList = (genres : [string]) => {
@@ -60,6 +61,21 @@ const Profile = () => {
             .then((data) => {
             console.log(data)
             setCards(data);
+        });
+    }
+
+    const getProfile = () => {
+        console.log("getting profile");
+        fetch("/api/userProfileRetrieval", { 
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({uid: AuthUser.id})
+        })
+            .then((res) => res.json())
+            .then((data) => {
+            console.log("user data")
+            console.log(data)
+            // setCards(data);
         });
     }
 
