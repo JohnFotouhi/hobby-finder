@@ -23,33 +23,48 @@ type Profile = {
     equipment: string
   }
 
-export default async (req, res) =>{
+export default async (req, res) => {
     if(req.method === 'POST'){
-        console.log("getting info")
+        
+        const uid = req.body.uid;
+        const newName = req.body.name;
+        const newBio = req.body.bio;
+        const newAvailability = req.body.availability;
+        const newHost = req.body.host;
+        const newEquipment = req.body.equipment;
+
 
         let userData: any;
+
+        const userRef = collection(database, "users")
 
         const querySnapshot = await getDocs(collection(database, "users"));
         querySnapshot.forEach((doc) => {
                 //if user id is our user's ID
-                console.log("id time")
-                console.log(doc.id)
-                if(doc.id == req.body.uid){
+                if(doc.id == uid){
                     userData = (doc.data());
                 }
         });
-        
+        //res.status(200).json("userData")
 
-        const existingProfile : Profile = {
-            name: userData.name,
-            bio: userData.bio,
-            availability: userData.availability,
-            host: userData.host,
-            equipment: userData.equipment
+
+        updateDoc(doc(userRef, uid), {name: newName});
+        updateDoc(doc(userRef, uid), {bio: newBio});
+        updateDoc(doc(userRef, uid), {equipment: newEquipment});
+        updateDoc(doc(userRef, uid), {availability: {}});
+        updateDoc(doc(userRef, uid), {host: newHost});
+
+
+        const freshProfile : Profile = {
+            name: newName,
+            bio: newBio,
+            availability: newAvailability,
+            host: newHost,
+            equipment: newEquipment
         }
 
-        res.status(200).json(existingProfile)
-        
+        res.status(200).json(freshProfile);
+
     } else {
         res.status(405).end()
     }
