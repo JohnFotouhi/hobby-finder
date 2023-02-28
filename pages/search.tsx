@@ -4,12 +4,12 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { BsSearch, BsFunnelFill } from "react-icons/bs";
 import { useState } from "react";
-import SearchCard from "@/components/SearchCard";
-import FullPageLoader from "@/components/FullPageLoader";
+import SearchCard from "../components/SearchCard";
+import FullPageLoader from "../components/FullPageLoader";
 import { withAuthUser, AuthAction } from "next-firebase-auth";
-import { instruments } from "@/lists";
-import SingleselectInput from "@/components/singleselectinput";
-import Filters from "@/components/filters";
+import { instrumentList } from "../lists";
+import SingleselectInput from "../components/singleselectinput";
+import Filters from "../components/filters";
 
 function Search() {
     const emptyFilters = {
@@ -22,9 +22,6 @@ function Search() {
     const [editFilters, setEditFilters] = useState(false);
     const [instrument, setInstrument] = useState({value: "", label: ""});
     const [users, setUsers] = useState<any[]>([]);
-    const instrumentOptions = instruments.map(function(instrument) {
-        return {label: instrument, value: instrument};
-    });
 
     function updateFilters(filters){
         setFilters(filters);
@@ -51,7 +48,7 @@ function Search() {
             <Container fluid className='bg-light pb-3 mt-0' >
                 <Form style={{whiteSpace: "nowrap"}}>
                     {/* className="w-50 mx-auto my-0" style={{display:"flex"}} */}
-                    <SingleselectInput controlId={"instrumentSearch"} label={""} text={""} options={instrumentOptions} setValue={setInstrument} value={instrument} className={"w-25"} style={{display: "inline-flex"}}/>
+                    <SingleselectInput controlId={"instrumentSearch"} label={""} text={""} options={instrumentList} setValue={setInstrument} value={instrument} className={"w-25"} style={{ display: "inline-flex" }} multi={false}/>
                     <Button onClick={handleSearch} style={{float:"left"}}>Search <BsSearch /></Button>
                     <Button onClick={handleEditFilters}style={{height: "40px"}} className="my-auto"><BsFunnelFill /></Button>
                 </Form>

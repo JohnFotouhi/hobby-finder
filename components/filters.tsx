@@ -2,7 +2,7 @@ import { Button, Col, Container, Row, Form, Modal } from "react-bootstrap";
 import FormInput from "./formInput";
 import { useState } from "react";
 import MultiselectInput from "./multiselectInput";
-import { experiences, instruments, genres } from "@/lists";
+import { instrumentList, genreList, experienceList } from "../lists";
 
 export default function Filters({show, setShow, filters, setFilters, ...props}){
     
@@ -18,8 +18,8 @@ export default function Filters({show, setShow, filters, setFilters, ...props}){
         return objectArray;
     }
 
-    const experienceLevelOptions = objectifyArray(experiences, "experience");
-    const genreOptions = objectifyArray(genres, "genre");
+    const experienceLevelOptions = objectifyArray(experienceList, "experience");
+    const genreOptions = objectifyArray(genreList, "genre");
     const commitmentLevelOptions = [{name: "Low: Less than 3 hours per week", id: "commit1"}, {name: "Medium: 3-7 hours per week", id: "commit2"}, {name: "High: more than 7 hours per week", id: "commit3"}];    
 
     function handleClose(){
