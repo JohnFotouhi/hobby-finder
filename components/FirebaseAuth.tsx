@@ -44,7 +44,7 @@ export default function FirebaseAuth(){
                         });
                     }
                     // TODO: change name from hello
-                    fetch("/api/hello", {
+                    fetch("/api/initializeUser", {
                         method: "POST",
                         headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify({uid: user.uid, displayName: user.displayName})

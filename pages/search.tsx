@@ -58,7 +58,7 @@ function Search() {
                 <Row className='m-auto'>
                     {users?.map((user, index )=>(
                         <Col md="4" key={index + "userCard"}>
-                            <SearchCard {...user} />
+                            <SearchCard {...user} authId={user.key} />
                         </Col>
                     ))}
                 </Row>

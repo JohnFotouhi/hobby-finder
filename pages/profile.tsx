@@ -6,7 +6,7 @@ import FullPageLoader from "../components/FullPageLoader";
 import HobbyCard from "../components/hobbyCard";
 import { initializeApp } from "firebase-admin";
 import UserInformation from "../components/userInformation";
-//import Jon from "@/public/User_images/jon.jpg"; //image won't import, idk why. I imagine we're changing this funcitonality anyway
+import Jon from "@/public/User_images/jon.jpg"; //image won't import, idk why. I imagine we're changing this funcitonality anyway
 import UserInformationEditor from '../components/userInformationEditor';
 import { updateProfile } from 'firebase/auth';
 import {instrumentList, experienceList, genreList} from "../lists"
@@ -175,7 +175,7 @@ const Profile = () => {
                     <Col>
                         {isEditing?
                         <UserInformationEditor setShowProfileEditor={setShowProfileEditor} showProfileEditor={showProfileEditor} oldCapacity={capacity} oldBio={undefined} oldEquipment={undefined} oldSchedule={undefined} oldName={displayName} setName={setDisplayName} setCapacity={setCapacity} setBio={setBio} setEquipment={setEquipment} setSchedule={undefined}></UserInformationEditor>
-                        :  <UserInformation owner={true} name={displayName} bio={bio} equipment={equipment} capacity={capacity} availability={undefined} profilePicture={undefined}></UserInformation> }
+                        :  <UserInformation owner={true} name={displayName} bio={bio} equipment={equipment} capacity={capacity} availability={undefined} profilePicture={Jon}></UserInformation> }
                     </Col>
                 </Row>
 
