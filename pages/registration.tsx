@@ -5,6 +5,7 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from 'firebase/app';
 import { useState } from "react";
 import { collection, doc, getFirestore, setDoc } from "firebase/firestore";
+import firebaseApp from "@/config";
 
 export default function Registration(){
     const [displayName, setDisplayName] = useState("");
@@ -13,20 +14,8 @@ export default function Registration(){
     const [passwordConfirm, setPasswordConfirm] = useState("");
 
     function createUser(){
-        const firebaseConfig = {
-            apiKey: "AIzaSyANQhKbnHwzW2SHI-GTPz3rH0X7InikKDo",
-            authDomain: "jamin-9ed6a.firebaseapp.com",
-            databaseURL: "https://jamin-9ed6a-default-rtdb.firebaseio.com",
-            projectId: "jamin-9ed6a",
-            storageBucket: "jamin-9ed6a.appspot.com",
-            messagingSenderId: "950884082294",
-            appId: "1:950884082294:web:40d61d4452f007c2f07557",
-            measurementId: "G-4HTBFDYZ1C"
-        };
-        
-        const app = initializeApp(firebaseConfig);
-        const database = getFirestore(app);
-        const auth = getAuth();
+        const database = getFirestore(firebaseApp);
+        const auth = getAuth(firebaseApp);
         createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             // Signed in 
