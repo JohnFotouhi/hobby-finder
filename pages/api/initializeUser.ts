@@ -1,5 +1,4 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from 'next'
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 
@@ -17,7 +16,6 @@ const app = initializeApp(firebaseConfig);
 const database = getFirestore(app);
 
 export default async function writeData(req, res){
-  // req.body
   try{
     const docRef = await addDoc(collection(database, 'users'), {
       key: req.body.uid,
@@ -29,6 +27,10 @@ export default async function writeData(req, res){
       host: 0,
       equipment: ""
     });
+    docRef.id
+    console.log(docRef);
+    const instrumentRef = await addDoc(collection(docRef, 'hobby'), {});
+    console.log(instrumentRef);
   }catch(e){
     console.error("Error adding document: ", e);
   }
