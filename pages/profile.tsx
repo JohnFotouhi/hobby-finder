@@ -18,14 +18,14 @@ const Profile = () => {
 
     //user credentials
     const AuthUser = useAuthUser();
-    console.log(AuthUser);
+    //console.log(AuthUser);
 
     //Profile states
     const [isEditing, setIsEditing] = useState(false);
     const [capacity, setCapacity] = useState("");
     const [bio, setBio] = useState("");
     const [equipment, setEquipment] = useState("");
-    const [schedule, setSchedule] = useState("");
+    const [schedule, setSchedule] = useState({});
     const [displayName, setDisplayName] = useState("");
 
 
@@ -130,8 +130,38 @@ const Profile = () => {
             setIsEditing(true);
         }
         else{ //user has saved new information
-            //function for updating db
-
+            let status;
+            console.log(bio)
+            console.log(displayName)
+            console.log(equipment)
+            console.log(capacity)
+            fetch("/api/userProfileUpdate", { 
+                method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    uid: AuthUser.id,
+                    name: displayName,
+                    bio: bio,
+                    availability: schedule,
+                    host: capacity,
+                    equipment: equipment
+                    })
+              })
+                .then((res) => {
+                    status = res.status;
+                    return res.json();           
+                })
+                .then((data) => {
+                    if(status == 200){
+                        console.log("SUCESSFUL PROFILE UPDATE");
+                        console.log(data);       
+                    }
+                    else if(status == 409){
+                        console.log("UNSUCESSFUL USER")
+                        console.log(data);
+                        //TODO: error message for user
+                    }        
+                });
             setIsEditing(false);
         }
     }
