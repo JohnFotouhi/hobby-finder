@@ -25,7 +25,9 @@ type Profile = {
 
 export default async (req, res) => {
     if(req.method === 'POST'){
-        
+    
+        console.log(req);
+
         const uid = req.body.uid;
         const newName = req.body.name;
         const newBio = req.body.bio;
@@ -47,7 +49,6 @@ export default async (req, res) => {
         });
         //res.status(200).json("userData")
 
-
         updateDoc(doc(userRef, uid), {name: newName});
         updateDoc(doc(userRef, uid), {bio: newBio});
         updateDoc(doc(userRef, uid), {equipment: newEquipment});
@@ -62,6 +63,8 @@ export default async (req, res) => {
             host: newHost,
             equipment: newEquipment
         }
+
+        console.log(freshProfile);
 
         res.status(200).json(freshProfile);
 
