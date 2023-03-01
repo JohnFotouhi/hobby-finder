@@ -15,11 +15,20 @@ export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, 
     const [genreSelect, setGenre] = useState<any[]>([]);
     const [infoSelect, setInfo] = useState("");
 
+    const [commitError, setCommitError] = useState(false);
+    const [emptyInput, setEmptyInput] = useState(false);
+
     function createCard(){
 
         //Make sure they've selected all inputs
-        if(instrumentSelect && experienceSelect && genreSelect && commitMinSelect && commitMaxSelect && infoSelect){
+        if(instrumentSelect && experienceSelect && (genreSelect.length >= 1) && commitMinSelect && commitMaxSelect && infoSelect){
+            if( commitMaxSelect < commitMinSelect ){
+                console.log("NOT CREATING - invalid commit inputs")
+                setCommitError(true);
+            }
             let status;
+            setCommitError(false);
+            setEmptyInput(false);
             fetch("/api/hobbyCardCreation", { 
                 method: "POST",
                 headers: {'Content-Type': 'application/json'},
@@ -59,11 +68,12 @@ export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, 
                 .catch(error =>{
                     console.error('Error: ', error);
                 });     
+
         }
         else{
             console.log("NOT CREATING - empty inputs")
-            //some sort of error indicating they need to fill out all info
-        }
+            setEmptyInput(true);
+        } 
     }
 
     function cancelCard(){
@@ -80,7 +90,7 @@ export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, 
     return(
         // TO DO: Add inputs already there for if they're editing rather than creating
         <Modal show={show}>
-            <Card style={{ width: "20rem" }}>
+            <Card>
             <Card.Body>            
                 <Card.Title> 
                     {<SingleselectInput controlId={undefined} label={"Instrument"} text={""} options={instrumentList} setValue={setInstrument} value={instrumentSelect} multi={false}/>}
@@ -93,20 +103,24 @@ export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, 
                 </Col>
                 <Col>
                     <Form>                  
-                        <Form.Label>Commitment</Form.Label>
-                        <Form.Text>Range of hours you are looking to commit weekly.</Form.Text>
+                        <Form.Label>Commitment</Form.Label> <br/> 
+                        <Form.Text>Range of hours you are looking to commit weekly.</Form.Text>            
                         <InputGroup className="col-sm-2">
-                        <FormInput controlId={"commiteLow"} label={undefined} type={"number"} placeholder={undefined} text={undefined} setValue={setCommitMin} value={commitMinSelect} min={1} max={50}/> to
-                        <FormInput controlId={"commitHigh"} label={undefined} type={"number"} placeholder={undefined} text={undefined} setValue={setCommitMax} value={commitMaxSelect} min={commitMinSelect} max={50}/>
+                        <FormInput controlId={"commiteLow"} label={undefined} type={"number"} placeholder={undefined} text={undefined} setValue={setCommitMin} value={commitMinSelect} min="1"/> to
+                        <FormInput controlId={"commitHigh"} label={undefined} type={"number"} placeholder={undefined} text={undefined} setValue={setCommitMax} value={commitMaxSelect} min={commitMinSelect}/>
+                        {commitError && (<p style={{color:"red", fontSize:13}}>Increase your upper threshold or lower your minimum commitment.</p>)}
                         </InputGroup>
                     </Form>       
                 </Col>
-                <Col><Form> 
-                        <FormInput controlId="info" label="Details" type="text" placeholder="Im looking for..." text="" setValue={setInfo} value={infoSelect}/>
-                        <Form.Text className="text-muted">
+                <Col><Form>
+                        <Form.Label>Details</Form.Label> 
+                        <Form.Text className="text-muted"> <br/>
                             Any additional info you would like to share with users about this hobby.
                         </Form.Text>
-                    </Form> </Col>
+                        <FormInput controlId="info" label={undefined} type="text" placeholder="Im looking for..." text="" setValue={setInfo} value={infoSelect}/>              
+                    </Form> 
+                </Col>
+                {emptyInput && (<p style={{color:"red", fontSize:14}}>Please fill out all hobby info.</p>)}
                 <Button onClick={createCard}> {newCard ? "Create" : "Save"} </Button>
                 <Button onClick={cancelCard}>Cancel</Button>
             </Card.Body>
