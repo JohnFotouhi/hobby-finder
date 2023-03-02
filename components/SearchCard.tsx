@@ -2,16 +2,21 @@ import { useEffect, useState } from "react";
 import { Card, ListGroup, Table } from "react-bootstrap";
 import { BsPersonCircle } from "react-icons/bs";
 import { useRouter } from "next/router";
+import user from "@/pages/user";
 
 
-export default function SearchCard(props){
+export default function SearchCard(props, authId){
     const router = useRouter();
     const [cards, setCards] = useState([]);
     const [genres, setGenres] = useState([]);
     const [availability, setAvailability] = useState<any[]>([]);
     function visitProfile(){
         //visit profile of user
-        router.push('/user');
+        console.log(props);
+        router.push({
+            pathname: "/user",
+            query: {uid: authId}
+        });
     }
 
     useEffect(() => {
