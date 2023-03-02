@@ -38,8 +38,9 @@ const Profile = () => {
 
     const [oldInstrumentId, setOldInstrumentId] = useState(0);
     const [oldGenres, setOldGenres] = useState<any[]>([]);
-    const [oldExperience, setOldExperience] = useState("");
-    const [oldCommitment, setOldCommitment] = useState("");
+    const [oldExperience, setOldExperience] = useState(0);
+    const [oldCommitMin, setOldCommitMin] = useState(0);
+    const [oldCommitMax, setOldCommitMax] = useState(0);
     const [oldInfo, setOldInfo] = useState("");
 
     //get user's hobby cards and profile information
@@ -47,7 +48,7 @@ const Profile = () => {
         console.log("IN USE EFFECT");
         getCards();
         getProfile();
-    }, []);
+    }, [oldInfo]);
 
     function clearCardFields(){
         
@@ -101,8 +102,9 @@ const Profile = () => {
 
         setOldGenres([])
 
-        setOldExperience("");
-        setOldCommitment("");
+        setOldExperience(0);
+        setOldCommitMin(0);
+        setOldCommitMax(0);
         setOldInfo("");
 
         setShow(true);
@@ -112,16 +114,20 @@ const Profile = () => {
     function editCard(instrument, genres, experience, min, max, info){
         console.log("SETTING new card bool in edit")
         setNewCard(false);
-        console.log(newCard)
 
-        console.log("SETTING old instrument in edit")
-        setOldInstrumentId(2);
-        console.log(oldInstrumentId);
+        var inst =  instrumentList.map((e) => { return e.value; }).indexOf(instrument);        
+        setOldInstrumentId(inst);
 
-        setOldExperience(experience);
-        console.log(oldExperience)
+        //console.log(oldInstrumentId);
+        setOldGenres(genres);
 
-        //show editor modal
+        var exp =  experienceList.map((e) => { return e.value; }).indexOf(experience);        
+        setOldExperience(exp);
+
+        setOldCommitMin(min);
+        setOldCommitMax(max);
+        setOldInfo(info);
+        
         setShow(true);
     }
 
@@ -194,9 +200,9 @@ const Profile = () => {
                 </Container>
 
                 <Row>
-                { show && 
-                <HobbyCardEditor uid={AuthUser.id} setCards={setCards} setShow={setShow} show={show} newCard={newCard} oldInstrument={undefined} oldGenre={undefined} oldExperience={undefined} oldCommitment={undefined} oldInfo={undefined}></HobbyCardEditor>
-                }
+                { show && (
+                <HobbyCardEditor uid={AuthUser.id} setCards={setCards} setShow={setShow} show={show} newCard={newCard} oldInstrument={oldInstrumentId} oldGenre={oldGenres} oldExperience={oldExperience} oldCommitMin={oldCommitMin} oldCommitMax={oldCommitMax} oldInfo={oldInfo}></HobbyCardEditor>
+                )}
                 </Row> 
 
             </Container>           
