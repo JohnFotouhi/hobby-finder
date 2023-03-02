@@ -1,15 +1,17 @@
 import { Button, Col, Container, Row, Form, Card, Modal, Dropdown, InputGroup} from "react-bootstrap";
 import MultiselectInput from "./multiselectInput";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SingleselectInput from "./singleselectinput";
 import FormInput from "./formInput";
 import { optionCSS } from "react-select/dist/declarations/src/components/Option";
 import {instrumentList, genreList, experienceList} from "../lists"
+import { BsMinecart } from "react-icons/bs";
+import { exit } from "process";
 
-export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, oldInstrument, oldGenre, oldExperience, oldCommitMin, oldCommitMax, oldInfo}) {
+export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, oldInstrument, oldGenre, oldGenreStrings, oldExperience, oldCommitMin, oldCommitMax, oldInfo}) {
     
-    const [instrumentSelect, setInstrument] = useState("");
-    const [experienceSelect, setExperience] = useState("");
+    const [instrumentSelect, setInstrument] = useState({});
+    const [experienceSelect, setExperience] = useState({});
     const [commitMinSelect, setCommitMin] = useState(0);
     const [commitMaxSelect, setCommitMax] = useState(0);
     const [genreSelect, setGenre] = useState<any[]>([]);
@@ -18,18 +20,41 @@ export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, 
     const [commitError, setCommitError] = useState(false);
     const [emptyInput, setEmptyInput] = useState(false);
 
-    function createCard(){
+    useEffect(() => {
+        setDefaults();
+    }, [infoSelect]);
 
+    function setDefaults(){
+        if(!newCard){
+            console.log("IN IF STATEMENT")
+            const instrument = instrumentList.at(oldInstrument)
+            setInstrument({value: instrument.value, label: instrument.label})
+            console.log(instrumentSelect)
+            if(genreSelect.length <= 1){setGenre(oldGenre);}
+            console.log(genreSelect)
+            const exp = experienceList.at(oldExperience)
+            setExperience({value: exp.value, label: exp.label})
+            console.log(experienceSelect)
+            if(commitMinSelect == 0){setCommitMin(oldCommitMin)};
+            console.log(commitMinSelect);
+            if(commitMaxSelect == 0){setCommitMax(oldCommitMax)};
+            console.log(commitMaxSelect)
+            if(infoSelect==""){setInfo(oldInfo)};
+            console.log(infoSelect);
+        }
+    }
+
+    function createCard(){    
+        
         //Make sure they've selected all inputs
-        if(instrumentSelect && experienceSelect && (genreSelect.length >= 1) && commitMinSelect && commitMaxSelect && infoSelect){
-            if( commitMaxSelect < commitMinSelect ){
-                console.log("NOT CREATING - invalid commit inputs")
-                setCommitError(true);
-            }
+        if( commitMaxSelect < commitMinSelect ){
+            console.log("NOT CREATING - invalid commit inputs")
+            setCommitError(true);
+            exit;
+        }
+        else if(instrumentSelect && experienceSelect && (genreSelect.length >= 1) && commitMinSelect && commitMaxSelect && infoSelect){
 
-            console.log(oldInstrument);
-            console.log(oldExperience);
-            console.log(oldInfo);
+            console.log(instrumentSelect)
 
             let status;
             setCommitError(false);
@@ -81,42 +106,56 @@ export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, 
         } 
     }
 
+    const handleMinChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const enteredMin = event.target.value;
+        setCommitMin(+enteredMin);
+    }
+
+    const handleMaxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const enteredMax = event.target.value;
+        setCommitMax(+enteredMax);
+    }
+
+    const handleInfoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const enteredInfo = event.target.value;
+        setInfo(enteredInfo);
+    }
         
     return(
         // TO DO: Add inputs already there for if they're editing rather than creating
         <Modal show={show}>
-            <p>{oldInstrument}, {oldGenre}, {oldExperience}, {oldCommitMin}, {oldCommitMax}, {oldInfo}</p>
             <Card>
             <Card.Body>            
                 <Card.Title> 
-                    {<SingleselectInput controlId={undefined} label={"Instrument"} text={""} options={instrumentList} setValue={setInstrument} value={instrumentList.at(oldInstrument)} multi={false}/>}
+                    {newCard? <SingleselectInput controlId={undefined} label={"Instrument"} text={""} options={instrumentList} setValue={setInstrument} value={instrumentSelect} multi={false}/> : instrumentList.at(oldInstrument).label}
                 </Card.Title>
                 <Col>
-                    <SingleselectInput controlId={undefined} label={"Genre"} text={""} options={genreList} setValue={setGenre} value={[genreList.at(3)]} multi={true} />
+                    <SingleselectInput controlId={undefined} label={"Genre"} text={""} options={genreList} setValue={setGenre} value={oldGenre} multi={true} />
                 </Col>
                 <Col> 
-                    <SingleselectInput controlId={undefined} label={"Experience"} text={""} options={experienceList} setValue={setExperience} value={experienceList.at(oldExperience)} multi={false}/>
+                    <SingleselectInput controlId={undefined} label={"Experience"} text={""} options={experienceList} setValue={setExperience} value={newCard? experienceSelect : experienceList.at(oldExperience)} multi={false}/>
                 </Col>
-                <Col>
-                    <Form>                  
-                        <Form.Label>Commitment</Form.Label> <br/> 
-                        <Form.Text>Range of hours you are looking to commit weekly.</Form.Text>            
-                        <InputGroup className="col-sm-2">
-                        <FormInput controlId={"commiteLow"} label={undefined} type={"number"} placeholder={undefined} text={undefined} setValue={setCommitMin} value={commitMinSelect} min="1"/> to
-                        <FormInput controlId={"commitHigh"} label={undefined} type={"number"} placeholder={undefined} text={undefined} setValue={setCommitMax} value={commitMaxSelect} min={commitMinSelect}/>
-                        {commitError && (<p style={{color:"red", fontSize:13}}>Increase your upper threshold or lower your minimum commitment.</p>)}
-                        </InputGroup>
-                    </Form>       
-                </Col>
-                <Col><Form>
-                        <Form.Label>Details</Form.Label> 
-                        <Form.Text className="text-muted"> <br/>
-                            Any additional info you would like to share with users about this hobby.
-                        </Form.Text>
-                        <FormInput controlId="info" label={undefined} type="text" placeholder="Im looking for..." text="" setValue={setInfo} value={infoSelect}/>              
-                    </Form> 
-                </Col>
+                <Row>
+                    <Form.Label>Commitment</Form.Label>
+                    <Form.Text>Range of hours you are looking to commit weekly</Form.Text>
+                    <Form.Group as={Col} md="5">
+                    <Form.Control type="number" defaultValue={oldCommitMin} onChange={handleMinChange} min="1" max="50"/>
+                    </Form.Group>
+                    <Col md="1">to</Col>
+                    <Form.Group as={Col} md="5">
+                    <Form.Control type="number" defaultValue={oldCommitMax} onChange={handleMaxChange} min={commitMinSelect} max="50"/>
+                    </Form.Group>
+                    {commitError && (<p style={{color:"red", fontSize:13}}>Increase your upper threshold or lower your minimum commitment.</p>)}
+                </Row> <br/>
+                <Row>
+                    <Form.Group>
+                    <Form.Label>Details</Form.Label> <br/>
+                    <Form.Text> Any additional info you would like to share with users about this hobby.</Form.Text>
+                    <Form.Control type="text" defaultValue={oldInfo} onChange={handleInfoChange} placeholder="I'm looking for..."/>
+                    </Form.Group>
+                </Row>
                 {emptyInput && (<p style={{color:"red", fontSize:14}}>Please fill out all hobby info.</p>)}
+                <br/>
                 <Button onClick={createCard}> {newCard ? "Create" : "Save"} </Button>
                 <Button onClick={() => setShow(false)}>Cancel</Button>
             </Card.Body>

@@ -10,8 +10,10 @@ import UserInformation from "../components/userInformation";
 import UserInformationEditor from '../components/userInformationEditor';
 import { updateProfile } from 'firebase/auth';
 import {instrumentList, experienceList, genreList} from "../lists"
-import { getCipherInfo } from "crypto";
+import { generateKey, getCipherInfo } from "crypto";
 import FormInput from "../components/formInput";
+import { stringify } from "querystring";
+import { Auth } from "firebase-admin/lib/auth/auth";
 
 
 const Profile = () => {
@@ -38,6 +40,7 @@ const Profile = () => {
 
     const [oldInstrumentId, setOldInstrumentId] = useState(0);
     const [oldGenres, setOldGenres] = useState<any[]>([]);
+    const [oldGenreStrings, setOldGenreStrings] = useState<string[]>([]);
     const [oldExperience, setOldExperience] = useState(0);
     const [oldCommitMin, setOldCommitMin] = useState(0);
     const [oldCommitMax, setOldCommitMax] = useState(0);
@@ -49,10 +52,6 @@ const Profile = () => {
         getCards();
         getProfile();
     }, [oldInfo]);
-
-    function clearCardFields(){
-        
-    } 
 
     const getCards = () => {
         fetch("/api/hobbyCardRetrieval", { 
@@ -102,7 +101,7 @@ const Profile = () => {
 
         setOldGenres([])
 
-        setOldExperience(0);
+        setOldExperience(-1);
         setOldCommitMin(0);
         setOldCommitMax(0);
         setOldInfo("");
@@ -111,15 +110,20 @@ const Profile = () => {
     }
 
     //in future, will likely take parameters of current settings and ID
-    function editCard(instrument, genres, experience, min, max, info){
-        console.log("SETTING new card bool in edit")
+    function editCard(instrument, genres: string[], experience, min, max, info){
+        console.log("SETTING states in edit")
         setNewCard(false);
 
         var inst =  instrumentList.map((e) => { return e.value; }).indexOf(instrument);        
         setOldInstrumentId(inst);
 
-        //console.log(oldInstrumentId);
-        setOldGenres(genres);
+        setOldGenreStrings(genres);
+        var genreArr : {value: string, label: string}[] = [];
+        genres.forEach(genre => {
+            var gen =  genreList.map((e) => { return e.value; }).indexOf(genre); 
+            genreArr.push(genreList.at(gen));
+        });    
+        setOldGenres(genreArr);
 
         var exp =  experienceList.map((e) => { return e.value; }).indexOf(experience);        
         setOldExperience(exp);
@@ -193,7 +197,7 @@ const Profile = () => {
                             <Col md="4" key={index+"hobbyCard"}>
                                 <HobbyCard uid={AuthUser.id} setCards={setCards} index={index} instrument={card.instrument} genre={card.genres} 
                                 experience={card.experience} commitMin={card.commitMin} commitMax={card.commitMax} info={card.info} owner={true} 
-                                editCard={() => editCard(card.instrument, card.genres, card.experience, card.commitMin, card.commitMax, card.info)}></HobbyCard>
+                                editCard={() => editCard(card.instrument, card.genres, card.experience, card.commitMin, card.commitMax, card.info)}  />
                             </Col>
                         ))}
                     </Row>
@@ -201,7 +205,7 @@ const Profile = () => {
 
                 <Row>
                 { show && (
-                <HobbyCardEditor uid={AuthUser.id} setCards={setCards} setShow={setShow} show={show} newCard={newCard} oldInstrument={oldInstrumentId} oldGenre={oldGenres} oldExperience={oldExperience} oldCommitMin={oldCommitMin} oldCommitMax={oldCommitMax} oldInfo={oldInfo}></HobbyCardEditor>
+                <HobbyCardEditor uid={AuthUser.id} setCards={setCards} setShow={setShow} show={show} newCard={newCard} oldInstrument={oldInstrumentId} oldGenre={oldGenres} oldGenreStrings={oldGenreStrings} oldExperience={oldExperience} oldCommitMin={oldCommitMin} oldCommitMax={oldCommitMax} oldInfo={oldInfo}></HobbyCardEditor>
                 )}
                 </Row> 
 
@@ -209,6 +213,10 @@ const Profile = () => {
         </>
     );
 }
+
+/* <HobbyCard uid={AuthUser.id} setCards={setCards} index={index} instrument={card.instrument} genre={card.genres} 
+                                experience={card.experience} commitMin={card.commitMin} commitMax={card.commitMax} info={card.info} owner={true} 
+                                editCard={() => editCard(card.instrument, card.genres, card.experience, card.commitMin, card.commitMax, card.info)} /> */
 
 //editCard(card.instrument, card.genres, card.experience, card.commitMin, card.commitMax, card.info)
 
