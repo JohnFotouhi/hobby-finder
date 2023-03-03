@@ -47,13 +47,11 @@ export default async (req, res) => {
             cards = [];
         }
 
-        //console.log(cards); //successfully gets array of hobbyCards from db
-        //console.log(cards.at(0).instrument)
+        //console.log(cards);
 
         //make array of genre strings
         let genreStrings : string[] = [];
         console.log(req.body)
-        console.log(req.body.genres);
         req.body.genres.forEach((genre) => {
             genreStrings.push(genre.label);
         });
@@ -69,20 +67,26 @@ export default async (req, res) => {
         };
         
         //catch if trying to make new card with duplicate instrument
-        const newInstrument = req.body.instrument.label;
         let duplicate = false;
         let trouble = false;
         if(cards.length >= 1) {
+            console.log("HERE 0")
             cards.forEach(async (card, index) => {
-                if(card.instrument == newInstrument){
+                console.log(card.instrument)
+                console.log(req.body.instrumemt)
+                if(card.instrument == req.body.instrument.label){
+                    console.log("HERE 1")
                     if(newCard){
                         duplicate = true;
                         trouble = true;
                     }
                     else { //we are editing an existing card and found the one with the matching instrument
                         //replace array w updated card
+                        console.log("HERE 2")
                         cards[index] = freshCard;
+                        console.log(freshCard);
                         updateDoc(doc(userRef, uid), {hobbyCards: cards});
+                        console.log("SHOULD HAVE JUST UPDATED");
                     }
                 }        
             });
