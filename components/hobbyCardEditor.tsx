@@ -28,12 +28,12 @@ export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, 
         if(!newCard){
             console.log("IN IF STATEMENT")
             const instrument = instrumentList.at(oldInstrument)
-            setInstrument({value: instrument.value, label: instrument.label})
+            if(instrument){setInstrument({value: instrument.value, label: instrument.label})};
             console.log(instrumentSelect)
             if(genreSelect.length <= 1){setGenre(oldGenre);}
             console.log(genreSelect)
             const exp = experienceList.at(oldExperience)
-            setExperience({value: exp.value, label: exp.label})
+            if(exp){setExperience({value: exp.value, label: exp.label})};
             console.log(experienceSelect)
             if(commitMinSelect == 0){setCommitMin(oldCommitMin)};
             console.log(commitMinSelect);
