@@ -127,7 +127,7 @@ export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, 
             <Card>
             <Card.Body>            
                 <Card.Title> 
-                    {newCard? <SingleselectInput controlId={undefined} label={"Instrument"} text={""} options={instrumentList} setValue={setInstrument} value={instrumentSelect} multi={false}/> : instrumentList.at(oldInstrument).label}
+                    {newCard? <SingleselectInput controlId={undefined} label={"Instrument"} text={""} options={instrumentList} setValue={setInstrument} value={instrumentSelect} multi={false}/> : instrumentList.at(oldInstrument)?.label}
                 </Card.Title>
                 <Col>
                     <SingleselectInput controlId={undefined} label={"Genre"} text={""} options={genreList} setValue={setGenre} value={oldGenre} multi={true} />
