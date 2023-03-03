@@ -121,7 +121,7 @@ const Profile = () => {
         var genreArr : {value: string, label: string}[] = [];
         genres.forEach(genre => {
             var gen =  genreList.map((e) => { return e.value; }).indexOf(genre); 
-            genreArr.push(genreList.at(gen));
+            if(genreList.at(gen)){genreArr.push(genreList.at(gen));}
         });    
         setOldGenres(genreArr);
 
