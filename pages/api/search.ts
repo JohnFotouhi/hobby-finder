@@ -1,24 +1,26 @@
-import { initializeApp } from "firebase/app";
+import Filters from "@/components/filters";
+import { getApp, initializeApp } from "firebase/app";
 import { collection, collectionGroup, getDoc, getDocs, getFirestore, query, where } from "firebase/firestore"; 
 
-const firebaseConfig = {
-    apiKey: "AIzaSyANQhKbnHwzW2SHI-GTPz3rH0X7InikKDo",
-    authDomain: "jamin-9ed6a.firebaseapp.com",
-    databaseURL: "https://jamin-9ed6a-default-rtdb.firebaseio.com",
-    projectId: "jamin-9ed6a",
-    storageBucket: "jamin-9ed6a.appspot.com",
-    messagingSenderId: "950884082294",
-    appId: "1:950884082294:web:40d61d4452f007c2f07557",
-    measurementId: "G-4HTBFDYZ1C"
-};
-
-const app = initializeApp(firebaseConfig);
-const database = getFirestore(app);
+const database = getFirestore(getApp());
 
 export default async (req, res) =>{
+    function stringifyObject(array){
+        let stringArray = array.map(function(item){
+            return item.name
+        });
+        return stringArray;
+    }
+
+    console.log(req.body.filters);
     if(req.method === 'POST'){
-        console.log(req.body.filters);
-        const hobbyCards = query(collectionGroup(database, "instruments"), where('instrument', '==', `${req.body.search}`));
+        let filters = req.body.filters;        
+        let queryList = [ where('instrument', '==', `${req.body.search}`) ];
+        if(filters.experienceLevels.length !== 0) queryList.push(where("experience", "in", stringifyObject(filters.experienceLevels)));
+        if(filters.genres.length !== 0) queryList.push(where("genres", "array-contains-any", stringifyObject(filters.genres)));
+        if(filters.commitMax > 0) queryList.push( where("commitMax", "<=", filters.commitMax));
+        if(filters.commitMin > 0) queryList.push( where("commitMin", ">=", filters.commitMin));
+        const hobbyCards = query(collectionGroup(database, "instruments"), ...queryList);
         const docs = await getDocs(hobbyCards);
         let instruments: any[] = [];
         let userDocuments: any[] = [];
@@ -43,6 +45,7 @@ export default async (req, res) =>{
             user["instruments"] = userInstruments;
             users.push(user);
         })
+        console.log(users);
         res.status(200).json(users)
     } else {
         res.status(405).end()

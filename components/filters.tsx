@@ -2,7 +2,7 @@ import { Button, Col, Container, Row, Form, Modal } from "react-bootstrap";
 import FormInput from "./formInput";
 import { useState } from "react";
 import MultiselectInput from "./multiselectInput";
-import { instrumentList, genreList, experienceList } from "../lists";
+import { genreList, experienceList } from "../lists";
 
 export default function Filters({show, setShow, filters, setFilters, ...props}){
     
@@ -10,17 +10,19 @@ export default function Filters({show, setShow, filters, setFilters, ...props}){
     const [experienceLevels, setExperienceLevels] = useState([]);
     const [genre, setGenre] = useState([]);
     const [commitmentLevels, setCommitmentLevels] = useState([]);
+    const [commitMin, setCommitMin] = useState(0);
+    const [commitMax, setCommitMax] = useState(0);
     
     function objectifyArray(array, name){
         let objectArray = array.map(function(item, index){
-            return {name: item, id: name + index}
+            return {name: item.value, id: name + index}
         });
         return objectArray;
     }
 
     const experienceLevelOptions = objectifyArray(experienceList, "experience");
     const genreOptions = objectifyArray(genreList, "genre");
-    const commitmentLevelOptions = [{name: "Low: Less than 3 hours per week", id: "commit1"}, {name: "Medium: 3-7 hours per week", id: "commit2"}, {name: "High: more than 7 hours per week", id: "commit3"}];    
+    console.log(genreOptions);
 
     function handleClose(){
         setDistance(filters.distance);
@@ -35,7 +37,9 @@ export default function Filters({show, setShow, filters, setFilters, ...props}){
             experienceLevels: experienceLevels,
             genres: genre,
             commitmentLevels: commitmentLevels,
-            distance: distance
+            distance: distance,
+            commitMax: commitMax,
+            commitMin: commitMin
         }
         setFilters(filters);
         setShow(false);
@@ -62,16 +66,6 @@ export default function Filters({show, setShow, filters, setFilters, ...props}){
                         </Col>
                         <Col>
                             <MultiselectInput
-                            controlId="commitmentInput"
-                            label="Time Commitment"
-                            text=""
-                            options={commitmentLevelOptions}
-                            selected={commitmentLevels} 
-                            setSelected={setCommitmentLevels}
-                            />
-                        </Col>
-                        <Col>
-                            <MultiselectInput
                             controlId="experienceInput"
                             label="Experience Level"
                             text=""
@@ -80,8 +74,14 @@ export default function Filters({show, setShow, filters, setFilters, ...props}){
                             setSelected={setExperienceLevels}
                             />
                         </Col>
-                        <Col>
+                        {/* <Col>
                             <FormInput controlId="distanceInput" label="Distance" type="number" placeholder="" text="Max. distance in miles" value={distance} setValue={setDistance} min={1} />
+                        </Col> */}
+                        <Col>
+                            <FormInput controlId="commitmentMin" label="Min Commitment" type="number" placeholder="" text="Hours Per Week" value={commitMin} setValue={setCommitMin} min={1} />
+                        </Col>
+                        <Col>
+                            <FormInput controlId="commitmentMax" label="Max Commitment" type="number" placeholder="" text="Hours Per Week" value={commitMax} setValue={setCommitMax} min={1} />
                         </Col>
                     </Row>
                 </Container>

@@ -1,25 +1,30 @@
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
-import { getApp } from 'firebase/app'
 import { getAuth, EmailAuthProvider, sendEmailVerification } from 'firebase/auth'
-import { initializeApp } from 'firebase/app';
 import { useEffect, useState } from 'react';
 import { getFirestore, collection } from 'firebase/firestore';
+import { Modal } from 'react-bootstrap';
+import { useAuthUser } from 'next-firebase-auth';
+import firebaseApp from '@/config';
 
-const firebaseConfig = {
-    apiKey: "AIzaSyANQhKbnHwzW2SHI-GTPz3rH0X7InikKDo",
-    authDomain: "jamin-9ed6a.firebaseapp.com",
-    databaseURL: "https://jamin-9ed6a-default-rtdb.firebaseio.com",
-    projectId: "jamin-9ed6a",
-    storageBucket: "jamin-9ed6a.appspot.com",
-    messagingSenderId: "950884082294",
-    appId: "1:950884082294:web:40d61d4452f007c2f07557",
-    measurementId: "G-4HTBFDYZ1C"
-};
-const app = initializeApp(firebaseConfig);
-const database = getFirestore(app);
+const database = getFirestore(firebaseApp);
 
 export default function FirebaseAuth(){
+    const [renderAuth, setRenderAuth] = useState(false);
+    const [emailVerifyMessage, setEmailVerifyMessage] = useState(false);
+    useEffect(() => {
+        if(typeof window !== 'undefined'){
+            setRenderAuth(true);
+        }
+    })
+    const AuthUser = useAuthUser();
     const usersCollection = collection(database, "users");
+
+    async function handleNoEmailVerification(){
+        setEmailVerifyMessage(true);
+        setRenderAuth(false);
+        // await AuthUser.signOut();
+    }
+
     // https://github.com/gladly-team/next-firebase-auth/blob/v1.x/example/components/FirebaseAuth.js
     const firebaseAuthConfig = {
         signInFlow: 'popup',
@@ -43,21 +48,20 @@ export default function FirebaseAuth(){
                             console.log("Sent email verification!");
                         });
                     }
-                    // TODO: change name from hello
                     fetch("/api/initializeUser", {
                         method: "POST",
                         headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify({uid: user.uid, displayName: user.displayName})
-                      })
-                        .then((res) => res.json())
-                        .then((data) => {
-                            console.log("done");
-                      });
-                    
+                    })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        console.log("done");
+                    });
                 }
                 else{
                     if(! signInData.user.emailVerified){
-                        // make them verify email
+                        console.log("IM HERE");
+                        // handleNoEmailVerification();
                     }
                     else{
                         // they verified email
@@ -69,16 +73,15 @@ export default function FirebaseAuth(){
         },
     }
 
-    const [renderAuth, setRenderAuth] = useState(false);
-    useEffect(() => {
-        if(typeof window !== 'undefined'){
-            setRenderAuth(true);
-        }
-    })
 return(
     <>{
         renderAuth &&
-        <StyledFirebaseAuth uiConfig={firebaseAuthConfig} firebaseAuth={getAuth(app)} className="mt-5"/>
+        <StyledFirebaseAuth uiConfig={firebaseAuthConfig} firebaseAuth={getAuth(firebaseApp)} className="mt-5"/>
+    }
+    {   emailVerifyMessage &&
+        <Modal>
+            <Modal.Header>Please Check your email for verification link</Modal.Header>
+        </Modal>
     }
     </>
 );
