@@ -10,14 +10,16 @@ export default async function writeData(req, res){
     const docRef = await addDoc(collection(database, 'users'), {
       key: req.body.uid,
       name: req.body.displayName,
-      hobbyCards: [],
       availability: {},
       bio: "",
       pronouns: "",
       host: 0,
       equipment: ""
     });
-    const instrumentRef = await addDoc(collection(docRef, 'hobby'), {});
+    docRef.id
+    console.log(docRef);
+    const hobbyRef = await addDoc(collection(docRef, 'hobby'), {});
+    console.log(hobbyRef);
   }catch(e){
     console.error("Error adding document: ", e);
   }
