@@ -1,8 +1,8 @@
 import Filters from "@/components/filters";
-import { getApp, initializeApp } from "firebase/app";
 import { collection, collectionGroup, getDoc, getDocs, getFirestore, query, where } from "firebase/firestore"; 
+import firebaseApp from "@/config";
 
-const database = getFirestore(getApp());
+const database = getFirestore(firebaseApp);
 
 export default async (req, res) =>{
     function stringifyObject(array){
