@@ -169,6 +169,10 @@ const instrumentList =
         "label": "Violin"
     },
     {
+        "value": "Voice",
+        "label": "Voice"
+    },
+    {
         "value": "Xylophone",
         "label": "Xylophone"
     },

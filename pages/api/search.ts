@@ -18,7 +18,7 @@ const database = getFirestore(app);
 export default async (req, res) =>{
     if(req.method === 'POST'){
         console.log(req.body.filters);
-        const hobbyCards = query(collectionGroup(database, "instruments"), where('instrument', '==', `${req.body.search}`));
+        const hobbyCards = query(collectionGroup(database, "hobbies"), where('hobbies', '==', `${req.body.search}`));
         const docs = await getDocs(hobbyCards);
         let instruments: any[] = [];
         let userDocuments: any[] = [];

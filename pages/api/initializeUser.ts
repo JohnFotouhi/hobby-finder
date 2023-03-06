@@ -28,8 +28,8 @@ export default async function writeData(req, res){
     });
     docRef.id
     console.log(docRef);
-    const hobbyRef = await addDoc(collection(docRef, 'hobby'), {});
-    console.log(hobbyRef);
+    //const hobbyRef = await addDoc(collection(docRef, 'hobbies'), {});
+    //console.log(hobbyRef);
   }catch(e){
     console.error("Error adding document: ", e);
   }
