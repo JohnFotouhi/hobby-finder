@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { collection, doc, getDocs, getFirestore, updateDoc } from "firebase/firestore"; 
+import { collection, doc, getDocs, getFirestore, query, where, deleteDoc } from "firebase/firestore"; 
 
 const firebaseConfig = {
     apiKey: "AIzaSyANQhKbnHwzW2SHI-GTPz3rH0X7InikKDo",
@@ -15,37 +15,58 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getFirestore(app);
 
+type Card = {
+    commitMin: number,
+    commitMax: number,
+    experience: string
+    genres: string[]
+    info: string
+    instrument: string
+  }
+
 export default async (req, res) =>{
     if(req.method === 'POST'){
-        
-        let userData: any;
 
-        const querySnapshot = await getDocs(collection(database, "users"));
+        const usersRef = collection(database, "users");
+        const user = query(usersRef, where("key", "==", req.body.uid))
+
+        const querySnapshot = await getDocs(user);
+        let userId;
+        //get the randomly generated id of the user to use to get hobbies collection
         querySnapshot.forEach((doc) => {
-                //if user id is our user's ID
-                if(doc.id == req.body.uid){
-                    userData = (doc.data());
-                }
-        });
-        var cards : Array<any> = userData.hobbyCards;
-
-        //console.log(cards); //successfully gets array of hobbyCards from db
-
-        //find index of hobby card with matching instrument
-        let deleteIndex;
-        cards.forEach(async (card, index) => {
-            if(card.instrument == req.body.instrument){
-                deleteIndex = index;
-            }        
+            // doc.data() is never undefined for query doc snapshots
+            userId = doc.id;
         });
 
-        //delete card from existing array
-        cards.splice(deleteIndex, 1);
-        const userRef = collection(database, "users")
+        const hobbiesRef = collection(database, "users", userId, "hobbies");
+        const matchingCard = query(hobbiesRef, where("instrument", "==", req.body.instrument))
 
-        //update field with new array
-        updateDoc(doc(userRef, req.body.uid), {hobbyCards: cards});
-        res.status(200).json(cards);
+        const querySnapshot2 = await getDocs(matchingCard);
+        let cardData;
+        querySnapshot2.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());
+            cardData = doc.id;
+        });
+
+        await deleteDoc(doc(database, "users", userId, "hobbies", cardData));
+
+        const hobbyCards = await getDocs(collection(database, "users", userId, "hobbies"));
+        let cardArray: Card[] = [];
+        hobbyCards.forEach((doc) => {
+            let newCard: Card = {
+                commitMin: doc.data().commitMin,
+                commitMax: doc.data().commitMax,
+                experience: doc.data().experience,
+                genres: doc.data().genres,
+                info: doc.data().info,
+                instrument: doc.data().instrument
+            }
+            cardArray.push(newCard);
+        });
+    
+        res.status(200).json(cardArray);
+
     } else {
         res.status(405).end()
     }
