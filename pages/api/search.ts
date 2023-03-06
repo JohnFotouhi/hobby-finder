@@ -1,6 +1,6 @@
-import Filters from "@/components/filters";
+import Filters from "../../components/filters";
 import { collection, collectionGroup, getDoc, getDocs, getFirestore, query, where } from "firebase/firestore"; 
-import firebaseApp from "@/config";
+import firebaseApp from "../../config";
 
 const database = getFirestore(firebaseApp);
 
@@ -14,13 +14,16 @@ export default async (req, res) =>{
 
     console.log(req.body.filters);
     if(req.method === 'POST'){
+        console.log(req.body.filters);
+        const hobbyCards = query(collectionGroup(database, "hobbies"), where('hobbies', '==', `${req.body.search}`));
         let filters = req.body.filters;        
         let queryList = [ where('instrument', '==', `${req.body.search}`) ];
         if(filters.experienceLevels.length !== 0) queryList.push(where("experience", "in", stringifyObject(filters.experienceLevels)));
         if(filters.genres.length !== 0) queryList.push(where("genres", "array-contains-any", stringifyObject(filters.genres)));
         if(filters.commitMax > 0) queryList.push( where("commitMax", "<=", filters.commitMax));
         if(filters.commitMin > 0) queryList.push( where("commitMin", ">=", filters.commitMin));
-        const hobbyCards = query(collectionGroup(database, "instruments"), ...queryList);
+        //const hobbyCards = query(collectionGroup(database, "instruments"), ...queryList);
+
         const docs = await getDocs(hobbyCards);
         let instruments: any[] = [];
         let userDocuments: any[] = [];

@@ -50,10 +50,11 @@ const Profile = () => {
     useEffect(() => {
         console.log("IN USE EFFECT");
         getCards();
-        getProfile();
+        //getProfile();
     }, [oldInfo]);
 
     const getCards = () => {
+        console.log("GETTING CARDS")
         fetch("/api/hobbyCardRetrieval", { 
             method: "POST",
             headers: {'Content-Type': 'application/json'},

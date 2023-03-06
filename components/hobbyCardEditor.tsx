@@ -19,6 +19,7 @@ export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, 
 
     const [commitError, setCommitError] = useState(false);
     const [emptyInput, setEmptyInput] = useState(false);
+    const [duplicate, setDuplicate] = useState(false);
 
     useEffect(() => {
         setDefaults();
@@ -92,7 +93,7 @@ export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, 
                     }
                     else if(status == 409){
                         console.log(data);
-                        //TODO: error message for user
+                        setDuplicate(true);
                     }                
                 })
                 .catch(error =>{
@@ -155,6 +156,7 @@ export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, 
                     </Form.Group>
                 </Row>
                 {emptyInput && (<p style={{color:"red", fontSize:14}}>Please fill out all hobby info.</p>)}
+                {duplicate && (<p style={{color:"red", fontSize:14}}>Looks like you've already created a hobby for this instrument. Feel free to update your existing card instead.</p>)}
                 <br/>
                 <Button onClick={createCard}> {newCard ? "Create" : "Save"} </Button>
                 <Button onClick={() => setShow(false)}>Cancel</Button>

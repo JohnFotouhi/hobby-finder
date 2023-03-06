@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { collection, doc, getDocs, getFirestore, updateDoc } from "firebase/firestore"; 
-import firebaseApp from "@/config";
+import { collection, doc, getDocs, getFirestore, updateDoc, query, where, addDoc } from "firebase/firestore"; 
+import firebaseApp from "../../config";
 
 const database = getFirestore(firebaseApp);
 
@@ -19,24 +19,18 @@ export default async (req, res) => {
         const newCard = req.body.newCard;
         const uid = req.body.uid;
 
-        let userData: any;
-        //LATER: database should be wherever our collection of users is
-        const userRef = collection(database, "users")
+        const usersRef = collection(database, "users");
+        const user = query(usersRef, where("key", "==", req.body.uid))
 
-        const querySnapshot = await getDocs(collection(database, "users"));
+        const querySnapshot = await getDocs(user);
+        let userId;
+        //get the randomly generated id of the user to use to get hobbies collection
         querySnapshot.forEach((doc) => {
-                //if user id is our user's ID
-                if(doc.id == uid){
-                    userData = (doc.data());
-                }
+            // doc.data() is never undefined for query doc snapshots
+            userId = doc.id;
         });
-        //res.status(200).json("userData")
-        var cards : Array<any> = userData.hobbyCards;
-        if(cards == undefined){
-            cards = [];
-        }
 
-        //console.log(cards);
+        const hobbiesRef = collection(database, "users", userId, "hobbies");
 
         //make array of genre strings
         let genreStrings : string[] = [];
@@ -54,49 +48,52 @@ export default async (req, res) => {
             info:req.body.info,
             instrument: req.body.instrument.label
         };
-        
-        //catch if trying to make new card with duplicate instrument
+
+        const existingCard = query(hobbiesRef, where("instrument", "==", req.body.instrument.label))      
         let duplicate = false;
-        let trouble = false;
-        if(cards.length >= 1) {
-            console.log("HERE 0")
-            cards.forEach(async (card, index) => {
-                console.log(card.instrument)
-                console.log(req.body.instrumemt)
-                if(card.instrument == req.body.instrument.label){
-                    console.log("HERE 1")
-                    if(newCard){
-                        duplicate = true;
-                        trouble = true;
-                    }
-                    else { //we are editing an existing card and found the one with the matching instrument
-                        //replace array w updated card
-                        console.log("HERE 2")
-                        cards[index] = freshCard;
-                        console.log(freshCard);
-                        updateDoc(doc(userRef, uid), {hobbyCards: cards});
-                        console.log("SHOULD HAVE JUST UPDATED");
-                    }
-                }        
+        const querySnapshot2 = await getDocs(existingCard);
+
+        //if its not a new card, update doc where its a matching instrument
+        if(!newCard){       
+            let cardId;
+            querySnapshot2.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                cardId = doc.id;
             });
+            updateDoc(doc(hobbiesRef, cardId), freshCard);
         }
-       
-        //if we're making a new card and have passed duplicate check
-        if(newCard && !duplicate){           
-            //add new card to existing array
-            cards.push(freshCard);
-            
-            //update field with new array
-            updateDoc(doc(userRef, uid), {hobbyCards: cards});
+        else{//if new card, add Doc
+            querySnapshot2.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                duplicate = true;
+            });
+            if(!duplicate){
+                const docRef = await addDoc(collection(database, "users", userId, "hobbies"), freshCard);
+                console.log("Document written with ID: ", docRef.id);
+            }
         }
-        
-        if(trouble){
+    
+        if(duplicate){
             res.status(409).json("ERROR: duplicate");
         }
         else{
-            res.status(200).json(cards);
+            const hobbyCards = await getDocs(collection(database, "users", userId, "hobbies"));
+            let cardArray: Card[] = [];
+            hobbyCards.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                console.log(doc.id, " => ", doc.data());
+                let newCard: Card = {
+                    commitMin: doc.data().commitMin,
+                    commitMax: doc.data().commitMax,
+                    experience: doc.data().experience,
+                    genres: doc.data().genres,
+                    info: doc.data().info,
+                    instrument: doc.data().instrument
+                }
+                cardArray.push(newCard);
+            });
+            res.status(200).json(cardArray);
         }
-
     } else {
         res.status(405).end()
     }
