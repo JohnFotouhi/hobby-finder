@@ -1,10 +1,11 @@
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
 import { getAuth, EmailAuthProvider, sendEmailVerification } from 'firebase/auth'
 import { useEffect, useState } from 'react';
-import { getFirestore, collection } from 'firebase/firestore';
+import { getFirestore, collection, updateDoc, query, where, getDocs, doc } from 'firebase/firestore';
 import { Modal } from 'react-bootstrap';
 import { useAuthUser } from 'next-firebase-auth';
-import firebaseApp from '@/config';
+import firebaseApp from '../config';
+import { useGeolocated } from "react-geolocated";
 
 const database = getFirestore(firebaseApp);
 
@@ -25,6 +26,13 @@ export default function FirebaseAuth(){
         // await AuthUser.signOut();
     }
 
+    const { coords } = useGeolocated({
+        positionOptions: {
+        enableHighAccuracy: true,
+        },
+        userDecisionTimeout: 5000,
+    });
+
     // https://github.com/gladly-team/next-firebase-auth/blob/v1.x/example/components/FirebaseAuth.js
     const firebaseAuthConfig = {
         signInFlow: 'popup',
@@ -37,7 +45,8 @@ export default function FirebaseAuth(){
         signInSuccessUrl: '/search',
         credentialHelper: 'none',
         callbacks: {
-            signInSuccessWithAuthResult: (signInData) => {
+            FsignInSuccessWithAuthResult: (signInData) => {
+                console.log("SIGN IN DATA")
                 console.log(signInData);
                 const user = signInData.user;
                 if(signInData.additionalUserInfo.isNewUser){
@@ -57,16 +66,32 @@ export default function FirebaseAuth(){
                     .then((data) => {
                         console.log("done");
                     });
+
                 }
                 else{
                     if(! signInData.user.emailVerified){
                         console.log("IM HERE");
+
+                        
                         // handleNoEmailVerification();
                     }
                     else{
                         // they verified email
                     }
                 }
+                
+                console.log(coords);
+
+                fetch("/api/getLocation", {
+                    method: "POST",
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({uid: uid, lat: coords.latitude, long: coords.longitude})
+                    })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        console.log("location setting done");
+                });
+
                 return true;
             },
             
