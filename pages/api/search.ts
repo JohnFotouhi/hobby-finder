@@ -1,7 +1,10 @@
 import Filters from "../../components/filters";
 import { collection, collectionGroup, getDoc, getDocs, getFirestore, query, where } from "firebase/firestore"; 
 import firebaseApp from "../../config";
+import { getAuth } from "firebase/auth";
 
+const auth = getAuth(firebaseApp);
+console.log(auth);
 const database = getFirestore(firebaseApp);
 
 export default async (req, res) =>{
@@ -14,8 +17,7 @@ export default async (req, res) =>{
 
     console.log(req.body.filters);
     if(req.method === 'POST'){
-        console.log(req.body.filters);
-        const hobbyCards = query(collectionGroup(database, "hobbies"), where('hobbies', '==', `${req.body.search}`));
+        const hobbyCards = query(collectionGroup(database, "hobbies"), where('instrument', '==', `${req.body.search}`));
         let filters = req.body.filters;        
         let queryList = [ where('instrument', '==', `${req.body.search}`) ];
         if(filters.experienceLevels.length !== 0) queryList.push(where("experience", "in", stringifyObject(filters.experienceLevels)));
@@ -28,6 +30,7 @@ export default async (req, res) =>{
         let instruments: any[] = [];
         let userDocuments: any[] = [];
         docs.forEach((doc) => {
+            console.log("HI");
             let ref = doc.ref.parent.parent;
             let userId = doc.ref.parent.parent?.id;
             let instrument = doc.data();
