@@ -19,12 +19,6 @@ export default function FirebaseAuth(){
     const AuthUser = useAuthUser();
     const usersCollection = collection(database, "users");
 
-    async function handleNoEmailVerification(){
-        setEmailVerifyMessage(true);
-        setRenderAuth(false);
-        // await AuthUser.signOut();
-    }
-
     // https://github.com/gladly-team/next-firebase-auth/blob/v1.x/example/components/FirebaseAuth.js
     const firebaseAuthConfig = {
         signInFlow: 'popup',
@@ -34,14 +28,13 @@ export default function FirebaseAuth(){
                 requireDisplayName: true,
             },
         ],
-        signInSuccessUrl: '/search',
+        signInSuccessUrl: '/verifyEmail',
         credentialHelper: 'none',
         callbacks: {
             signInSuccessWithAuthResult: (signInData) => {
                 console.log(signInData);
                 const user = signInData.user;
                 if(signInData.additionalUserInfo.isNewUser){
-                    console.log("add");
                     if(user !== null){
                         sendEmailVerification(user)
                         .then(() => {
