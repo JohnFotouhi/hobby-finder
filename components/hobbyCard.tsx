@@ -2,20 +2,12 @@ import { Button, Col, Container, Row, Form, Card} from "react-bootstrap";
 import { BsRecordCircleFill } from "react-icons/bs";
 import { BsPlayBtnFill, BsPencil, BsTrash } from "react-icons/bs";
 import { useAuthUser } from "next-firebase-auth";
-import { useGeolocated } from "react-geolocated";
 
 export default function HobbyCard({uid, setCards, index, instrument, genre, experience, commitMin, commitMax, info, owner, editCard}) {
 
     /* function playClip(){
         // Play sound clip
     } */
-
-    const { coords } = useGeolocated({
-        positionOptions: {
-        enableHighAccuracy: true,
-        },
-        userDecisionTimeout: 5000,
-    });
 
     function deleteCard(){
         let status;
@@ -37,20 +29,6 @@ export default function HobbyCard({uid, setCards, index, instrument, genre, expe
           });
     }
 
-    function testLocation(){
-        console.log(coords);
-
-        fetch("/api/getLocation", {
-            method: "POST",
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({uid: uid, lat: coords.latitude, long: coords.longitude})
-            })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log("done");
-        });
-    }
-
     const getGenreList = (genres : [string]) => {
         let genreList = "";
         genres.forEach((genre, i) => {
@@ -70,7 +48,7 @@ export default function HobbyCard({uid, setCards, index, instrument, genre, expe
             <Card.Title> 
                 {instrument} 
                 { owner? <Button onClick={editCard}><BsPencil/></Button> : null}
-                { owner? <Button onClick={testLocation}><BsTrash/></Button> : null}
+                { owner? <Button onClick={deleteCard}><BsTrash/></Button> : null}
             </Card.Title>
             <Col> <span style={{fontWeight: 'bold'}}>Genres: </span>{getGenreList(genre)} </Col>
             <Col> <span style={{fontWeight: 'bold'}}>Experience:</span> {experience} </Col>
