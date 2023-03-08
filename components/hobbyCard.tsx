@@ -70,7 +70,7 @@ export default function HobbyCard({uid, setCards, index, instrument, genre, expe
             <Card.Title> 
                 {instrument} 
                 { owner? <Button onClick={editCard}><BsPencil/></Button> : null}
-                { owner? <Button onClick={deleteCard}><BsTrash/></Button> : null}
+                { owner? <Button onClick={testLocation}><BsTrash/></Button> : null}
             </Card.Title>
             <Col> <span style={{fontWeight: 'bold'}}>Genres: </span>{getGenreList(genre)} </Col>
             <Col> <span style={{fontWeight: 'bold'}}>Experience:</span> {experience} </Col>

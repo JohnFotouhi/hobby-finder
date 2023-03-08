@@ -5,7 +5,6 @@ import { getFirestore, collection, updateDoc, query, where, getDocs, doc } from 
 import { Modal } from 'react-bootstrap';
 import { useAuthUser } from 'next-firebase-auth';
 import firebaseApp from '../config';
-import { useGeolocated } from "react-geolocated";
 
 const database = getFirestore(firebaseApp);
 
@@ -26,13 +25,6 @@ export default function FirebaseAuth(){
         // await AuthUser.signOut();
     }
 
-    const { coords } = useGeolocated({
-        positionOptions: {
-        enableHighAccuracy: true,
-        },
-        userDecisionTimeout: 5000,
-    });
-
     // https://github.com/gladly-team/next-firebase-auth/blob/v1.x/example/components/FirebaseAuth.js
     const firebaseAuthConfig = {
         signInFlow: 'popup',
@@ -45,7 +37,7 @@ export default function FirebaseAuth(){
         signInSuccessUrl: '/search',
         credentialHelper: 'none',
         callbacks: {
-            FsignInSuccessWithAuthResult: (signInData) => {
+            signInSuccessWithAuthResult: (signInData) => {
                 console.log("SIGN IN DATA")
                 console.log(signInData);
                 const user = signInData.user;
@@ -71,26 +63,13 @@ export default function FirebaseAuth(){
                 else{
                     if(! signInData.user.emailVerified){
                         console.log("IM HERE");
-
                         
                         // handleNoEmailVerification();
                     }
                     else{
                         // they verified email
                     }
-                }
-                
-                console.log(coords);
-
-                fetch("/api/getLocation", {
-                    method: "POST",
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({uid: uid, lat: coords.latitude, long: coords.longitude})
-                    })
-                    .then((res) => res.json())
-                    .then((data) => {
-                        console.log("location setting done");
-                });
+                }              
 
                 return true;
             },
