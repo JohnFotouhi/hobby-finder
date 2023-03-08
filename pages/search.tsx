@@ -1,4 +1,4 @@
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, InputGroup } from "react-bootstrap";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -10,6 +10,7 @@ import { withAuthUser, AuthAction } from "next-firebase-auth";
 import { instrumentList } from "../lists";
 import SingleselectInput from "../components/singleselectinput";
 import Filters from "../components/filters";
+import Select from "react-select"
 
 function Search() {
     const emptyFilters = {
@@ -43,22 +44,35 @@ function Search() {
         setEditFilters(false);
     }
 
+    function setSearch(newInstrument){
+        setInstrument(newInstrument);
+    }
     return(
         <>  
             <Container fluid className='bg-light pb-3 mt-0' >
-                <Form style={{whiteSpace: "nowrap"}}>
-                    {/* className="w-50 mx-auto my-0" style={{display:"flex"}} */}
-                    <SingleselectInput controlId={"instrumentSearch"} label={""} text={""} options={instrumentList} setValue={setInstrument} value={instrument} className={"w-25"} style={{ display: "inline-flex" }} multi={false}/>
-                    <Button onClick={handleSearch} style={{float:"left"}}>Search <BsSearch /></Button>
-                    <Button onClick={handleEditFilters}style={{height: "40px"}} className="my-auto"><BsFunnelFill /></Button>
-                </Form>
+                <Row>
+                    <InputGroup className="justify-content-center">
+                        <div style={{width: '300px'}}>
+                            <Select
+                                isSearchable={true} 
+                                defaultValue={instrument}
+                                onChange={setSearch}
+                                options={instrumentList}
+                                isMulti={false}
+                                className="my-auto"
+                            />
+                        </div>
+                        <Button onClick={handleSearch} style={{height: "38px"}}>Search <BsSearch /></Button>
+                        <Button onClick={handleEditFilters} style={{height: "38px"}}>Filter<BsFunnelFill /></Button>
+                    </InputGroup>
+                </Row>
             </Container>
             
             <Container className="mt-3">
                 <Row className='m-auto'>
                     {users?.map((user, index )=>(
                         <Col md="4" key={index + "userCard"}>
-                            <SearchCard {...user} />
+                            <SearchCard {...user} authId={user.key} />
                         </Col>
                     ))}
                 </Row>

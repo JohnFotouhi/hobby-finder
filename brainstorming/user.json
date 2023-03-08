@@ -10,40 +10,29 @@
                 "folk",
                 "Other - Norwegian Underwater Square Dance"
             ],
-            "commitment": "low",
-            "info": ""
-        },
-        {
-            "instrument": "Electric Guitar",
-            "experience": "Novice",
-            "genres": [
-                "rock"
-            ],
-            "commitment": "moderate",
-            "info": ""
-        },
-        {
-            "instrument": "Acapella",
-            "experience": "Expert",
-            "genres": [
-                "pop"
-            ],
-            "commitment": "high",
+            "commitMin": 1,
+            "commitMax": 3,
             "info": ""
         }
     ],
     "availability": {
-        "monday": [
-            "night"
-        ],
-        "friday": [
-            "afternoon",
-            "night"
-        ]
+        "monday": {
+            "morning": true,
+            "afternoon": true,
+            "evening": false,
+            "night": false
+        },
+        "tuesday": {
+            "morning": true,
+            "afternoon": true,
+            "evening": false,
+            "night": false
+        }
+        
     },
     "bio": "I'm a really cool guy who likes music.",
     "pronouns": "he/him",
-    "host": false,
+    "host": 0,
     "equipment": "I have my own guitar and electric guitar, as well as amps. I also know a park where we could go with good acoustics but I don't want to host anything at my apartment."
 
 }

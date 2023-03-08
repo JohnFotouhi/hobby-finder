@@ -169,6 +169,10 @@ const instrumentList =
         "label": "Violin"
     },
     {
+        "value": "Voice",
+        "label": "Voice"
+    },
+    {
         "value": "Xylophone",
         "label": "Xylophone"
     },
@@ -219,8 +223,8 @@ const genreList = [
         "label": "Afrobeat"
     },
     {
-        "value": "Alternatice rock",
-        "label": "Alternatice rock"
+        "value": "Alternative rock",
+        "label": "Alternative rock"
     },
     {
         "value": "Ambient music",

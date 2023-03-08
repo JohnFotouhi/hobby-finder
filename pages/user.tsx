@@ -34,7 +34,6 @@ function User() {
 
 }
 export default withAuthUser({
-    whenAuthed: AuthAction.REDIRECT_TO_APP,
     whenUnauthedBeforeInit: AuthAction.RETURN_NULL,
     whenUnauthedAfterInit: AuthAction.RENDER,
   })(User)
