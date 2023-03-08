@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { BsPlayBtnFill, BsPencil, BsTrash } from "react-icons/bs";
 import UserInfoModal from "./userInfoModal";
 import FormInput from "./formInput";
+import styles from "styles/schedule.module.css";
 
 export default function UserInformation({owner, name, bio, equipment, availability, capacity, profilePicture}){
     const [file, setFile] = useState("");
@@ -31,11 +32,11 @@ export default function UserInformation({owner, name, bio, equipment, availabili
         <Container style={{padding: 10}}>
             <Row style={{padding: 60}}>
                 
-                <Col className="col-md-3">
+                <Col className="col-md-2">
                     <Image className= "square bg-primary rounded-pill" src={profilePicture} alt="profile_picture" width="200" height = "200"></Image>
                 </Col>
                 
-                <Col className="col-md-4">
+                <Col className="col-md-5">
                     <Col>
                         <span className="fw-bold fs-2">{name}</span>
                     </Col>
@@ -47,9 +48,144 @@ export default function UserInformation({owner, name, bio, equipment, availabili
                         <span>{bio}</span>
                     </div> */}
                 </Col>
-                <Col className="col-md-4" style ={{border: "solid"}}>
-                    {/* Schedule */}
-                    <span>Schedule </span>
+                <Col className="col-md-5" style ={{height: "100%", border: "solid"}}>
+                    <Container>
+                        <Row>
+                            <span>Schedule </span>
+                        </Row>
+                        <Row>
+                            <Col className={styles.cell}>
+                                <span>     </span>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div >Mon</div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div>Tues</div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div>Wed</div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div>Thur</div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div>Fri</div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div>Sat</div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div>Sun</div>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col className={styles.cell} >
+                                <span >M </span>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col className={styles.cell} >
+                                <span >A</span>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col className={styles.cell} >
+                                <span>E</span>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col className={styles.cell} >
+                                <span>N</span>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                        </Row>
+                        
+                    </Container>
+                    
                 </Col>
                 
             </Row>
