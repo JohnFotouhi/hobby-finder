@@ -50,7 +50,7 @@ const Profile = () => {
     useEffect(() => {
         console.log("IN USE EFFECT");
         getCards();
-        //getProfile();
+        getProfile();
     }, [oldInfo]);
 
     const getCards = () => {
@@ -189,7 +189,7 @@ const Profile = () => {
                     <Col>
                         {isEditing?
                         <UserInformationEditor setShowProfileEditor={setShowProfileEditor} showProfileEditor={showProfileEditor} oldCapacity={capacity} oldBio={undefined} oldEquipment={undefined} oldSchedule={undefined} oldName={displayName} setName={setDisplayName} setCapacity={setCapacity} setBio={setBio} setEquipment={setEquipment} setSchedule={undefined}></UserInformationEditor>
-                        :  <UserInformation owner={true} name={displayName} bio={bio} equipment={equipment} capacity={capacity} availability={undefined} profilePicture={undefined}></UserInformation> }
+                        :  <UserInformation owner={true} name={displayName} pronouns={""} bio={bio} equipment={equipment} capacity={capacity} availability={undefined} profilePicture={undefined}></UserInformation> }
                     </Col>
                 </Row>
 
