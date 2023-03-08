@@ -1,6 +1,6 @@
-import firebaseApp from "@/config";
+import firebaseApp from "../../config";
 import { initializeApp } from "firebase/app";
-import { collection, doc, getDocs, getFirestore, updateDoc } from "firebase/firestore"; 
+import { collection, doc, getDocs, getFirestore, updateDoc, query, where } from "firebase/firestore"; 
 
 const database = getFirestore(firebaseApp);
 
@@ -27,22 +27,23 @@ export default async (req, res) => {
 
         let userData: any;
 
-        const userRef = collection(database, "users")
+        const usersRef = collection(database, "users");
+        const user = query(usersRef, where("key", "==", req.body.uid))
 
-        const querySnapshot = await getDocs(collection(database, "users"));
-        querySnapshot.forEach((doc) => {
-                //if user id is our user's ID
-                if(doc.id == uid){
-                    userData = (doc.data());
-                }
+        const querySnapshot = await getDocs(user);
+        let id;
+        querySnapshot.forEach((doc) => {               
+            userData = (doc.data());
+            id = doc.id;
         });
-        //res.status(200).json("userData")
 
-        updateDoc(doc(userRef, uid), {name: newName});
-        updateDoc(doc(userRef, uid), {bio: newBio});
-        updateDoc(doc(userRef, uid), {equipment: newEquipment});
-        updateDoc(doc(userRef, uid), {availability: {}});
-        updateDoc(doc(userRef, uid), {host: newHost});
+        const userRef = doc(database, "users", id);
+
+        if( newName != undefined ) { updateDoc(userRef, {name: newName}); }
+        if( newBio != undefined ) { updateDoc(userRef, {bio: newBio}); }
+        if( newEquipment != undefined ) { updateDoc(userRef, {equipment: newEquipment}); }
+        if( newAvailability != undefined ) { updateDoc(userRef, {availability: {}}); }
+        if( newHost != undefined ) { updateDoc(userRef, {host: newHost}); }
 
 
         const freshProfile : Profile = {

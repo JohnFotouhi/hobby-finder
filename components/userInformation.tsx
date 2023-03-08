@@ -6,7 +6,7 @@ import { BsPlayBtnFill, BsPencil, BsTrash } from "react-icons/bs";
 import UserInfoModal from "./userInfoModal";
 import FormInput from "./formInput";
 
-export default function UserInformation({owner, name, bio, equipment, availability, capacity, profilePicture}){
+export default function UserInformation({owner, name, pronouns, bio, equipment, availability, capacity, profilePicture}){
     const [file, setFile] = useState("");
 
     const [showEquipmentInfo, setShowEquipmentInfo] = useState(false);
@@ -37,7 +37,12 @@ export default function UserInformation({owner, name, bio, equipment, availabili
                 
                 <Col className="col-md-4">
                     <Col>
-                        <span className="fw-bold fs-2">{name}</span>
+                        <Row>
+                            <span className="fw-bold fs-2">{name}</span>
+                        </Row>
+                        <Row>
+                            <span>{pronouns}</span>
+                        </Row>
                     </Col>
                     
                     <Col style = {{height: "100%", border: "solid"}}>
