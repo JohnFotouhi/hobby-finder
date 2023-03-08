@@ -1,10 +1,10 @@
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
 import { getAuth, EmailAuthProvider, sendEmailVerification } from 'firebase/auth'
 import { useEffect, useState } from 'react';
-import { getFirestore, collection } from 'firebase/firestore';
+import { getFirestore, collection, updateDoc, query, where, getDocs, doc } from 'firebase/firestore';
 import { Modal } from 'react-bootstrap';
 import { useAuthUser } from 'next-firebase-auth';
-import firebaseApp from '@/config';
+import firebaseApp from '../config';
 
 const database = getFirestore(firebaseApp);
 
@@ -38,6 +38,7 @@ export default function FirebaseAuth(){
         credentialHelper: 'none',
         callbacks: {
             signInSuccessWithAuthResult: (signInData) => {
+                console.log("SIGN IN DATA")
                 console.log(signInData);
                 const user = signInData.user;
                 if(signInData.additionalUserInfo.isNewUser){
@@ -57,16 +58,19 @@ export default function FirebaseAuth(){
                     .then((data) => {
                         console.log("done");
                     });
+
                 }
                 else{
                     if(! signInData.user.emailVerified){
                         console.log("IM HERE");
+                        
                         // handleNoEmailVerification();
                     }
                     else{
                         // they verified email
                     }
-                }
+                }              
+
                 return true;
             },
             

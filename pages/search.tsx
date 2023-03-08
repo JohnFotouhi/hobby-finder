@@ -3,12 +3,13 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { BsSearch, BsFunnelFill } from "react-icons/bs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchCard from "../components/SearchCard";
 import FullPageLoader from "../components/FullPageLoader";
-import { withAuthUser, AuthAction } from "next-firebase-auth";
+import { withAuthUser, AuthAction, useAuthUser } from "next-firebase-auth";
 import { instrumentList } from "../lists";
 import SingleselectInput from "../components/singleselectinput";
+import { useGeolocated } from "react-geolocated";
 import Filters from "../components/filters";
 import Select from "react-select"
 
@@ -23,6 +24,36 @@ function Search() {
     const [editFilters, setEditFilters] = useState(false);
     const [instrument, setInstrument] = useState({value: "", label: ""});
     const [users, setUsers] = useState<any[]>([]);
+
+    const AuthUser = useAuthUser();
+    //const [coords, setCoords] = useState();
+    const { coords } = useGeolocated({
+        positionOptions: {
+        enableHighAccuracy: true,
+        },
+        userDecisionTimeout: 5000,
+    });
+    console.log(coords);
+
+    useEffect( () => {
+        //console.log(coords);  
+        doLocation(); 
+    }, [coords] );
+
+    function doLocation(){
+        //console.log(coords)
+        if(coords != undefined){
+            fetch("/api/getLocation", {
+                method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({uid: AuthUser.id, lat: coords.latitude, long: coords.longitude})
+                })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log("location setting done");
+            }); 
+        }
+    }
 
     function updateFilters(filters){
         setFilters(filters);
