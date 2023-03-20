@@ -6,6 +6,7 @@ const database = getFirestore(firebaseApp);
 
 type Profile = {
     name: string
+    pronouns: string
     bio: string
     availability: {}
     host: number
@@ -30,6 +31,7 @@ export default async (req, res) =>{
 
         const existingProfile : Profile = {
             name: userData.name,
+            pronouns: userData.pronouns,
             bio: userData.bio,
             availability: userData.availability,
             host: userData.host,
