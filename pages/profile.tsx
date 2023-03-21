@@ -172,7 +172,7 @@ const Profile = () => {
                     if(status == 200){
                         console.log("SUCESSFUL PROFILE UPDATE");
                         console.log(data); 
-                        
+
                         setPronouns(data.pronouns)      
                     }
                     else if(status == 409){
