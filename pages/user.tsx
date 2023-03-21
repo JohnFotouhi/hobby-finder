@@ -8,9 +8,15 @@ import { getAuth } from "firebase/auth";
 import { APP_BUILD_MANIFEST } from "next/dist/shared/lib/constants";
 //import perry from "../public/User_images/perry.png";
 
-function User() {
 
-    //user credentials
+
+function User() {
+    const [capacity, setCapacity] = useState("");
+    const [bio, setBio] = useState("");
+    const [equipment, setEquipment] = useState("");
+    const [schedule, setSchedule] = useState({});
+    const [displayName, setDisplayName] = useState("");
+    const [userKey, setUserKey] = useState("");
     const AuthUser = useAuthUser();
     console.log(AuthUser);
 
@@ -76,9 +82,34 @@ function User() {
         });
     }
 
-    function editProfile(){
-        //need to fill in
-    }
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const uid = params.get('uid');
+        // setUserKey(uid);
+        fetch("/api/hobbyCardRetrieval", { 
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({uid: uid})
+        })
+            .then((res) => res.json())
+            .then((data) => {
+            setCards(data);
+        });
+        fetch("/api/userProfileRetrieval", { 
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({uid: uid})
+        })
+            .then((res) => res.json())
+            .then((data) => {
+            setDisplayName(data.name);
+            setBio(data.bio);
+            //setAvailability(data.availability);
+            setCapacity(data.host);
+            setEquipment(data[4]);
+        });
+    }, [])
+    
 
     return(
         <>  
@@ -87,23 +118,26 @@ function User() {
             <Container fluid className ="bg-light">
 
                 <Col> {status} </Col>
-
-                <h2>USER PROFILE STUFF HERE</h2>
-
+     
+                <Row>
+                    <Col>
+                        <UserInformation owner={true} name={displayName} pronouns={""} bio={bio} equipment={equipment} capacity={capacity} availability={undefined} profilePicture={undefined}></UserInformation>
+                    </Col>
+                </Row>
+                
                 <Container className="mt-3">
                     <h2>Hobbies</h2>
                     <Row className='m-auto'>
                         {cards.map( (card, index) => (
                             <Col md="4" key={index+"hobbyCard"}>
-                                <HobbyCard uid={undefined} setCards={undefined} index={index} instrument={card.instrument} genre={card.genres} 
-                                experience={card.experience} commitMin={card.commitMin} commitMax={card.commitMax} info={card.info} owner={false} 
-                                editCard={undefined}  />
+                                <HobbyCard uid={AuthUser.id} setCards={setCards} index={index} instrument={card.instrument} genre={card.genres} 
+                                experience={card.experience} commitMin={card.commitMin} commitMax={card.commitMax} info={card.info} owner={false}
+                                editCard={() => {}} />
                             </Col>
                         ))}
                     </Row>
                 </Container>
-
-            </Container>
+            </Container> 
         </>
     );
 
