@@ -171,7 +171,9 @@ const Profile = () => {
                 .then((data) => {
                     if(status == 200){
                         console.log("SUCESSFUL PROFILE UPDATE");
-                        console.log(data);       
+                        console.log(data); 
+                        
+                        setPronouns(data.pronouns)      
                     }
                     else if(status == 409){
                         console.log("UNSUCESSFUL USER")

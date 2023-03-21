@@ -58,6 +58,7 @@ export default async (req, res) => {
             equipment: newEquipment
         }
 
+        console.log("FRESH PROFILE:")
         console.log(freshProfile);
 
         res.status(200).json(freshProfile);

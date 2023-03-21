@@ -15,6 +15,7 @@ export default async function writeData(req, res){
       pronouns: "",
       host: 0,
       equipment: "",
+      relationships: []
     });
     docRef.id
     console.log(docRef);
