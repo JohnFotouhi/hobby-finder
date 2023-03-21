@@ -22,7 +22,6 @@ export default function Filters({show, setShow, filters, setFilters, ...props}){
 
     const experienceLevelOptions = objectifyArray(experienceList, "experience");
     const genreOptions = objectifyArray(genreList, "genre");
-    console.log(genreOptions);
 
     function handleClose(){
         setDistance(filters.distance);

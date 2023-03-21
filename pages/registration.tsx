@@ -14,8 +14,8 @@ export default function Registration(){
     const [passwordConfirm, setPasswordConfirm] = useState("");
 
     function createUser(){
-        const database = getFirestore(firebaseApp);
         const auth = getAuth(firebaseApp);
+        const database = getFirestore(firebaseApp);
         createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             // Signed in 
