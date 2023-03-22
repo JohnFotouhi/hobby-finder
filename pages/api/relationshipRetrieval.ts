@@ -8,19 +8,8 @@ export default async (req, res) =>{
         
         const usersRef = collection(database, "users");
 
-        //get other users key
-        const themRef = doc(database, "users", req.body.theirId)
-        const docSnap = await getDoc(themRef);
-        let themKey;
-        if (docSnap.exists()) {
-            themKey = docSnap.data().key;
-        } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-        }
-
         //get my "relationship" map
-        const user = query(usersRef, where("key", "==", req.body.myId))
+        const user = query(usersRef, where("key", "==", req.body.myKey))
 
         const querySnapshot2 = await getDocs(user);
         let relationships : {key: string, status: string}[] = [];
@@ -30,10 +19,21 @@ export default async (req, res) =>{
             relationships = doc.data().relationships;
         });
 
+        const them = query(usersRef, where("key", "==", req.body.theirKey))
+
+        const querySnapshot = await getDocs(them);
+        let theirEmail;
+        querySnapshot.forEach((doc) => {
+            theirEmail = doc.data().email;
+        });
+
         //search for other users user's key in relationship field
         let rel : any;
         console.log("ABOUT TO FIND")
-        rel = relationships.find(e => e.key === themKey);
+        console.log(relationships)
+        console.log(req.body.theirKey)
+        rel = relationships.find(e => e.key === req.body.theirKey);
+        console.log(rel)
 
         let responseCode = 0;
         //if not there
@@ -42,20 +42,19 @@ export default async (req, res) =>{
             responseCode = 1;
         }
         //if pending, display "waiting for reply" (option 2)
-        else if( rel.status = "pending"){
+        else if( rel.status == "pending"){
             responseCode = 2;
         }
         //if respond, display button to accept
-        else if( rel.status = "respond"){
+        else if( rel.status == "respond"){
             responseCode = 3;
         }
         //if friends, display email (for now)
-        else if( rel.status = "friends"){
+        else if( rel.status == "friends"){
             responseCode = 4;
-            //TO DO: get users email
         }
 
-        res.status(200).json(responseCode)
+        res.status(200).json({code: responseCode, email: theirEmail})
 
     } else {
         res.status(405).end()

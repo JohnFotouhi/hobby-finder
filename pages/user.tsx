@@ -6,6 +6,7 @@ import UserInformation from "../components/userInformation";
 import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { APP_BUILD_MANIFEST } from "next/dist/shared/lib/constants";
+import { DatabaseService } from "firebase-admin/lib/database/database";
 //import perry from "../public/User_images/perry.png";
 
 
@@ -16,7 +17,8 @@ function User() {
     const [equipment, setEquipment] = useState("");
     const [schedule, setSchedule] = useState({});
     const [displayName, setDisplayName] = useState("");
-    const [userKey, setUserKey] = useState("");
+    //const [userKey, setUserKey] = useState("");
+
     const AuthUser = useAuthUser();
     console.log(AuthUser);
 
@@ -27,65 +29,11 @@ function User() {
     const [cards, setCards] = useState<any[]>([]);
     const [status, setStatus] = useState<any>();
     //let status;
-    
-    //get user's hobby cards and profile information
-    useEffect(() => {
-        console.log("IN USE EFFECT");
-        getRelationshipStatus();
-        //getCards();
-        //getProfile();
-    }, []);
-
-    const getRelationshipStatus = () => {
-        console.log("GETTING REL STATUS")
-        fetch("/api/relationshipRetrieval", { 
-            method: "POST",
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({myKey: AuthUser.id, theirId: "j1vCDj5kqxOe7PNN12sQ"})
-        })
-            .then((res) => res.json())
-            .then((data) => {
-            console.log(data)
-            //setStatus(data)
-            if(data == 1){
-                setStatus(<Button onClick={updateRelationshipStatus}>Reach Out</Button>);
-                console.log(status)
-            }
-            else if(data == 2){
-                setStatus(<div className="btn btn-static">Waiting for Reply</div>);
-            }
-            else if(data == 3){
-                setStatus(<Button onClick={updateRelationshipStatus}>Accept Request</Button>);
-            }
-            else if(data == 4){
-                setStatus(<div className="btn btn-static">email@email.com (todo lol)</div>);
-            }
-        });
-    }
-
-    const updateRelationshipStatus = () => {
-        console.log("UPDATING REL STATUS")
-    }
-
-    const getCards = () => {
-
-        console.log("GETTING CARDS")
-        fetch("/api/hobbyCardRetrieval", { 
-            method: "POST",
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({uid: userId})
-        })
-            .then((res) => res.json())
-            .then((data) => {
-            console.log(data)
-            setCards(data);
-        });
-    }
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const uid = params.get('uid');
-        // setUserKey(uid);
+
         fetch("/api/hobbyCardRetrieval", { 
             method: "POST",
             headers: {'Content-Type': 'application/json'},
@@ -95,6 +43,7 @@ function User() {
             .then((data) => {
             setCards(data);
         });
+
         fetch("/api/userProfileRetrieval", { 
             method: "POST",
             headers: {'Content-Type': 'application/json'},
@@ -108,24 +57,89 @@ function User() {
             setCapacity(data.host);
             setEquipment(data[4]);
         });
+
+        getRelationshipStatus(uid);
     }, [])
+
+    const getRelationshipStatus = (theirId) => {
+
+        console.log("GETTING REL STATUS")
+        fetch("/api/relationshipRetrieval", { 
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({myKey: AuthUser.id, theirKey: theirId})
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data)
+                //setStatus(data)
+                if(data.code <= 1){
+                    setStatus(<Button onClick={updateRelationshipStatus}>Reach Out</Button>);
+                    console.log(status)
+                }
+                else if(data.code == 2){
+                    setStatus(<h3 className="">Waiting for Reply</h3>);
+                }
+                else if(data.code == 3){
+                    setStatus(<Button onClick={updateRelationshipStatus}>Accept Request</Button>);
+                }
+                else if(data.code == 4){
+                    setStatus(<h3 className="">{data.email}</h3>);
+                }
+        });
+    }
     
+    const updateRelationshipStatus = () => {
+        const params = new URLSearchParams(window.location.search);
+        const uid = params.get('uid');
+
+        console.log("UPDATING REL STATUS")
+
+        fetch("/api/relationshipUpdate", { 
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},     
+            body: JSON.stringify({myKey: AuthUser.id, theirKey: uid}, replacerFunc())
+        })
+            .then((res) => res.json())
+            .then((data) => {  
+                if(data.code == 1){
+                    setStatus(<h3 className="">Waiting for Reply</h3>);
+                    console.log(status)
+                }
+                else if(data.code == 2){
+                    setStatus(<h3 className="">{data.email}</h3>);
+                }
+        });     
+    }
+
+    //https://careerkarma.com/blog/converting-circular-structure-to-json/
+    const replacerFunc = () => {
+        const visited = new WeakSet();
+        return (key, value) => {
+          if (typeof value === "object" && value !== null) {
+            if (visited.has(value)) {
+              return;
+            }
+            visited.add(value);
+          }
+          return value;
+        };
+      };
 
     return(
         <>  
             {/*<UserInformation capacity={"2"} equipment={"a condenser mic and an interface"} schedule = {"Any morning before 11am"} displayName={"Perry the Platypus"} bio={"*chatter*"} owner={false} editProfile={editProfile} profilePicture={perry}></UserInformation>*/}
             
             <Container fluid className ="bg-light">
-
-                <Col> {status} </Col>
      
                 <Row>
                     <Col>
                         <UserInformation owner={true} name={displayName} pronouns={""} bio={bio} equipment={equipment} capacity={capacity} availability={undefined} profilePicture={undefined}></UserInformation>
                     </Col>
                 </Row>
-                
+
                 <Container className="mt-3">
+                <Col> {status} </Col>
                     <h2>Hobbies</h2>
                     <Row className='m-auto'>
                         {cards.map( (card, index) => (
