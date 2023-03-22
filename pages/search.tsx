@@ -91,11 +91,12 @@ function Search() {
                         <div style={{width: '300px'}}>
                             <Select
                                 isSearchable={true} 
-                                defaultValue={instrument}
+                                defaultValue={null}
                                 onChange={setSearch}
                                 options={instrumentList}
                                 isMulti={false}
                                 className="my-auto"
+                                placeholder='Select an Instrument...'
                             />
                         </div>
                         <Button onClick={handleSearch} style={{height: "38px"}}>Search <BsSearch /></Button>
