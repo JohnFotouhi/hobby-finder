@@ -1,4 +1,4 @@
-import { Button, Col, Container, Row, Form, Stack, Alert, Navbar } from "react-bootstrap";
+import { Button, Col, Container, Row, Form, Stack, Alert, Navbar, Spinner } from "react-bootstrap";
 import HobbyCard from "../components/hobbyCard";
 import { useAuthUser, AuthAction, withAuthUser } from "next-firebase-auth";
 import UploadImage from "../components/uploadImage";
@@ -8,6 +8,7 @@ import { getAuth } from "firebase/auth";
 import { APP_BUILD_MANIFEST } from "next/dist/shared/lib/constants";
 import { DatabaseService } from "firebase-admin/lib/database/database";
 //import perry from "../public/User_images/perry.png";
+import FullPageLoader from "../components/FullPageLoader";
 
 
 
@@ -19,6 +20,8 @@ function User() {
     const [displayName, setDisplayName] = useState("");
     //const [userKey, setUserKey] = useState("");
 
+    const [loadingCards, setLoadingCards] = useState(true);
+    const [loadingData, setLoadingData] = useState(true);
     const AuthUser = useAuthUser();
     console.log(AuthUser);
 
@@ -42,6 +45,7 @@ function User() {
             .then((res) => res.json())
             .then((data) => {
             setCards(data);
+            setLoadingCards(false);
         });
 
         fetch("/api/userProfileRetrieval", { 
@@ -56,6 +60,7 @@ function User() {
             //setAvailability(data.availability);
             setCapacity(data.host);
             setEquipment(data[4]);
+            setLoadingData(false);
         });
 
         getRelationshipStatus(uid);
@@ -127,36 +132,38 @@ function User() {
       };
 
     return(
-        <>  
-            {/*<UserInformation capacity={"2"} equipment={"a condenser mic and an interface"} schedule = {"Any morning before 11am"} displayName={"Perry the Platypus"} bio={"*chatter*"} owner={false} editProfile={editProfile} profilePicture={perry}></UserInformation>*/}
-            
-            <Container fluid className ="bg-light">
-     
-                <Row>
-                    <Col>
-                        <UserInformation owner={true} name={displayName} pronouns={""} bio={bio} equipment={equipment} capacity={capacity} availability={undefined} profilePicture={undefined}></UserInformation>
-                    </Col>
+       
+        <>
+        { loadingCards || loadingData ? 
+        <Container className="align-items-center mt-5 text-center">
+            <Spinner animation="border" role="status"></Spinner>
+        </Container> :
+        <Container>
+            <Row>
+                <Col>
+                    <UserInformation owner={true} name={displayName} pronouns={""} bio={bio} equipment={equipment} capacity={capacity} availability={undefined} profilePicture={undefined}></UserInformation>
+                </Col>
+            </Row>
+            <Container className="mt-3">
+            <Col> {status} </Col>
+                <h2>Hobbies</h2>
+                <Row className='m-auto'>
+                    {cards.map( (card, index) => (
+                        <Col md="4" key={index+"hobbyCard"}>
+                            <HobbyCard uid={AuthUser.id} setCards={setCards} index={index} instrument={card.instrument} genre={card.genres} 
+                            experience={card.experience} commitMin={card.commitMin} commitMax={card.commitMax} info={card.info} owner={false}
+                            editCard={() => {}} />
+                        </Col>
+                    ))}
                 </Row>
-
-                <Container className="mt-3">
-                <Col> {status} </Col>
-                    <h2>Hobbies</h2>
-                    <Row className='m-auto'>
-                        {cards.map( (card, index) => (
-                            <Col md="4" key={index+"hobbyCard"}>
-                                <HobbyCard uid={AuthUser.id} setCards={setCards} index={index} instrument={card.instrument} genre={card.genres} 
-                                experience={card.experience} commitMin={card.commitMin} commitMax={card.commitMax} info={card.info} owner={false}
-                                editCard={() => {}} />
-                            </Col>
-                        ))}
-                    </Row>
-                </Container>
-            </Container> 
+            </Container>
+        </Container> }      
         </>
     );
 
 }
 export default withAuthUser({
-    whenUnauthedBeforeInit: AuthAction.RETURN_NULL,
-    whenUnauthedAfterInit: AuthAction.RENDER,
+    whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
+    whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+    LoaderComponent: FullPageLoader
   })(User)
