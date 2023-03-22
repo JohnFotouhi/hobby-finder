@@ -1,10 +1,10 @@
-import { Button, Col, Container, Row, Form, Stack, Alert, Navbar } from "react-bootstrap";
+import { Button, Col, Container, Row, Form, Stack, Alert, Navbar, Spinner } from "react-bootstrap";
 import HobbyCard from "../components/hobbyCard";
 import { useAuthUser, AuthAction, withAuthUser } from "next-firebase-auth";
 import UploadImage from "../components/uploadImage";
 import UserInformation from "../components/userInformation";
 import { useEffect, useState } from "react";
-//import perry from "../public/User_images/perry.png";
+import FullPageLoader from "../components/FullPageLoader";
 
 
 
@@ -15,13 +15,13 @@ function User() {
     const [schedule, setSchedule] = useState({});
     const [displayName, setDisplayName] = useState("");
     const [cards, setCards] = useState<any[]>([]);
-    const [userKey, setUserKey] = useState("");
+    const [loadingCards, setLoadingCards] = useState(true);
+    const [loadingData, setLoadingData] = useState(true);
     const AuthUser = useAuthUser();
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const uid = params.get('uid');
-        // setUserKey(uid);
         fetch("/api/hobbyCardRetrieval", { 
             method: "POST",
             headers: {'Content-Type': 'application/json'},
@@ -30,6 +30,7 @@ function User() {
             .then((res) => res.json())
             .then((data) => {
             setCards(data);
+            setLoadingCards(false);
         });
         fetch("/api/userProfileRetrieval", { 
             method: "POST",
@@ -43,12 +44,17 @@ function User() {
             //setAvailability(data.availability);
             setCapacity(data.host);
             setEquipment(data[4]);
+            setLoadingData(false);
         });
     }, [])
     
 
     return(
-        <>  
+        <>
+        { loadingCards || loadingData ? 
+        <Container className="align-items-center mt-5 text-center">
+            <Spinner animation="border" role="status"></Spinner>
+        </Container> :
         <Container>
             <Row>
                 <Col>
@@ -67,12 +73,13 @@ function User() {
                     ))}
                 </Row>
             </Container>
-        </Container> 
+        </Container> }      
         </>
     );
 
 }
 export default withAuthUser({
-    whenUnauthedBeforeInit: AuthAction.RETURN_NULL,
-    whenUnauthedAfterInit: AuthAction.RENDER,
+    whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
+    whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+    LoaderComponent: FullPageLoader
   })(User)
