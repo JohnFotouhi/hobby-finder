@@ -4,7 +4,7 @@ import { useAuthUser, AuthAction, withAuthUser } from "next-firebase-auth";
 import UploadImage from "../components/uploadImage";
 import UserInformation from "../components/userInformation";
 import { useEffect, useState } from "react";
-//import perry from "../public/User_images/perry.png";
+import FullPageLoader from "../components/FullPageLoader";
 
 
 
@@ -73,6 +73,7 @@ function User() {
 
 }
 export default withAuthUser({
-    whenUnauthedBeforeInit: AuthAction.RETURN_NULL,
-    whenUnauthedAfterInit: AuthAction.RENDER,
+    whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
+    whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+    LoaderComponent: FullPageLoader
   })(User)

@@ -11,7 +11,9 @@ import { instrumentList } from "../lists";
 import SingleselectInput from "../components/singleselectinput";
 import { useGeolocated } from "react-geolocated";
 import Filters from "../components/filters";
-import Select from "react-select"
+import Select from "react-select";
+import Image from 'react-bootstrap/Image';
+import HeroImage from '@/public/Jam-Hero.png';
 
 function Search() {
     const emptyFilters = {
@@ -24,6 +26,7 @@ function Search() {
     const [editFilters, setEditFilters] = useState(false);
     const [instrument, setInstrument] = useState({value: "", label: ""});
     const [users, setUsers] = useState<any[]>([]);
+    const [failedSearch, setFailedSearch] = useState(false);
 
     const AuthUser = useAuthUser();
     //const [coords, setCoords] = useState();
@@ -71,6 +74,8 @@ function Search() {
             .then((res) => res.json())
             .then((data) => {
                 setUsers(data);
+                setFailedSearch(data.length === 0);
+
           });
         setEditFilters(false);
     }
@@ -99,15 +104,23 @@ function Search() {
                 </Row>
             </Container>
             
+            {users.length === 0 ?
+            <Container className="align-items-center mx-auto text-center"> 
+                <h1 className="mt-5" >
+                    {failedSearch ? "No musicians matched your search" : "Search for musicians near you"}
+                </h1>
+                <Image src={HeroImage.src} className="mt-5"></Image>
+            </Container>
+            :
             <Container className="mt-3">
                 <Row className='m-auto'>
-                    {users?.map((user, index )=>(
+                    {users.map((user, index )=>(
                         <Col md="4" key={index + "userCard"}>
                             <SearchCard {...user} authId={user.key} />
                         </Col>
                     ))}
                 </Row>
-            </Container>
+            </Container> }
 
             <Filters show={editFilters} setShow={setEditFilters} filters={filters} setFilters={updateFilters} />
         </>
