@@ -21,8 +21,9 @@ function Search() {
     const emptyFilters = {
         experienceLevels: [],
         genres: [],
-        commitmentLevels: [],
-        distance: 10
+        distance: 10,
+        commitMax: 0,
+        commitMin: 0
     }
     const [filters, setFilters] = useState(emptyFilters);
     const [editFilters, setEditFilters] = useState(false);

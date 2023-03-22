@@ -6,11 +6,12 @@ import FormInput from "./formInput";
 import { optionCSS } from "react-select/dist/declarations/src/components/Option";
 import { updateProfile } from "firebase/auth";
 
-export default function UserInformationEditor({setShowProfileEditor, showProfileEditor, oldName, setName, oldCapacity, setCapacity, oldBio, setBio, oldEquipment, setEquipment, oldSchedule, setSchedule}) {
+export default function UserInformationEditor({setShowProfileEditor, showProfileEditor, oldName, setName, oldPronouns, setPronouns, oldCapacity, setCapacity, oldBio, setBio, oldEquipment, setEquipment, oldSchedule, setSchedule}) {
     
 
     const capacity = [{label: "1", value: "capacity1"}, {label: "2", value: "capacity2"}, {label: "3", value: "capacity3"}, {label: "4", value: "capacity4"}, {label: "5", value: "capacity5"},
                             {label: "6", value: "capacity6"}, {label: "7", value: "capacity7"}, {label: "8+", value: "capacity8"},]
+    const pronounList = [{label: "she/her", value: "she/her"}, {label: "he/him", value: "he/him"}, {label: "they/them", value: "they/them"}]
 
     return(
         // TO DO: Add inputs already there for if they're editing rather than creating
@@ -21,10 +22,13 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
                     Edit Profile
                 </Card.Title>
                 {/* <SingleselectInput controlId={undefined} label={"Capacity to Host"} text={""} options={capacity} setValue={setCapacity} value={oldCapacity}/> */}
+                <Col>
+                    <SingleselectInput controlId={undefined} label={"Pronouns"} text={""} options={pronounList} setValue={setPronouns} value={oldPronouns? {label: oldPronouns, value: oldPronouns} : undefined} multi={false}/>
+                </Col>
                 <Col><Form>
                         <FormInput controlId="host" label="Capacity to host" type="number" text="" setValue={setCapacity} value={oldCapacity} placeholder={undefined}/>
                         <Form.Text className="text-muted">
-                            Share a little bit about yourself!
+                            Would you want to host musician friends? If so, how many?
                         </Form.Text>
                     </Form> </Col>
                 <Col><Form>

@@ -10,11 +10,13 @@ export default async function writeData(req, res){
     const docRef = await addDoc(collection(database, 'users'), {
       key: req.body.uid,
       name: req.body.displayName,
+      email: req.body.email,
       availability: {},
       bio: "",
       pronouns: "",
       host: 0,
       equipment: "",
+      relationships: [{key: "", status: ""}]
     });
     docRef.id
     console.log(docRef);
