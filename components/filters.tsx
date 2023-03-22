@@ -6,7 +6,7 @@ import { genreList, experienceList } from "../lists";
 
 export default function Filters({show, setShow, filters, setFilters, ...props}){
     
-    const [distance, setDistance] = useState(undefined);
+    const [distance, setDistance] = useState(10);
     const [experienceLevels, setExperienceLevels] = useState([]);
     const [genre, setGenre] = useState([]);
     const [commitmentLevels, setCommitmentLevels] = useState([]);
@@ -81,6 +81,9 @@ export default function Filters({show, setShow, filters, setFilters, ...props}){
                         </Col>
                         <Col>
                             <FormInput controlId="commitmentMax" label="Max Commitment" type="number" placeholder="" text="Hours Per Week" value={commitMax} setValue={setCommitMax} min={1} />
+                        </Col>
+                        <Col>
+                            <FormInput controlId="distance" label="Distance" type="number" placeholder="" text="Miles" value={distance} setValue={setDistance} min={1} />
                         </Col>
                     </Row>
                 </Container>
