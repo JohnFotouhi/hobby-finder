@@ -1,13 +1,16 @@
-import { Button, Col, Container, Row, Form, Card} from "react-bootstrap";
+import { Button, Col, Container, Row, Form, Card, Modal} from "react-bootstrap";
 import { BsRecordCircleFill } from "react-icons/bs";
 import { BsPlayBtnFill, BsPencil, BsTrash } from "react-icons/bs";
-import { useAuthUser } from "next-firebase-auth";
+import globals from '../styles/Home.module.css'
+import { useState } from "react";
 
 export default function HobbyCard({uid, setCards, index, instrument, genre, experience, commitMin, commitMax, info, owner, editCard}) {
 
     /* function playClip(){
         // Play sound clip
     } */
+
+    const [confirmDelete, setConfirmDelete] = useState(false);
 
     function deleteCard(){
         let status;
@@ -25,6 +28,7 @@ export default function HobbyCard({uid, setCards, index, instrument, genre, expe
                 if(status == 200){
                     console.log("SUCCESSFUL DELETION")
                     setCards(data);
+                    setConfirmDelete(false)
                 }
           });
     }
@@ -43,19 +47,38 @@ export default function HobbyCard({uid, setCards, index, instrument, genre, expe
     }
 
     return(
-        <Card style={{ width: '18rem' }}>
-        <Card.Body>
-            <Card.Title> 
-                {instrument} 
-                { owner? <Button onClick={editCard}><BsPencil/></Button> : null}
-                { owner? <Button onClick={deleteCard}><BsTrash/></Button> : null}
-            </Card.Title>
-            <Col> <span style={{fontWeight: 'bold'}}>Genres: </span>{getGenreList(genre)} </Col>
-            <Col> <span style={{fontWeight: 'bold'}}>Experience:</span> {experience} </Col>
-            <Col> <span style={{fontWeight: 'bold'}}>Commitment:</span> {commitMin!=commitMax? `${commitMin} to ${commitMax} hours weekly` : `${commitMin} hours weekly`}</Col>
-            <Col> <span style={{fontWeight: 'bold'}}>Details:</span> {info} </Col> 
-            {/* <Col> <Button onClick={playClip}><BsPlayBtnFill/></Button> Play to hear attached clip </Col> */}
-        </Card.Body>
+        <><Card className={globals.card}>
+            <Card.Body>
+                <Card.Title>
+                    <Row>
+                        <Col>
+                            {instrument + '   '}
+                        </Col>
+                        <Col align="right">
+                            {owner ? <Button className={globals.btn} onClick={editCard} style={{margin:1}}><BsPencil /></Button> : null}
+                            {owner ? <Button className={globals.btn} onClick={() => setConfirmDelete(true)} style={{margin:1}}><BsTrash /></Button> : null}
+                        </Col>
+                    </Row>
+                </Card.Title>
+                <Col> <span style={{ fontWeight: 'bold' }}>Genres: </span>{getGenreList(genre)} </Col>
+                <Col> <span style={{ fontWeight: 'bold' }}>Experience:</span> {experience} </Col>
+                <Col> <span style={{ fontWeight: 'bold' }}>Commitment:</span> {commitMin != commitMax ? `${commitMin} to ${commitMax} hours weekly` : `${commitMin} hours weekly`}</Col>
+                <Col> <span style={{ fontWeight: 'bold' }}>Details:</span> {info} </Col>
+                {/* <Col> <Button onClick={playClip}><BsPlayBtnFill/></Button> Play to hear attached clip </Col> */}
+            </Card.Body>
         </Card>
+
+        <Modal show={confirmDelete} onHide={() => setConfirmDelete(false)}>
+            <Modal.Header> <Modal.Title>Are you sure you want to delete this hobby?</Modal.Title></Modal.Header>
+            <Modal.Footer>
+                <Button variant="danger" onClick={deleteCard}>
+                    Delete
+                </Button>
+                <Button variant="secondary" onClick={() => setConfirmDelete(false)}>
+                    Cancel
+                </Button>
+            </Modal.Footer>
+        </Modal>
+        </>
     );
 }

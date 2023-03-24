@@ -1,0 +1,57 @@
+
+@font-face{
+    font-family: "Archive";
+    src: url('./Archive-Regular.ttf');
+}
+
+.logo {
+    color: #FDCD3E;
+    font-family: "Archive";
+    font-size: 90px;
+    /* text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000; */
+}
+
+.searchLogo {
+    width: 40%;
+}
+
+.main {
+    padding-top: 10%;
+}
+
+.btn{
+    background-color: #8ac853 !important;
+    border-color: #8ac853 !important; 
+}
+
+.btn:hover{
+    background-color: #6fae37 !important;
+    border-color: #6fae37 !important;
+}
+
+.bigButton {
+    background-color: #8ac853;
+    border-color: #8ac853;
+    font-size: 22px;
+}
+
+.bigButton:hover {
+    background-color: #6fae37;
+    border-color: #6fae37;
+}
+
+.upload {
+    display: none;
+    /* visibility: hidden!important; */
+}
+
+.card {
+    flex: 1;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #fef7e7;
+    border-color: #fde59b;
+    border-width: 2px;
+}
+
+

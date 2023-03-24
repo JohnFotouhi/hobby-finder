@@ -2,16 +2,26 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, addDoc, GeoPoint } from "firebase/firestore";
 import firebaseApp from '../../config';
+import { valueContainerCSS } from 'react-select/dist/declarations/src/components/containers';
 
 const database = getFirestore(firebaseApp);
 
+type Day = {
+  morn: boolean,
+  aft: boolean,
+  eve: boolean,
+  night: boolean,
+}
+
 export default async function writeData(req, res){
   try{
+    var emptyDay = {morn: false, aft: false, eve: false, night: false}
+    const avail : [Day, Day, Day, Day, Day, Day, Day] = [emptyDay,emptyDay,emptyDay,emptyDay,emptyDay,emptyDay,emptyDay];
     const docRef = await addDoc(collection(database, 'users'), {
       key: req.body.uid,
       name: req.body.displayName,
       email: req.body.email,
-      availability: {},
+      availability: avail,
       bio: "",
       pronouns: "",
       host: 0,

@@ -1,35 +1,36 @@
 import HobbyCardEditor from "../components/hobbyCardEditor";
 import { useEffect, useState } from "react";
 import { AuthAction, init, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
-import { Button, Col, Container, Row, Form, Stack, Alert, Navbar } from "react-bootstrap";
+import { Button, Col, Container, Row, Form, Stack, Alert, Navbar, Modal } from "react-bootstrap";
 import FullPageLoader from "../components/FullPageLoader";
 import HobbyCard from "../components/hobbyCard";
-import { initializeApp } from "firebase-admin";
 import UserInformation from "../components/userInformation";
-//import Jon from "/public/User_images/jon.jpg"; //image won't import, idk why. I imagine we're changing this funcitonality anyway
 import UserInformationEditor from '../components/userInformationEditor';
-import { updateProfile } from 'firebase/auth';
 import {instrumentList, experienceList, genreList} from "../lists"
-import { generateKey, getCipherInfo } from "crypto";
-import FormInput from "../components/formInput";
-import { stringify } from "querystring";
-import { Auth } from "firebase-admin/lib/auth/auth";
+import globals from '../styles/Home.module.css'
+import firebaseApp from "../config";
+import { getDownloadURL, getStorage, listAll, ref, uploadBytes} from "firebase/storage";
+import { BsPlusLg} from "react-icons/bs";
 
 
 const Profile = () => {
 
     //user credentials
     const AuthUser = useAuthUser();
+    const storage = getStorage(firebaseApp);
+
     //console.log(AuthUser);
 
     //Profile states
     const [isEditing, setIsEditing] = useState(false);
     const [capacity, setCapacity] = useState("");
     const [bio, setBio] = useState("");
+    const [availability, setAvailability] = useState({})
     const [equipment, setEquipment] = useState("");
     const [schedule, setSchedule] = useState({});
     const [displayName, setDisplayName] = useState("");
     const [pronouns, setPronouns] = useState("")
+    const [imageRef, setImageRef] = useState("");
 
     //user's cards
     const [cards, setCards] = useState<any[]>([]);
@@ -48,9 +49,11 @@ const Profile = () => {
 
     //get user's hobby cards and profile information
     useEffect(() => {
-        console.log("IN USE EFFECT");
+        console.log("IN USE EFFECT");     
         getCards();
         getProfile();
+        getPicture();
+        //console.log(imageRef)
     }, [oldInfo]);
 
     const getCards = () => {
@@ -82,10 +85,29 @@ const Profile = () => {
             //set pronouns to be the object version.
             setPronouns(data.pronouns)
             setBio(data.bio);
-            //setAvailability(data.availability);
+            setAvailability(data.availability);
             setCapacity(data.host);
             setEquipment(data[4]);
-        });
+        });       
+    }
+
+    const getPicture = () => {
+        //get prof pic
+        const imageRef = ref(storage, `Profile Pictures/${AuthUser.id}`); 
+
+        console.log(imageRef)
+        if(imageRef != undefined){
+            getDownloadURL(imageRef).then(onResolve, onReject);          
+        }
+    }
+
+    function onResolve(foundURL) {
+        console.log('FOUND IMAGE')
+        setImageRef(foundURL)
+    }
+    
+    function onReject(error) {
+        console.log(error.code);
     }
 
     //User Info Functions
@@ -147,6 +169,7 @@ const Profile = () => {
         }
         else{ //user has saved new information
             let status;
+            getPicture();
             console.log(bio)
             console.log(displayName)
             console.log(equipment)
@@ -185,30 +208,36 @@ const Profile = () => {
         }
     }
 
-
     return(
         <>  
             <Container>
                 <Row>
-                    <Button onClick={handleEditChange}>{isEditing? "Save" : "Edit"}</Button>
+                    <Button className={globals.btn} onClick={handleEditChange}>{isEditing? "Save" : "Edit"}</Button>
                     <Col>
                         {isEditing?
                         <UserInformationEditor setShowProfileEditor={setShowProfileEditor} showProfileEditor={showProfileEditor} oldCapacity={capacity} oldBio={undefined} 
-                        oldEquipment={undefined} oldSchedule={undefined} oldName={displayName} setName={setDisplayName} setCapacity={setCapacity} setBio={setBio} 
-                        setEquipment={setEquipment} setSchedule={undefined} oldPronouns={pronouns} setPronouns={setPronouns}></UserInformationEditor>
-                        :  <UserInformation owner={true} name={displayName} pronouns={pronouns} bio={bio} equipment={equipment} capacity={capacity} availability={undefined} profilePicture={undefined}></UserInformation> }
+                        oldEquipment={undefined} oldAvailability={undefined} oldName={displayName} setName={setDisplayName} setCapacity={setCapacity} setAvailability={setAvailability} setBio={setBio} 
+                        setEquipment={setEquipment} oldPronouns={pronouns} setPronouns={setPronouns} setImage={setImageRef}></UserInformationEditor>
+                        :  <UserInformation owner={true} name={displayName} pronouns={pronouns} bio={bio} equipment={equipment} capacity={capacity} availability={availability} profilePicture={imageRef}></UserInformation> }
                     </Col>
                 </Row>
 
                 <Container className="mt-3">
-                    <h2>Hobbies</h2>
-                    <Button onClick={handleCreate}>New Hobby</Button>
-                    <Row className='m-auto'>
+                    <Row>
+                        <Col md={4}>
+                        <h2>Hobbies</h2>
+                        </Col>
+                        <Col md={{ span: 1, offset: 7 }}>
+                        <Button className={globals.btn} onClick={handleCreate}><BsPlusLg/></Button> 
+                        </Col>
+                    </Row>
+                    <Row className='m-auto' style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
                         {cards.map( (card, index) => (
                             <Col md="4" key={index+"hobbyCard"}>
                                 <HobbyCard uid={AuthUser.id} setCards={setCards} index={index} instrument={card.instrument} genre={card.genres} 
                                 experience={card.experience} commitMin={card.commitMin} commitMax={card.commitMax} info={card.info} owner={true} 
-                                editCard={() => editCard(card.instrument, card.genres, card.experience, card.commitMin, card.commitMax, card.info)}  />
+                                editCard={() => editCard(card.instrument, card.genres, card.experience, card.commitMin, card.commitMax, card.info)}
+                                />
                             </Col>
                         ))}
                     </Row>
@@ -251,3 +280,5 @@ export default withAuthUser({
     whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
     LoaderComponent: FullPageLoader,
   })(Profile)
+
+

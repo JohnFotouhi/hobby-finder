@@ -536,5 +536,42 @@ const genreList = [
     }
 ]
 
-
+const equipmentList = [
+    {
+        "value": "Amp",
+        "label": "Amp"
+    },
+    {
+        "value": "Wireless Microphone",
+        "label": "Wireless Microphone"
+    },
+    {
+        "value": "Wired Microphone",
+        "label": "Wired Microphone"
+    },
+    {
+        "value": "Mic Stand",
+        "label": "Mic Stand"
+    },
+    {
+        "value": "Power Amp",
+        "label": "Power Amp"
+    },
+    {
+        "value": "Equalizer",
+        "label": "Equalizer"
+    },
+    {
+        "value": "Mic Cable",
+        "label": "Mic Cable"
+    },
+    {
+        "value": "Loop Pedal",
+        "label": "Loop Pedal"
+    },
+    {
+        "value": "Reverb Pedal",
+        "label": "Reverb Pedal"
+    }
+]
 export {instrumentList, genreList, experienceList};
