@@ -1,0 +1,29 @@
+
+@font-face{
+    font-family: "Archive";
+    src: url('./Archive-Regular.ttf');
+}
+
+.logo {
+    color: #FDCD3E;
+    font-family: "Archive";
+    font-size: 90px;
+    /* text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000; */
+}
+
+.main {
+    padding-top: 10%;
+}
+
+.bigButton {
+    background-color: #8ac853;
+    border-color: #8ac853;
+    font-size: 22px;
+}
+
+.bigButton:hover {
+    background-color: #6fae37;
+    border-color: #6fae37;
+}
+
+
