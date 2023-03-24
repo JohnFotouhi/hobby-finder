@@ -45,7 +45,7 @@ export default function FirebaseAuth(){
                     fetch("/api/initializeUser", {
                         method: "POST",
                         headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({uid: user.uid, displayName: user.displayName})
+                        body: JSON.stringify({uid: user.uid, displayName: user.displayName, email: user.email})
                     })
                     .then((res) => res.json())
                     .then((data) => {
