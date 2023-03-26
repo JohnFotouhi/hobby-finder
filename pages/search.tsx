@@ -15,6 +15,7 @@ import Select from "react-select";
 import Image from 'react-bootstrap/Image';
 import HeroImage from '@/public/Jam-Hero.png';
 import HeroMobile from '@/public/Jam-Hero-mobile.jpg';
+import logo from '../public/JAM.png'
 import { useMediaQuery } from 'react-responsive';
 
 function Search() {
@@ -111,8 +112,8 @@ function Search() {
                     {failedSearch ? "No musicians matched your search" : "Search for musicians near you"}
                 </h1>
                 {isMobile ? 
-                    <Image src={HeroMobile.src} style={{width: '100%'}} className="mt-5"></Image> :
-                    <Image src={HeroImage.src}  className="mt-5"></Image>
+                    <Image src={logo.src} style={{width: '100%'}} className="mt-5"></Image> :
+                    <Image src={logo.src}  className="mt-5"></Image>
                 }
             </Container>
             :

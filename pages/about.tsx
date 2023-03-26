@@ -1,6 +1,6 @@
 import { AuthAction, withAuthUser } from "next-firebase-auth";
 import FullPageLoader from "../components/FullPageLoader";
-import { Button, Col, Row, Container } from "react-bootstrap";
+import { Button, Col, Row, Container, Nav } from "react-bootstrap";
 import logo from '../public/JAM.png'
 import React from 'react';
 import globals from '../styles/Home.module.css'
@@ -25,7 +25,7 @@ const About = () => {
                     </p>
                 </Row>
                 <Row lg={3} md={3} className="justify-content-md-center">
-                    <Button className={globals.bigButton}>Start Jammin</Button>
+                    <Button className={globals.bigButton}><Nav.Link href="/search">Start Jammin</Nav.Link></Button>
                 </Row>
             </Container>
         </>
