@@ -15,12 +15,16 @@ import FormInput from "../components/formInput";
 import { stringify } from "querystring";
 import { Auth } from "firebase-admin/lib/auth/auth";
 import globals from '../styles/Home.module.css'
+import firebaseApp from "../config";
+import { getDownloadURL, getStorage, listAll, ref, uploadBytes} from "firebase/storage";
 
 
 const Profile = () => {
 
     //user credentials
     const AuthUser = useAuthUser();
+    const storage = getStorage(firebaseApp);
+
     //console.log(AuthUser);
 
     //Profile states
@@ -32,6 +36,7 @@ const Profile = () => {
     const [schedule, setSchedule] = useState({});
     const [displayName, setDisplayName] = useState("");
     const [pronouns, setPronouns] = useState("")
+    const [imageRef, setImageRef] = useState("");
 
     //user's cards
     const [cards, setCards] = useState<any[]>([]);
@@ -50,9 +55,11 @@ const Profile = () => {
 
     //get user's hobby cards and profile information
     useEffect(() => {
-        console.log("IN USE EFFECT");
+        console.log("IN USE EFFECT");     
         getCards();
         getProfile();
+        getPicture();
+        //console.log(imageRef)
     }, [oldInfo]);
 
     const getCards = () => {
@@ -87,7 +94,26 @@ const Profile = () => {
             setAvailability(data.availability);
             setCapacity(data.host);
             setEquipment(data[4]);
-        });
+        });       
+    }
+
+    const getPicture = () => {
+        //get prof pic
+        const imageRef = ref(storage, `Profile Pictures/${AuthUser.id}`); 
+
+        console.log(imageRef)
+        if(imageRef != undefined){
+            getDownloadURL(imageRef).then(onResolve, onReject);          
+        }
+    }
+
+    function onResolve(foundURL) {
+        console.log('FOUND IMAGE')
+        setImageRef(foundURL)
+    }
+    
+    function onReject(error) {
+        console.log(error.code);
     }
 
     //User Info Functions
@@ -149,6 +175,7 @@ const Profile = () => {
         }
         else{ //user has saved new information
             let status;
+            getPicture();
             console.log(bio)
             console.log(displayName)
             console.log(equipment)
@@ -196,8 +223,8 @@ const Profile = () => {
                         {isEditing?
                         <UserInformationEditor setShowProfileEditor={setShowProfileEditor} showProfileEditor={showProfileEditor} oldCapacity={capacity} oldBio={undefined} 
                         oldEquipment={undefined} oldAvailability={undefined} oldName={displayName} setName={setDisplayName} setCapacity={setCapacity} setAvailability={setAvailability} setBio={setBio} 
-                        setEquipment={setEquipment} oldPronouns={pronouns} setPronouns={setPronouns}></UserInformationEditor>
-                        :  <UserInformation owner={true} name={displayName} pronouns={pronouns} bio={bio} equipment={equipment} capacity={capacity} availability={availability} profilePicture={undefined}></UserInformation> }
+                        setEquipment={setEquipment} oldPronouns={pronouns} setPronouns={setPronouns} setImage={setImageRef}></UserInformationEditor>
+                        :  <UserInformation owner={true} name={displayName} pronouns={pronouns} bio={bio} equipment={equipment} capacity={capacity} availability={availability} profilePicture={imageRef}></UserInformation> }
                     </Col>
                 </Row>
 
@@ -253,3 +280,5 @@ export default withAuthUser({
     whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
     LoaderComponent: FullPageLoader,
   })(Profile)
+
+
