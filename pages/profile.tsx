@@ -1,7 +1,7 @@
 import HobbyCardEditor from "../components/hobbyCardEditor";
 import { useEffect, useState } from "react";
 import { AuthAction, init, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
-import { Button, Col, Container, Row, Form, Stack, Alert, Navbar } from "react-bootstrap";
+import { Button, Col, Container, Row, Form, Stack, Alert, Navbar, Modal } from "react-bootstrap";
 import FullPageLoader from "../components/FullPageLoader";
 import HobbyCard from "../components/hobbyCard";
 import { initializeApp } from "firebase-admin";
@@ -14,6 +14,7 @@ import { generateKey, getCipherInfo } from "crypto";
 import FormInput from "../components/formInput";
 import { stringify } from "querystring";
 import { Auth } from "firebase-admin/lib/auth/auth";
+import globals from '../styles/Home.module.css'
 
 
 const Profile = () => {
@@ -185,12 +186,11 @@ const Profile = () => {
         }
     }
 
-
     return(
         <>  
             <Container>
                 <Row>
-                    <Button onClick={handleEditChange}>{isEditing? "Save" : "Edit"}</Button>
+                    <Button className={globals.btn} onClick={handleEditChange}>{isEditing? "Save" : "Edit"}</Button>
                     <Col>
                         {isEditing?
                         <UserInformationEditor setShowProfileEditor={setShowProfileEditor} showProfileEditor={showProfileEditor} oldCapacity={capacity} oldBio={undefined} 
@@ -202,13 +202,14 @@ const Profile = () => {
 
                 <Container className="mt-3">
                     <h2>Hobbies</h2>
-                    <Button onClick={handleCreate}>New Hobby</Button>
+                    <Button className={globals.btn} onClick={handleCreate}>New Hobby</Button> <br/>
                     <Row className='m-auto'>
                         {cards.map( (card, index) => (
                             <Col md="4" key={index+"hobbyCard"}>
                                 <HobbyCard uid={AuthUser.id} setCards={setCards} index={index} instrument={card.instrument} genre={card.genres} 
                                 experience={card.experience} commitMin={card.commitMin} commitMax={card.commitMax} info={card.info} owner={true} 
-                                editCard={() => editCard(card.instrument, card.genres, card.experience, card.commitMin, card.commitMax, card.info)}  />
+                                editCard={() => editCard(card.instrument, card.genres, card.experience, card.commitMin, card.commitMax, card.info)}
+                                 />
                             </Col>
                         ))}
                     </Row>

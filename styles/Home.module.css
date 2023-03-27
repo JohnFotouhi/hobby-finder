@@ -19,6 +19,16 @@
     padding-top: 10%;
 }
 
+.btn{
+    background-color: #8ac853 !important;
+    border-color: #8ac853 !important; 
+}
+
+.btn:hover{
+    background-color: #6fae37 !important;
+    border-color: #6fae37 !important;
+}
+
 .bigButton {
     background-color: #8ac853;
     border-color: #8ac853;
