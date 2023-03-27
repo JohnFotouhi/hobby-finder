@@ -51,63 +51,37 @@ export default function UserInformation({owner, name, bio, equipment, availabili
                 <Col className="col-md-5" style ={{height: "100%", border: "solid"}}>
                     <Container>
                         <Row>
-                            <span>Schedule </span>
+                            <span>Availability</span>
                         </Row>
                         <Row>
                             <Col className={styles.cell}>
-                                <span>     </span>
+                                <span></span>
                             </Col>
                             <Col className={styles.cell}>
-                                <div >Mon</div>
+                                <div>M</div>
                             </Col>
                             <Col className={styles.cell}>
-                                <div>Tues</div>
+                                <div>T</div>
                             </Col>
                             <Col className={styles.cell}>
-                                <div>Wed</div>
+                                <div>W</div>
                             </Col>
                             <Col className={styles.cell}>
-                                <div>Thur</div>
+                                <div>Th</div>
                             </Col>
                             <Col className={styles.cell}>
-                                <div>Fri</div>
+                                <div>F</div>
                             </Col>
                             <Col className={styles.cell}>
-                                <div>Sat</div>
+                                <div>St</div>
                             </Col>
                             <Col className={styles.cell}>
-                                <div>Sun</div>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col className={styles.cell} >
-                                <span >M </span>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
+                                <div>Sn</div>
                             </Col>
                         </Row>
                         <Row>
                             <Col className={styles.cell} >
-                                <span >A</span>
+                                <span className={styles.morning}>Morning</span>
                             </Col>
                             <Col className={styles.cell}>
                                 <div></div>
@@ -133,7 +107,7 @@ export default function UserInformation({owner, name, bio, equipment, availabili
                         </Row>
                         <Row>
                             <Col className={styles.cell} >
-                                <span>E</span>
+                                <span className={styles.afternoon}>Afternoon</span>
                             </Col>
                             <Col className={styles.cell}>
                                 <div></div>
@@ -159,7 +133,33 @@ export default function UserInformation({owner, name, bio, equipment, availabili
                         </Row>
                         <Row>
                             <Col className={styles.cell} >
-                                <span>N</span>
+                                <span className={styles.evening}>Evening</span>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                            <Col className={styles.cell}>
+                                <div></div>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col className={styles.cell} >
+                                <span className={styles.night}>Night</span>
                             </Col>
                             <Col className={styles.cell}>
                                 <div></div>

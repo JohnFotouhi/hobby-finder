@@ -5,6 +5,7 @@ import SingleselectInput from "./singleselectinput";
 import FormInput from "./formInput";
 import { optionCSS } from "react-select/dist/declarations/src/components/Option";
 import { updateProfile } from "firebase/auth";
+import UploadFile from "./uploadFile";
 
 export default function UserInformationEditor({setShowProfileEditor, showProfileEditor, oldName, setName, oldCapacity, setCapacity, oldBio, setBio, oldEquipment, setEquipment, oldSchedule, setSchedule}) {
     
@@ -27,6 +28,7 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
                             Share a little bit about yourself!
                         </Form.Text>
                     </Form> </Col>
+                    <UploadFile></UploadFile>
                 <Col><Form>
                         <FormInput controlId="bio" label="Bio" type="text" placeholder={oldBio} text="" setValue={setBio} value={oldBio}/>
                         <Form.Text className="text-muted">
