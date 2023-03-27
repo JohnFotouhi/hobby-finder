@@ -1,0 +1,27 @@
+.cell {
+    border: solid;
+}
+
+.timeofday {
+    font-size: 35px;
+    font-family: bold;
+    font-family: Arial;
+}
+
+.morning {
+    font-size: .90em;
+}
+
+.afternoon {
+    font-size: .76em;
+}
+
+.evening {
+    font-size: .85em;
+    letter-spacing: 1px;
+}
+
+.night {
+    font-size: 1em;
+    letter-spacing: 3px;
+}

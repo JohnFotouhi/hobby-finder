@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { BsPlayBtnFill, BsPencil, BsTrash } from "react-icons/bs";
 import UserInfoModal from "./userInfoModal";
 import FormInput from "./formInput";
+import styles from "styles/schedule.module.css";
+import Table from 'react-bootstrap/Table';
 
 export default function UserInformation({owner, name, pronouns, bio, equipment, availability, capacity, profilePicture}){
     const [file, setFile] = useState("");
@@ -31,11 +33,11 @@ export default function UserInformation({owner, name, pronouns, bio, equipment, 
         <Container style={{padding: 10}}>
             <Row style={{padding: 60}}>
                 
-                <Col className="col-md-3">
+                <Col className="col-md-2">
                     <Image className= "square bg-primary rounded-pill" src={profilePicture} alt="profile_picture" width="200" height = "200"></Image>
                 </Col>
                 
-                <Col className="col-md-4">
+                <Col className="col-md-5">
                     <Col>
                         <Row>
                             <span className="fw-bold fs-2">{name}</span>
@@ -52,11 +54,65 @@ export default function UserInformation({owner, name, pronouns, bio, equipment, 
                         <span>{bio}</span>
                     </div> */}
                 </Col>
-                <Col className="col-md-4" style ={{border: "solid"}}>
-                    {/* Schedule */}
-                    <span>Schedule </span>
-                </Col>
-                
+                <Col className="col-md-5" style ={{height: "100%", border: "solid"}}>
+                    <span>Availability</span>
+                    <Table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>S</th>
+                                <th>M</th>
+                                <th>T</th>
+                                <th>W</th>
+                                <th>Th</th>
+                                <th>F</th>
+                                <th>S</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Morning</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Afternoon</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Evening</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Night</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </Table> 
+                </Col> 
             </Row>
 
           
