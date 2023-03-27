@@ -11,6 +11,10 @@
     /* text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000; */
 }
 
+.searchLogo {
+    width: 40%;
+}
+
 .main {
     padding-top: 10%;
 }
@@ -25,5 +29,7 @@
     background-color: #6fae37;
     border-color: #6fae37;
 }
+
+
 
 

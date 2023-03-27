@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useAuthUser, withAuthUser } from "next-firebase-auth";
 import { BsPersonCircle } from "react-icons/bs";
 import Jar from '@/public/jam-jar-icon.png';
+import logo from '../public/JAM.png'
 
 const Header = () => {
     const [confirmLogout, setConfirmLogout] = useState(false);
@@ -18,7 +19,7 @@ const Header = () => {
         <>
         {showHeader &&
             <Navbar bg="light" className="mx-0">
-                <Navbar.Brand className="p-0 mx-3"><Image src={Jar.src} height="35" width="35" className="mb-1" roundedCircle></Image>Jam</Navbar.Brand>
+                <Navbar.Brand className="p-0 mx-3"><Image src={logo.src} height="22" width="22" className="mb-1" roundedCircle></Image>Jam</Navbar.Brand>
                 <Container className="mx-0 px-0" fluid>   
                 <Nav className="mr-auto"> 
                     <Nav.Link href="/about">About</Nav.Link>
