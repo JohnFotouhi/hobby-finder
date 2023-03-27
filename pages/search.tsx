@@ -17,6 +17,7 @@ import HeroImage from '@/public/Jam-Hero.png';
 import HeroMobile from '@/public/Jam-Hero-mobile.jpg';
 import logo from '../public/JAM.png'
 import { useMediaQuery } from 'react-responsive';
+import globals from '../styles/Home.module.css'
 
 function Search() {
     const emptyFilters = {
@@ -112,8 +113,8 @@ function Search() {
                     {failedSearch ? "No musicians matched your search" : "Search for musicians near you"}
                 </h1>
                 {isMobile ? 
-                    <Image src={logo.src} style={{width: '100%'}} className="mt-5"></Image> :
-                    <Image src={logo.src}  className="mt-5"></Image>
+                    <Image src={logo.src} className={globals.searchLogo}></Image> :
+                    <Image src={logo.src}  className={globals.searchLogo}></Image>
                 }
             </Container>
             :
