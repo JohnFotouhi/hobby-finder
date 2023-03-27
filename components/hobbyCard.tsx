@@ -1,7 +1,7 @@
 import { Button, Col, Container, Row, Form, Card} from "react-bootstrap";
 import { BsRecordCircleFill } from "react-icons/bs";
 import { BsPlayBtnFill, BsPencil, BsTrash } from "react-icons/bs";
-import { useAuthUser } from "next-firebase-auth";
+import globals from '../styles/Home.module.css'
 
 export default function HobbyCard({uid, setCards, index, instrument, genre, experience, commitMin, commitMax, info, owner, editCard}) {
 
@@ -46,9 +46,9 @@ export default function HobbyCard({uid, setCards, index, instrument, genre, expe
         <Card style={{ width: '18rem' }}>
         <Card.Body>
             <Card.Title> 
-                {instrument} 
-                { owner? <Button onClick={editCard}><BsPencil/></Button> : null}
-                { owner? <Button onClick={deleteCard}><BsTrash/></Button> : null}
+                {instrument + '   '} 
+                { owner? <Button className={globals.btn} onClick={editCard}><BsPencil/></Button> : null}
+                { owner? <Button className={globals.btn} onClick={deleteCard}><BsTrash/></Button> : null}
             </Card.Title>
             <Col> <span style={{fontWeight: 'bold'}}>Genres: </span>{getGenreList(genre)} </Col>
             <Col> <span style={{fontWeight: 'bold'}}>Experience:</span> {experience} </Col>

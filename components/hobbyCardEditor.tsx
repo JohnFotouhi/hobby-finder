@@ -8,6 +8,7 @@ import {instrumentList, genreList, experienceList} from "../lists"
 import { BsMinecart } from "react-icons/bs";
 import { exit } from "process";
 import { info } from "console";
+import globals from '../styles/Home.module.css'
 
 export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, oldInstrument, oldGenre, oldGenreStrings, oldExperience, oldCommitMin, oldCommitMax, oldInfo}) {
     
@@ -220,8 +221,8 @@ export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, 
                 </Row>
                 {duplicate && (<p style={{color:"red", fontSize:14}}>Looks like you've already created a hobby for this instrument. Feel free to update your existing card instead.</p>)}
                 <br/>
-                <Button onClick={createCard}> {newCard ? "Create" : "Save"} </Button>
-                <Button onClick={() => setShow(false)}>Cancel</Button>
+                <Button className={globals.btn} onClick={createCard}> {newCard ? "Create" : "Save"} </Button>
+                <Button className={globals.btn} onClick={() => setShow(false)}>Cancel</Button>
             </Card.Body>
             </Card>
         </Modal>

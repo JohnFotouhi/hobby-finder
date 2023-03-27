@@ -14,6 +14,7 @@ import { generateKey, getCipherInfo } from "crypto";
 import FormInput from "../components/formInput";
 import { stringify } from "querystring";
 import { Auth } from "firebase-admin/lib/auth/auth";
+import globals from '../styles/Home.module.css'
 
 
 const Profile = () => {
@@ -190,7 +191,7 @@ const Profile = () => {
         <>  
             <Container>
                 <Row>
-                    <Button onClick={handleEditChange}>{isEditing? "Save" : "Edit"}</Button>
+                    <Button className={globals.btn} onClick={handleEditChange}>{isEditing? "Save" : "Edit"}</Button>
                     <Col>
                         {isEditing?
                         <UserInformationEditor setShowProfileEditor={setShowProfileEditor} showProfileEditor={showProfileEditor} oldCapacity={capacity} oldBio={undefined} 
@@ -202,7 +203,7 @@ const Profile = () => {
 
                 <Container className="mt-3">
                     <h2>Hobbies</h2>
-                    <Button onClick={handleCreate}>New Hobby</Button>
+                    <Button className={globals.btn} onClick={handleCreate}>New Hobby</Button> <br/>
                     <Row className='m-auto'>
                         {cards.map( (card, index) => (
                             <Col md="4" key={index+"hobbyCard"}>

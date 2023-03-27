@@ -102,8 +102,8 @@ function Search() {
                                 placeholder='Select an Instrument...'
                             />
                         </div>
-                        <Button onClick={handleSearch} style={{height: '38px', width: isMobile ? "70px" : ''}} >Search <BsSearch /></Button>
-                        <Button onClick={handleEditFilters} style={{height: '38px', width: isMobile ? "70px" : ''}}>Filter<BsFunnelFill /></Button>
+                        <Button className={globals.bigButton} onClick={handleSearch} style={{height: '38px', width: isMobile ? "70px" : ''}} >Search <BsSearch /></Button>
+                        <Button className={globals.bigButton} onClick={handleEditFilters} style={{height: '38px', width: isMobile ? "70px" : ''}}>Filter<BsFunnelFill /></Button>
                     </InputGroup>
                 </Row>
             </Container>
