@@ -1,7 +1,7 @@
 import HobbyCardEditor from "../components/hobbyCardEditor";
 import { useEffect, useState } from "react";
 import { AuthAction, init, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
-import { Button, Col, Container, Row, Form, Stack, Alert, Navbar } from "react-bootstrap";
+import { Button, Col, Container, Row, Form, Stack, Alert, Navbar, Modal } from "react-bootstrap";
 import FullPageLoader from "../components/FullPageLoader";
 import HobbyCard from "../components/hobbyCard";
 import { initializeApp } from "firebase-admin";
@@ -186,7 +186,6 @@ const Profile = () => {
         }
     }
 
-
     return(
         <>  
             <Container>
@@ -209,7 +208,8 @@ const Profile = () => {
                             <Col md="4" key={index+"hobbyCard"}>
                                 <HobbyCard uid={AuthUser.id} setCards={setCards} index={index} instrument={card.instrument} genre={card.genres} 
                                 experience={card.experience} commitMin={card.commitMin} commitMax={card.commitMax} info={card.info} owner={true} 
-                                editCard={() => editCard(card.instrument, card.genres, card.experience, card.commitMin, card.commitMax, card.info)}  />
+                                editCard={() => editCard(card.instrument, card.genres, card.experience, card.commitMin, card.commitMax, card.info)}
+                                 />
                             </Col>
                         ))}
                     </Row>
