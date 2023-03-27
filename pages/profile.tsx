@@ -26,6 +26,7 @@ const Profile = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [capacity, setCapacity] = useState("");
     const [bio, setBio] = useState("");
+    const [availability, setAvailability] = useState({})
     const [equipment, setEquipment] = useState("");
     const [schedule, setSchedule] = useState({});
     const [displayName, setDisplayName] = useState("");
@@ -82,7 +83,7 @@ const Profile = () => {
             //set pronouns to be the object version.
             setPronouns(data.pronouns)
             setBio(data.bio);
-            //setAvailability(data.availability);
+            setAvailability(data.availability);
             setCapacity(data.host);
             setEquipment(data[4]);
         });
@@ -194,9 +195,9 @@ const Profile = () => {
                     <Col>
                         {isEditing?
                         <UserInformationEditor setShowProfileEditor={setShowProfileEditor} showProfileEditor={showProfileEditor} oldCapacity={capacity} oldBio={undefined} 
-                        oldEquipment={undefined} oldSchedule={undefined} oldName={displayName} setName={setDisplayName} setCapacity={setCapacity} setBio={setBio} 
-                        setEquipment={setEquipment} setSchedule={undefined} oldPronouns={pronouns} setPronouns={setPronouns}></UserInformationEditor>
-                        :  <UserInformation owner={true} name={displayName} pronouns={pronouns} bio={bio} equipment={equipment} capacity={capacity} availability={undefined} profilePicture={undefined}></UserInformation> }
+                        oldEquipment={undefined} oldAvailability={undefined} oldName={displayName} setName={setDisplayName} setCapacity={setCapacity} setAvailability={setAvailability} setBio={setBio} 
+                        setEquipment={setEquipment} oldPronouns={pronouns} setPronouns={setPronouns}></UserInformationEditor>
+                        :  <UserInformation owner={true} name={displayName} pronouns={pronouns} bio={bio} equipment={equipment} capacity={capacity} availability={availability} profilePicture={undefined}></UserInformation> }
                     </Col>
                 </Row>
 

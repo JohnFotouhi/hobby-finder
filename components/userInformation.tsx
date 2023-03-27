@@ -6,6 +6,7 @@ import { BsPlayBtnFill, BsPencil, BsTrash } from "react-icons/bs";
 import UserInfoModal from "./userInfoModal";
 import FormInput from "./formInput";
 import styles from "styles/schedule.module.css";
+import Table from 'react-bootstrap/Table';
 
 export default function UserInformation({owner, name, pronouns, bio, equipment, availability, capacity, profilePicture}){
     const [file, setFile] = useState("");
@@ -54,145 +55,64 @@ export default function UserInformation({owner, name, pronouns, bio, equipment, 
                     </div> */}
                 </Col>
                 <Col className="col-md-5" style ={{height: "100%", border: "solid"}}>
-                    <Container>
-                        <Row>
-                            <span>Availability</span>
-                        </Row>
-                        <Row>
-                            <Col className={styles.cell}>
-                                <span></span>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div>M</div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div>T</div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div>W</div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div>Th</div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div>F</div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div>St</div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div>Sn</div>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col className={styles.cell} >
-                                <span className={styles.morning}>Morning</span>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col className={styles.cell} >
-                                <span className={styles.afternoon}>Afternoon</span>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col className={styles.cell} >
-                                <span className={styles.evening}>Evening</span>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col className={styles.cell} >
-                                <span className={styles.night}>Night</span>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                            <Col className={styles.cell}>
-                                <div></div>
-                            </Col>
-                        </Row>
-                        
-                    </Container>
-                    
-                </Col>
-                
+                    <span>Availability</span>
+                    <Table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>S</th>
+                                <th>M</th>
+                                <th>T</th>
+                                <th>W</th>
+                                <th>Th</th>
+                                <th>F</th>
+                                <th>S</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Morning</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Afternoon</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Evening</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Night</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </Table> 
+                </Col> 
             </Row>
 
           
