@@ -40,6 +40,9 @@
     border-color: #6fae37;
 }
 
-
+.upload {
+    display: none;
+    /* visibility: hidden!important; */
+}
 
 

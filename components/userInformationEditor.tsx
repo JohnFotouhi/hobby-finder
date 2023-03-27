@@ -7,7 +7,7 @@ import { optionCSS } from "react-select/dist/declarations/src/components/Option"
 import { updateProfile } from "firebase/auth";
 import UploadFile from "./uploadFile";
 
-export default function UserInformationEditor({setShowProfileEditor, showProfileEditor, oldName, setName, oldPronouns, setPronouns, oldCapacity, setCapacity, oldBio, setBio, oldEquipment, setEquipment, oldAvailability, setAvailability}) {
+export default function UserInformationEditor({setShowProfileEditor, showProfileEditor, oldName, setName, oldPronouns, setPronouns, oldCapacity, setCapacity, oldBio, setBio, oldEquipment, setEquipment, oldAvailability, setAvailability, setImage}) {
     
 
     const capacity = [{label: "1", value: "capacity1"}, {label: "2", value: "capacity2"}, {label: "3", value: "capacity3"}, {label: "4", value: "capacity4"}, {label: "5", value: "capacity5"},
@@ -32,7 +32,7 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
                             Would you want to host musician friends? If so, how many?
                         </Form.Text>
                     </Form> </Col>
-                    <UploadFile></UploadFile>
+                    <UploadFile setImage={setImage}></UploadFile>
                 <Col><Form>
                         <FormInput controlId="bio" label="Bio" type="text" placeholder={oldBio} text="" setValue={setBio} value={oldBio}/>
                         <Form.Text className="text-muted">
