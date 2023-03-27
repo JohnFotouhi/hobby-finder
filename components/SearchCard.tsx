@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import user from "@/pages/user";
 
 
-export default function SearchCard(props, authId){
+export default function SearchCard(props){
     const router = useRouter();
     const [cards, setCards] = useState([]);
     const [genres, setGenres] = useState([]);
@@ -15,7 +15,7 @@ export default function SearchCard(props, authId){
         console.log(props);
         router.push({
             pathname: "/user",
-            query: {uid: authId}
+            query: {uid: props.authId}
         });
     }
 

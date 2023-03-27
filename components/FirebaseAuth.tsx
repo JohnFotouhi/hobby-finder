@@ -1,10 +1,10 @@
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
 import { getAuth, EmailAuthProvider, sendEmailVerification } from 'firebase/auth'
 import { useEffect, useState } from 'react';
-import { getFirestore, collection } from 'firebase/firestore';
+import { getFirestore, collection, updateDoc, query, where, getDocs, doc } from 'firebase/firestore';
 import { Modal } from 'react-bootstrap';
 import { useAuthUser } from 'next-firebase-auth';
-import firebaseApp from '@/config';
+import firebaseApp from '../config';
 
 const database = getFirestore(firebaseApp);
 
@@ -19,12 +19,6 @@ export default function FirebaseAuth(){
     const AuthUser = useAuthUser();
     const usersCollection = collection(database, "users");
 
-    async function handleNoEmailVerification(){
-        setEmailVerifyMessage(true);
-        setRenderAuth(false);
-        // await AuthUser.signOut();
-    }
-
     // https://github.com/gladly-team/next-firebase-auth/blob/v1.x/example/components/FirebaseAuth.js
     const firebaseAuthConfig = {
         signInFlow: 'popup',
@@ -34,14 +28,14 @@ export default function FirebaseAuth(){
                 requireDisplayName: true,
             },
         ],
-        signInSuccessUrl: '/search',
+        signInSuccessUrl: '/verifyEmail',
         credentialHelper: 'none',
         callbacks: {
             signInSuccessWithAuthResult: (signInData) => {
+                console.log("SIGN IN DATA")
                 console.log(signInData);
                 const user = signInData.user;
                 if(signInData.additionalUserInfo.isNewUser){
-                    console.log("add");
                     if(user !== null){
                         sendEmailVerification(user)
                         .then(() => {
@@ -57,16 +51,19 @@ export default function FirebaseAuth(){
                     .then((data) => {
                         console.log("done");
                     });
+
                 }
                 else{
                     if(! signInData.user.emailVerified){
                         console.log("IM HERE");
+                        
                         // handleNoEmailVerification();
                     }
                     else{
                         // they verified email
                     }
-                }
+                }              
+
                 return true;
             },
             

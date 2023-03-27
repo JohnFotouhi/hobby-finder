@@ -23,17 +23,17 @@ export default async (req, res) =>{
         let userId;
         querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
+            //console.log(doc.id, " => ", doc.data());
             userId = doc.id;
         });
 
-        console.log(userId);
+        //console.log(userId);
 
         const hobbyCards = await getDocs(collection(database, "users", userId, "hobbies"));
         let cardArray: Card[] = [];
         hobbyCards.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
+            //console.log(doc.id, " => ", doc.data());
             let newCard: Card = {
                 commitMin: doc.data().commitMin,
                 commitMax: doc.data().commitMax,
@@ -46,7 +46,7 @@ export default async (req, res) =>{
         });
 
 
-        console.log(cardArray);
+        //console.log(cardArray);
 
         res.status(200).json(cardArray)
         

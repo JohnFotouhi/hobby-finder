@@ -29,7 +29,7 @@ const Profile = () => {
     const [equipment, setEquipment] = useState("");
     const [schedule, setSchedule] = useState({});
     const [displayName, setDisplayName] = useState("");
-
+    const [pronouns, setPronouns] = useState("")
 
     //user's cards
     const [cards, setCards] = useState<any[]>([]);
@@ -50,7 +50,7 @@ const Profile = () => {
     useEffect(() => {
         console.log("IN USE EFFECT");
         getCards();
-        //getProfile();
+        getProfile();
     }, [oldInfo]);
 
     const getCards = () => {
@@ -79,6 +79,8 @@ const Profile = () => {
             console.log("user data")
             console.log(data)
             setDisplayName(data.name);
+            //set pronouns to be the object version.
+            setPronouns(data.pronouns)
             setBio(data.bio);
             //setAvailability(data.availability);
             setCapacity(data.host);
@@ -155,6 +157,7 @@ const Profile = () => {
                 body: JSON.stringify({
                     uid: AuthUser.id,
                     name: displayName,
+                    pronouns: pronouns,
                     bio: bio,
                     availability: schedule,
                     host: capacity,
@@ -168,7 +171,9 @@ const Profile = () => {
                 .then((data) => {
                     if(status == 200){
                         console.log("SUCESSFUL PROFILE UPDATE");
-                        console.log(data);       
+                        console.log(data); 
+
+                        setPronouns(data.pronouns)      
                     }
                     else if(status == 409){
                         console.log("UNSUCESSFUL USER")
@@ -188,8 +193,10 @@ const Profile = () => {
                     <Button onClick={handleEditChange}>{isEditing? "Save" : "Edit"}</Button>
                     <Col>
                         {isEditing?
-                        <UserInformationEditor setShowProfileEditor={setShowProfileEditor} showProfileEditor={showProfileEditor} oldCapacity={capacity} oldBio={undefined} oldEquipment={undefined} oldSchedule={undefined} oldName={displayName} setName={setDisplayName} setCapacity={setCapacity} setBio={setBio} setEquipment={setEquipment} setSchedule={undefined}></UserInformationEditor>
-                        :  <UserInformation owner={true} name={displayName} bio={bio} equipment={equipment} capacity={capacity} availability={undefined} profilePicture={undefined}></UserInformation> }
+                        <UserInformationEditor setShowProfileEditor={setShowProfileEditor} showProfileEditor={showProfileEditor} oldCapacity={capacity} oldBio={undefined} 
+                        oldEquipment={undefined} oldSchedule={undefined} oldName={displayName} setName={setDisplayName} setCapacity={setCapacity} setBio={setBio} 
+                        setEquipment={setEquipment} setSchedule={undefined} oldPronouns={pronouns} setPronouns={setPronouns}></UserInformationEditor>
+                        :  <UserInformation owner={true} name={displayName} pronouns={pronouns} bio={bio} equipment={equipment} capacity={capacity} availability={undefined} profilePicture={undefined}></UserInformation> }
                     </Col>
                 </Row>
 

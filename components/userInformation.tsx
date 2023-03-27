@@ -7,7 +7,7 @@ import UserInfoModal from "./userInfoModal";
 import FormInput from "./formInput";
 import styles from "styles/schedule.module.css";
 
-export default function UserInformation({owner, name, bio, equipment, availability, capacity, profilePicture}){
+export default function UserInformation({owner, name, pronouns, bio, equipment, availability, capacity, profilePicture}){
     const [file, setFile] = useState("");
 
     const [showEquipmentInfo, setShowEquipmentInfo] = useState(false);
@@ -38,7 +38,12 @@ export default function UserInformation({owner, name, bio, equipment, availabili
                 
                 <Col className="col-md-5">
                     <Col>
-                        <span className="fw-bold fs-2">{name}</span>
+                        <Row>
+                            <span className="fw-bold fs-2">{name}</span>
+                        </Row>
+                        <Row>
+                            <span>{pronouns}</span>
+                        </Row>
                     </Col>
                     
                     <Col style = {{height: "100%", border: "solid"}}>

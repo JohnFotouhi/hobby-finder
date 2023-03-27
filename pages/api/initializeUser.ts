@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, addDoc } from "firebase/firestore";
-import firebaseApp from '@/config';
+import { getFirestore, collection, addDoc, GeoPoint } from "firebase/firestore";
+import firebaseApp from '../../config';
 
 const database = getFirestore(firebaseApp);
 
@@ -10,11 +10,13 @@ export default async function writeData(req, res){
     const docRef = await addDoc(collection(database, 'users'), {
       key: req.body.uid,
       name: req.body.displayName,
+      email: req.body.email,
       availability: {},
       bio: "",
       pronouns: "",
       host: 0,
-      equipment: ""
+      equipment: "",
+      relationships: [{key: "", status: ""}]
     });
     docRef.id
     console.log(docRef);
