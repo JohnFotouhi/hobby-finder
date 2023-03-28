@@ -13,6 +13,17 @@ import Tooltip from 'react-bootstrap/Tooltip';
 export default function UserInformation({owner, name, pronouns, bio, equipment, availability, capacity, profilePicture}){
     const [file, setFile] = useState("");
 
+    type Day = {
+        morn: boolean,
+        aft: boolean,
+        eve: boolean,
+        night: boolean,
+      }
+
+    var emptyDay = {morn: false, aft: false, eve: false, night: false}
+    const avail : [Day, Day, Day, Day, Day, Day, Day] = [emptyDay,emptyDay,emptyDay,emptyDay,emptyDay,emptyDay,emptyDay];
+    console.log(avail);
+
     const [showEquipmentInfo, setShowEquipmentInfo] = useState(false);
     const [showScheduleInfo, setShowScheduleInfo] = useState(false);
 
@@ -75,9 +86,12 @@ export default function UserInformation({owner, name, pronouns, bio, equipment, 
                         <tbody>
                             <tr>
                                 <td>Morning</td>
-                                <td className={availability[0].morn? "styles/isAvail" : "" }>{availability[0].morn? "Y" : "N"}</td>
+                                {/* <td className={availability[0].morn? "styles/isAvail" : "" }>{availability[0].morn? "Y" : "N"}</td>
                                 <td className={availability[0].morn? "styles/isAvail" : "" }></td>
-                                <td className={availability[0].morn? "styles/isAvail" : "" }></td>
+                                <td className={availability[0].morn? "styles/isAvail" : "" }></td> */}
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>

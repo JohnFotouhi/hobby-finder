@@ -25,12 +25,17 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
         n: boolean
       }
 
-    function changeAvailability(day, time, value)  {
+    function changeAvailability(dayIndex, timeIndex, value)  {
         //each checkbox sends a string on check
         //checked against a switch
-        const dayUpdate = oldAvailability[day];
+        console.log(oldAvailability)
+        const dayUpdate = oldAvailability[dayIndex];
         console.log(dayUpdate);
-        // dayUpdate.time = value;
+        console.log(value);
+        dayUpdate.timeIndex = value;
+        oldAvailability[0].timeIndex = value
+        console.log(oldAvailability[0].timeIndex);
+        console.log(oldAvailability)
 
         
     }
@@ -98,43 +103,43 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
                         <tbody>
                             <tr>
                                 <td>Morning</td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(0, "morn", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(1, "morn", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(2, "morn", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(3, "morn", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(4, "morn", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(5, "morn", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(6, "morn", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(0, "morn", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(1, "morn", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(2, "morn", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(3, "morn", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(4, "morn", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(5, "morn", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(6, "morn", e.target.checked)}/></td>
                             </tr>
                             <tr>
                                 <td>Afternoon</td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(0, "aft", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(1, "aft", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(2, "aft", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(3, "aft", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(4, "aft", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(5, "aft", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(6, "aft", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(0, "aft", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(1, "aft", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(2, "aft", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(3, "aft", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(4, "aft", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(5, "aft", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(6, "aft", e.target.checked)}/></td>
                             </tr>
                             <tr>
                                 <td>Evening</td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(0, "eve", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(1, "eve", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(2, "eve", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(3, "eve", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(4, "eve", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(5, "eve", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(6, "eve", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(0, "eve", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(1, "eve", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(2, "eve", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(3, "eve", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(4, "eve", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(5, "eve", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(6, "eve", e.target.checked)}/></td>
                             </tr>
                             <tr>
                                 <td>Night</td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(0, "night", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(1, "night", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(2, "night", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(3, "night", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(4, "night", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(5, "night", e)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(6, "night", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(0, "night", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(1, "night", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(2, "night", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(3, "night", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(4, "night", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(5, "night", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(6, "night", e.target.checked)}/></td>
                             </tr>
                         </tbody>
                     </Table>
