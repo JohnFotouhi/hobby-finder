@@ -17,18 +17,35 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
                             {label: "6", value: "capacity6"}, {label: "7", value: "capacity7"}, {label: "8+", value: "capacity8"},]
     const pronounList = [{label: "she/her", value: "she/her"}, {label: "he/him", value: "he/him"}, {label: "they/them", value: "they/them"}]
 
+
+    type Day = {
+        m: boolean,
+        a: boolean,
+        e: boolean,
+        n: boolean
+      }
+
+    function changeAvailability(day, time, value)  {
+        //each checkbox sends a string on check
+        //checked against a switch
+        const dayUpdate = oldAvailability[day];
+        console.log(dayUpdate);
+        // dayUpdate.time = value;
+
+        
+    }
+
     return(
         // TO DO: Add inputs already there for if they're editing rather than creating
 
-        
-
+    
 <Container style={{padding: 10}}>
             <Row style={{padding: 60}}>
 
                 <Col className="col-md-3">
                     <Col>
                         <Row>
-                            <Image className= "square bg-light rounded-pill" src={profilePicture} alt="profile_picture" width="200" height = "150"></Image>
+                            <Image className= "square bg-light rounded-pill" src={profilePicture} alt="profile_picture" width="200" height = "200"></Image>
 
                         </Row>
                         <Row style={{padding: 10}}>
@@ -39,21 +56,21 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
                                     <UploadFile setImage={setImage}></UploadFile>   
                                 </Col>     
                         </Row>
-                        <Row style={{padding: 25}}>
-                        <Form style = {{height: "100%"}}>
-                                <FormInput controlId="name" label="Update profile name" type="text" placeholder={oldName} text="" setValue={setName} value={oldName}/> 
-                            </Form> 
-                            <span className="fw-bold fs-2">{oldName}</span>
-                        </Row>
-                        <Row style={{padding: 20}}>
+                        
+                        {/* <Row style={{padding: 20}}>
                             <SingleselectInput controlId={undefined} label={"Pronouns"} text={""} options={pronounList} setValue={setPronouns} 
                             value={oldPronouns? {label: oldPronouns, value: oldPronouns} : undefined} multi={false}/>
-                        </Row>
+                        </Row> */}
                     </Col>
                     
                     
                 </Col>
                 <Col className="col-md-4" >
+                    <Row style={{padding: 25}}>
+                        <Form style = {{height: "100%"}}>
+                                <FormInput controlId="name" label="Update profile name" type="text" placeholder={oldName} text="" setValue={setName} value={oldName}/> 
+                            </Form> 
+                        </Row>
                     <Row style={{padding: 20}}>
                         <Form>
                         {/* <textarea name="bio" rows={4} cols={40} value={oldBio}></textarea> */}
@@ -62,6 +79,65 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
                         </Form> 
                     </Row>
                         
+                </Col>
+                <Col className="col-md-5" style ={{height: "100%", width: "40%"}}>
+                    <div style={{alignContent: "center"}}>Availability</div>
+                    <Table style={{backgroundColor: "whitesmoke"}}>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>S</th>
+                                <th>M</th>
+                                <th>T</th>
+                                <th>W</th>
+                                <th>Th</th>
+                                <th>F</th>
+                                <th>S</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Morning</td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(0, "morn", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(1, "morn", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(2, "morn", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(3, "morn", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(4, "morn", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(5, "morn", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(6, "morn", e)}/></td>
+                            </tr>
+                            <tr>
+                                <td>Afternoon</td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(0, "aft", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(1, "aft", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(2, "aft", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(3, "aft", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(4, "aft", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(5, "aft", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(6, "aft", e)}/></td>
+                            </tr>
+                            <tr>
+                                <td>Evening</td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(0, "eve", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(1, "eve", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(2, "eve", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(3, "eve", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(4, "eve", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(5, "eve", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(6, "eve", e)}/></td>
+                            </tr>
+                            <tr>
+                                <td>Night</td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(0, "night", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(1, "night", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(2, "night", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(3, "night", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(4, "night", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(5, "night", e)}/></td>
+                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(6, "night", e)}/></td>
+                            </tr>
+                        </tbody>
+                    </Table>
                     <Row style={{padding: 20}}>
                         <Col>
                             <Form>
@@ -81,67 +157,7 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
                                 </Form.Text>
                             </Form> 
                         </Col>
-                    </Row>
-                        
-                </Col>
-                <Col className="col-md-5" style ={{height: "100%", width: "40%"}}>
-                    <div style={{alignContent: "center"}}>Availability</div>
-                    <Table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>S</th>
-                                <th>M</th>
-                                <th>T</th>
-                                <th>W</th>
-                                <th>Th</th>
-                                <th>F</th>
-                                <th>S</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Morning</td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={undefined}  /></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Afternoon</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Evening</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Night</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </Table> 
+                    </Row> 
                 </Col> 
             </Row>
 

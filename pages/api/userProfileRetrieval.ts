@@ -4,11 +4,21 @@ import { collection, doc, getDocs, getFirestore, updateDoc, query, where } from 
 
 const database = getFirestore(firebaseApp);
 
+type Avail = {
+    sm: boolean, sa: boolean, se: boolean, sn: boolean,
+    mm: boolean, ma: boolean, me: boolean, mn: boolean,
+    tm: boolean, ta: boolean, te: boolean, tn: boolean,
+    wm: boolean, wa: boolean, we: boolean, wn: boolean,
+    thm: boolean, tha: boolean, the: boolean, thn: boolean,
+    fm: boolean, fa: boolean, fe: boolean, fn: boolean,
+    stm: boolean, sta: boolean, ste: boolean, stn: boolean,
+}
+
 type Profile = {
     name: string
     pronouns: string
     bio: string
-    availability: {}
+    availability: Avail
     host: number
     equipment: string
   }
