@@ -36,4 +36,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 # this be zoe!
 
 Link to the site:
-[hobby-finder.vercel.app](hobby-finder.vercel.app)
+[hobby-finder.vercel.app](http://hobby-finder.vercel.app)
