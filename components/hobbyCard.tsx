@@ -47,12 +47,18 @@ export default function HobbyCard({uid, setCards, index, instrument, genre, expe
     }
 
     return(
-        <><Card style={{ width: '18rem' }}>
+        <><Card className={globals.card}>
             <Card.Body>
                 <Card.Title>
-                    {instrument + '   '}
-                    {owner ? <Button className={globals.btn} onClick={editCard}><BsPencil /></Button> : null}
-                    {owner ? <Button className={globals.btn} onClick={() => setConfirmDelete(true)}><BsTrash /></Button> : null}
+                    <Row>
+                        <Col>
+                            {instrument + '   '}
+                        </Col>
+                        <Col align="right">
+                            {owner ? <Button className={globals.btn} onClick={editCard} style={{margin:1}}><BsPencil /></Button> : null}
+                            {owner ? <Button className={globals.btn} onClick={() => setConfirmDelete(true)} style={{margin:1}}><BsTrash /></Button> : null}
+                        </Col>
+                    </Row>
                 </Card.Title>
                 <Col> <span style={{ fontWeight: 'bold' }}>Genres: </span>{getGenreList(genre)} </Col>
                 <Col> <span style={{ fontWeight: 'bold' }}>Experience:</span> {experience} </Col>

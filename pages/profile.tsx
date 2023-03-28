@@ -4,19 +4,13 @@ import { AuthAction, init, useAuthUser, withAuthUser, withAuthUserTokenSSR } fro
 import { Button, Col, Container, Row, Form, Stack, Alert, Navbar, Modal } from "react-bootstrap";
 import FullPageLoader from "../components/FullPageLoader";
 import HobbyCard from "../components/hobbyCard";
-import { initializeApp } from "firebase-admin";
 import UserInformation from "../components/userInformation";
-//import Jon from "/public/User_images/jon.jpg"; //image won't import, idk why. I imagine we're changing this funcitonality anyway
 import UserInformationEditor from '../components/userInformationEditor';
-import { updateProfile } from 'firebase/auth';
 import {instrumentList, experienceList, genreList} from "../lists"
-import { generateKey, getCipherInfo } from "crypto";
-import FormInput from "../components/formInput";
-import { stringify } from "querystring";
-import { Auth } from "firebase-admin/lib/auth/auth";
 import globals from '../styles/Home.module.css'
 import firebaseApp from "../config";
 import { getDownloadURL, getStorage, listAll, ref, uploadBytes} from "firebase/storage";
+import { BsPlusLg} from "react-icons/bs";
 
 
 const Profile = () => {
@@ -229,15 +223,21 @@ const Profile = () => {
                 </Row>
 
                 <Container className="mt-3">
-                    <h2>Hobbies</h2>
-                    <Button className={globals.btn} onClick={handleCreate}>New Hobby</Button> <br/>
-                    <Row className='m-auto'>
+                    <Row>
+                        <Col md={4}>
+                        <h2>Hobbies</h2>
+                        </Col>
+                        <Col md={{ span: 1, offset: 7 }}>
+                        <Button className={globals.btn} onClick={handleCreate}><BsPlusLg/></Button> 
+                        </Col>
+                    </Row>
+                    <Row className='m-auto' style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
                         {cards.map( (card, index) => (
                             <Col md="4" key={index+"hobbyCard"}>
                                 <HobbyCard uid={AuthUser.id} setCards={setCards} index={index} instrument={card.instrument} genre={card.genres} 
                                 experience={card.experience} commitMin={card.commitMin} commitMax={card.commitMax} info={card.info} owner={true} 
                                 editCard={() => editCard(card.instrument, card.genres, card.experience, card.commitMin, card.commitMax, card.info)}
-                                 />
+                                />
                             </Col>
                         ))}
                     </Row>
