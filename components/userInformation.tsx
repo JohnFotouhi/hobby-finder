@@ -33,21 +33,22 @@ export default function UserInformation({owner, name, pronouns, bio, equipment, 
         <Container style={{padding: 10}}>
             <Row style={{padding: 60}}>
                 
-                <Col className="col-md-2">
-                    <Image className= "square bg-primary rounded-pill" src={profilePicture} alt="profile_picture" width="200" height = "200"></Image>
+                <Col className="col-md-3">
+                    <Row> 
+                        <Image className= "square bg-primary rounded-pill" src={profilePicture} alt="profile_picture" width="200" height = "200"></Image>
+                    </Row>
+                    
+                    <Row>
+                        <span>{pronouns}</span>
+                    </Row>
+                    
                 </Col>
                 
-                <Col className="col-md-5">
+                <Col className="col-md-4">
                     <Col>
-                        <Row>
-                            <span className="fw-bold fs-2">{name}</span>
-                        </Row>
-                        <Row>
-                            <span>{pronouns}</span>
-                        </Row>
+                        <span className="fw-bold fs-2">{name}</span>
                     </Col>
-                    
-                    <Col style = {{height: "100%", border: "solid"}}>
+                    <Col style = {{height: "100%"}}>
                         <span>{bio}</span>
                     </Col>
                     {/* <div className="fluid square border border-dark" style={{maxHeight: "100%"}}>
@@ -123,7 +124,7 @@ export default function UserInformation({owner, name, pronouns, bio, equipment, 
                     {/* Can host */}
                     <div className="square border border-dark"> Jam Session Host Capacity: {capacity} people</div>
                 </Col>
-                <Col className="col-md-3" style ={{border: "solid"}} >
+                <Col className="col-md-4" style ={{border: "solid"}} >
                     {/* Equipment */}
                     <span>Equipment: {equipment}</span>
                 </Col>

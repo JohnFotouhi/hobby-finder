@@ -223,7 +223,7 @@ const Profile = () => {
                         {isEditing?
                         <UserInformationEditor setShowProfileEditor={setShowProfileEditor} showProfileEditor={showProfileEditor} oldCapacity={capacity} oldBio={undefined} 
                         oldEquipment={undefined} oldAvailability={undefined} oldName={displayName} setName={setDisplayName} setCapacity={setCapacity} setAvailability={setAvailability} setBio={setBio} 
-                        setEquipment={setEquipment} oldPronouns={pronouns} setPronouns={setPronouns} setImage={setImageRef}></UserInformationEditor>
+                        setEquipment={setEquipment} oldPronouns={pronouns} setPronouns={setPronouns} setImage={setImageRef} profilePicture={imageRef}></UserInformationEditor>
                         :  <UserInformation owner={true} name={displayName} pronouns={pronouns} bio={bio} equipment={equipment} capacity={capacity} availability={availability} profilePicture={imageRef}></UserInformation> }
                     </Col>
                 </Row>
