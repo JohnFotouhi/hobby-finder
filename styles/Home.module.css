@@ -45,4 +45,13 @@
     /* visibility: hidden!important; */
 }
 
+.card {
+    flex: 1;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #fef7e7;
+    border-color: #fde59b;
+    border-width: 2px;
+}
+
 
