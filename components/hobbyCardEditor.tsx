@@ -66,6 +66,7 @@ export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, 
         //Make sure they've selected all inputs
         if(Object.keys(instrumentSelect).length == 0){     
             setNoInst(true);
+            //console.log(oldAvailability.keys(time))
         }       
         if(genreSelect.length == 0){
             setNoGenre(true);
@@ -215,7 +216,7 @@ export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, 
                     <Form.Group>
                     <Form.Label>Details</Form.Label> <br/>
                     <Form.Text> Additional info you would like to share with users about this hobby.</Form.Text>
-                    <Form.Control type="text" maxLength={200} defaultValue={oldInfo} onChange={handleInfoChange} placeholder="I'm looking for..."/>
+                    <Form.Control type="text" defaultValue={oldInfo} onChange={handleInfoChange} placeholder="I'm looking for..."/>
                     </Form.Group>
                     {noInfo && (<p style={{color:"red", fontSize:13}}>Please include further details.</p>)}
                 </Row>
@@ -228,3 +229,13 @@ export default function HobbyCardEditor({uid, setCards, setShow, show, newCard, 
         </Modal>
     );
 }
+
+//OLD GENRE SELECT
+/* <MultiselectInput
+        controlId="skillInput"
+        label="Genres"
+        text=""
+        selected={genreSelect}
+        setSelected={setGenre}
+        options={genreList}
+        />  */

@@ -8,7 +8,7 @@ type Profile = {
     name: string
     pronouns: string
     bio: string
-    availability: {}
+    availability: []
     host: number
     equipment: string
   }
