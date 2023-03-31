@@ -2,6 +2,10 @@
     border: solid;
 }
 
+.isAvail {
+    background-color: #e6f3d8 !important;
+}
+
 .timeofday {
     font-size: 35px;
     font-family: bold;

@@ -4,6 +4,8 @@ import { collection, doc, getDocs, getFirestore, updateDoc, query, where } from 
 
 const database = getFirestore(firebaseApp);
 
+
+
 type Profile = {
     name: string
     pronouns: string

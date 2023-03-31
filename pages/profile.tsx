@@ -10,7 +10,7 @@ import {instrumentList, experienceList, genreList} from "../lists"
 import globals from '../styles/Home.module.css'
 import firebaseApp from "../config";
 import { getDownloadURL, getStorage, listAll, ref, uploadBytes} from "firebase/storage";
-import { BsPlusLg} from "react-icons/bs";
+import { BsChatRight, BsPlusLg} from "react-icons/bs";
 
 
 const Profile = () => {
@@ -211,13 +211,18 @@ const Profile = () => {
     return(
         <>  
             <Container>
+                <Row style = {{padding: 20, justifyContent: "right"}}>
+                    <Col className = "col-md-1">
+                        <Button className={globals.btn} onClick={handleEditChange}>{isEditing? "Save" : "Edit"}</Button>
+                    </Col>
+                    
+                </Row>
                 <Row>
-                    <Button className={globals.btn} onClick={handleEditChange}>{isEditing? "Save" : "Edit"}</Button>
                     <Col>
                         {isEditing?
-                        <UserInformationEditor setShowProfileEditor={setShowProfileEditor} showProfileEditor={showProfileEditor} oldCapacity={capacity} oldBio={undefined} 
-                        oldEquipment={undefined} oldAvailability={undefined} oldName={displayName} setName={setDisplayName} setCapacity={setCapacity} setAvailability={setAvailability} setBio={setBio} 
-                        setEquipment={setEquipment} oldPronouns={pronouns} setPronouns={setPronouns} setImage={setImageRef}></UserInformationEditor>
+                        <UserInformationEditor setShowProfileEditor={setShowProfileEditor} showProfileEditor={showProfileEditor} oldCapacity={capacity} oldBio={bio} 
+                        oldEquipment={equipment} oldAvailability={availability} oldName={displayName} setName={setDisplayName} setCapacity={setCapacity} setAvailability={setAvailability} setBio={setBio} 
+                        setEquipment={setEquipment} oldPronouns={pronouns} setPronouns={setPronouns} setImage={setImageRef} profilePicture={imageRef}></UserInformationEditor>
                         :  <UserInformation owner={true} name={displayName} pronouns={pronouns} bio={bio} equipment={equipment} capacity={capacity} availability={availability} profilePicture={imageRef}></UserInformation> }
                     </Col>
                 </Row>
