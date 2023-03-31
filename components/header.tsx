@@ -24,6 +24,7 @@ const Header = () => {
                 <Nav className="mr-auto"> 
                     <Nav.Link href="/about">About</Nav.Link>
                     <Nav.Link href="/search">Search</Nav.Link>
+                    <Nav.Link href="/events">Events</Nav.Link>
                 </Nav>
                 <Nav className="ml-auto mx-2">
                     <Nav.Link href="/profile" className="ml-auto"><BsPersonCircle size="24"/></Nav.Link>
