@@ -22,20 +22,22 @@ function User() {
 
     const [loadingCards, setLoadingCards] = useState(true);
     const [loadingData, setLoadingData] = useState(true);
+    const [relationshipStatus, setRelationshipStatus] = useState("");
+    const [relButtonVariant, setRelButtonVariant] = useState("");
+    const [relButtonDisabled, setRelButtonDisabled] = useState(false);
+    const [relButtonText, setRelButtonText] = useState("");
+    const [relButtonAction, setRelButtonAction] = useState("none");
     const AuthUser = useAuthUser();
     console.log(AuthUser);
-
-    //TO DO: Get proper uid from URL
-    let userId = 123;
 
     //user's cards
     const [cards, setCards] = useState<any[]>([]);
     const [status, setStatus] = useState<any>();
-    //let status;
+    const params = new URLSearchParams(window.location.search);
+    const uid = params.get('uid');
+    console.log(uid);
 
     useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-        const uid = params.get('uid');
 
         fetch("/api/hobbyCardRetrieval", { 
             method: "POST",
@@ -66,6 +68,49 @@ function User() {
         getRelationshipStatus(uid);
     }, [])
 
+    useEffect(() => {
+        switch (relationshipStatus) {
+            case 'none':
+            setRelButtonVariant("primary");
+            setRelButtonDisabled(false);
+            setRelButtonText("Send Friend Request");
+            setRelButtonAction("request");
+            break;
+            case 'pending':
+            setRelButtonVariant("primary");
+            setRelButtonDisabled(true);
+            setRelButtonText("Already Reached Out");
+            setRelButtonAction("none");
+            break;
+            case 'respond':
+            setRelButtonVariant("primary");
+            setRelButtonDisabled(false);
+            setRelButtonText("Accept Friend Request");
+            setRelButtonAction("accept");
+            break;
+            case 'blocked':
+            setRelButtonVariant("danger");
+            setRelButtonDisabled(true);
+            setRelButtonText("You have been blocked");
+            setRelButtonAction("none");
+            break;
+            case 'sentBlock':
+            setRelButtonVariant("danger");
+            setRelButtonDisabled(false);
+            setRelButtonText("Unblock");
+            setRelButtonAction("unblock");
+            break;
+            case 'friends':
+            setRelButtonVariant("secondary");
+            setRelButtonDisabled(false);
+            setRelButtonText("Remove friend");
+            setRelButtonAction("unfriend");
+            break;
+            default:
+            console.log('Could not parse relationship, status is: ' + relationshipStatus);
+        }
+    }, [relationshipStatus])
+
     const getRelationshipStatus = (theirId) => {
 
         console.log("GETTING REL STATUS")
@@ -77,43 +122,21 @@ function User() {
             .then((res) => res.json())
             .then((data) => {
                 console.log(data)
-                //setStatus(data)
-                if(data.code <= 1){
-                    setStatus(<Button onClick={updateRelationshipStatus}>Reach Out</Button>);
-                    console.log(status)
-                }
-                else if(data.code == 2){
-                    setStatus(<h3 className="">Waiting for Reply</h3>);
-                }
-                else if(data.code == 3){
-                    setStatus(<Button onClick={updateRelationshipStatus}>Accept Request</Button>);
-                }
-                else if(data.code == 4){
-                    setStatus(<h3 className="">{data.email}</h3>);
-                }
+                setRelationshipStatus(data.status)
         });
     }
     
-    const updateRelationshipStatus = () => {
-        const params = new URLSearchParams(window.location.search);
-        const uid = params.get('uid');
-
+    function updateRelationshipStatus(action) {
         console.log("UPDATING REL STATUS")
 
         fetch("/api/relationshipUpdate", { 
             method: "POST",
             headers: {'Content-Type': 'application/json'},     
-            body: JSON.stringify({myKey: AuthUser.id, theirKey: uid}, replacerFunc())
+            body: JSON.stringify({myKey: AuthUser.id, theirKey: uid, action: action})
         })
             .then((res) => res.json())
             .then((data) => {  
-                if(data.code == 1){
-                    setStatus(<h3 className="">Waiting for Reply</h3>);
-                    console.log(status)
-                }
-                else if(data.code == 2){
-                    setStatus(<h3 className="">{data.email}</h3>);
-                }
+                setRelationshipStatus(data.newStatus);
         });     
     }
 
@@ -145,7 +168,7 @@ function User() {
                 </Col>
             </Row>
             <Container className="mt-3">
-            <Col> {status} </Col>
+            <Col> <Button variant={relButtonVariant} disabled={relButtonDisabled} onClick={() => {updateRelationshipStatus(relButtonAction)}}>{relButtonText}</Button> </Col>
                 <h2>Hobbies</h2>
                 <Row className='m-auto'>
                     {cards.map( (card, index) => (
