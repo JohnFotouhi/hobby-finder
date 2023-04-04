@@ -87,6 +87,10 @@ const Friends = () => {
                                 </Card>
                             </ListGroup.Item>
                         ))}
+                        {
+                            requests.length === 0 &&
+                            <div className="text-center mt-2 fs-5 fw-bolder">You don't have any friend requests right now</div>
+                        }
                     </ListGroup>
                 </Col>
                 <Col xs={6}>

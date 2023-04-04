@@ -2,6 +2,7 @@ import React from 'react';
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import Layout from "../components/layout";
 import initAuth from '../initAuth';
 
