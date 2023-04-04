@@ -2,9 +2,9 @@ import { Container, Navbar, Nav, Spinner, Image, Modal, Button } from "react-boo
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useAuthUser, withAuthUser } from "next-firebase-auth";
-import { BsPersonCircle } from "react-icons/bs";
-import Jar from '@/public/jam-jar-icon.png';
+import { BsPersonCircle, BsPersonFillAdd } from "react-icons/bs";
 import logo from '../public/JAM.png'
+import globals from '../styles/Home.module.css'
 
 const Header = () => {
     const [confirmLogout, setConfirmLogout] = useState(false);
@@ -26,6 +26,7 @@ const Header = () => {
                     <Nav.Link href="/search">Search</Nav.Link>
                 </Nav>
                 <Nav className="ml-auto mx-2">
+                    <Nav.Link href="/friends" className="ml-auto"><BsPersonFillAdd size="24"/></Nav.Link>
                     <Nav.Link href="/profile" className="ml-auto"><BsPersonCircle size="24"/></Nav.Link>
                     <Nav.Link onClick={() => setConfirmLogout(true)} className="ml-auto">Logout</Nav.Link>
                 </Nav>
@@ -35,7 +36,7 @@ const Header = () => {
         <Modal show={confirmLogout} onHide={() => setConfirmLogout(false)}>
             <Modal.Header> <Modal.Title>Are you sure you want to logout?</Modal.Title></Modal.Header>
             <Modal.Footer>
-            <Button variant="primary" onClick={logout}>
+            <Button className={globals.btn} variant="primary" onClick={logout}>
                 Logout
             </Button>
             <Button variant="secondary" onClick={() => setConfirmLogout(false)}>
