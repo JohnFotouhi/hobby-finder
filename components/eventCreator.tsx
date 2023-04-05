@@ -3,7 +3,7 @@ import { Modal, Card, Row, Button, Col } from "react-bootstrap";
 import globals from '../styles/Home.module.css'
 import Form from 'react-bootstrap/Form';
 
-export default function eventCreator({show, setShow, uid, setEvents}){
+export default function EventCreator({show, setShow, uid, setEvents}){
 
 
     const [title, setTitle] = useState("");
