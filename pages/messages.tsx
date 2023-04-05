@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { MainContainer, ChatContainer, MessageList, Message, MessageInput, Avatar, Conversation, ConversationHeader, ConversationList, EllipsisButton, MessageSeparator, Search, Sidebar, TypingIndicator, VideoCallButton, VoiceCallButton } from '@chatscope/chat-ui-kit-react';
 import pic from "@/public/User_images/jon.jpg";
 import { useRouter } from "next/router";
+import { Button } from "react-bootstrap";
 
 const Messages = () => {
     const AuthUser = useAuthUser();
@@ -29,6 +30,12 @@ const Messages = () => {
         })
             .then((res) => res.json())
             .then((data) => {
+                let chat = chats.find(chat => chat.id === chatId);
+                let newChats = chats.filter(chat => chat.id !== chatId);
+                chat['recentMessageText'] = messageInputValue;
+                chat['recentMessageSender'] = AuthUser.displayName;
+                newChats.push(chat);
+                setChats(newChats);
                 setMessageInputValue("");
                 let newMessages = messages;
                 newMessages.push(data.message);
@@ -105,7 +112,8 @@ const Messages = () => {
                   <Avatar src={exampleIcon} name={nameOfRecipient} />
                   <ConversationHeader.Content userName={nameOfRecipient} info="" />
                   <ConversationHeader.Actions>
-                    <EllipsisButton orientation="vertical" />
+                    {/* <EllipsisButton orientation="vertical" /> */}
+                    <Button onClick={() => {router.push({pathname: "/user", query: {uid: AuthUser.id}})}}>Visit Profile</Button>
                   </ConversationHeader.Actions>          
                 </ConversationHeader>
                 <MessageList>

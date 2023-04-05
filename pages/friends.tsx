@@ -35,15 +35,15 @@ const Friends = () => {
         });
     }, [])
 
-    useEffect(() => {
-        const newOverlayRefs = overlayRefs;
-        for(let i = overlayRefs.length; i < requests.length; i++){
-            console.log("HIII");
-            let newRef : any = createRef();
-            newOverlayRefs.push(newRef);
-        }
-        setOverlayRefs(newOverlayRefs);
-    }, [requests]);
+    // useEffect(() => {
+    //     const newOverlayRefs = overlayRefs;
+    //     for(let i = overlayRefs.length; i < requests.length; i++){
+    //         console.log("HIII");
+    //         let newRef : any = createRef();
+    //         newOverlayRefs.push(newRef);
+    //     }
+    //     setOverlayRefs(newOverlayRefs);
+    // }, [requests]);
  
     function handleChoice(choice, otherId){
         fetch("/api/relationshipUpdate", { 
@@ -144,7 +144,7 @@ const Friends = () => {
                                                 <Col xs={4} className="pt-2">
                                                     { friend.status === "friends" &&
                                                     <>
-                                                    <BsFillChatFill className="mx-1 ml-auto" onClick={() => {router.push({pathname: "/messages", query: {uid: friend.key, name: friend.name}})}} />
+                                                    {/* <BsFillChatFill className="mx-1 ml-auto" onClick={() => {router.push({pathname: "/messages", query: {chatId: , name: friend.name}})}} /> */}
                                                     <Button className="p-0 m-1" variant="outline-danger" onClick={() => {handleChoice("unfriend", friend.key)}}>Unfriend</Button>
                                                     </>
                                                     }
