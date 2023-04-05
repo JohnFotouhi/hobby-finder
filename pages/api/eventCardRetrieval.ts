@@ -7,6 +7,8 @@ type EventCard = {
     eventId: string,
     ownerId: string,
     title: string,
+    date: string,
+    time: string,
     description: string
   }
 
@@ -24,6 +26,8 @@ type EventCard = {
                 eventId: doc.id,
                 ownerId: doc.data().OwnerId,
                 title: doc.data().Title,
+                date: doc.data().Date,
+                time: doc.data().Time,
                 description: doc.data().Description
             }
             cardArray.push(newCard);

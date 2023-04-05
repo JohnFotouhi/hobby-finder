@@ -9,6 +9,7 @@ import globals from '../styles/Home.module.css'
 import { BsFunnelFill, BsSearch } from "react-icons/bs";
 import EventCard from "../components/eventCard";
 import { useRouter } from "next/router";
+import EventCreator from "../components/eventCreator";
 
 
 const Events = () => {
@@ -21,6 +22,7 @@ const Events = () => {
 
     //event status
     const [events, setEvents] = useState<any[]>([]);
+    const [show, setShow] = useState(false);
 
     useEffect(() => {
         getEvents();
@@ -45,9 +47,6 @@ const Events = () => {
        
     }
 
-    function addEvent(){
-
-    }
 
     return(
         <>
@@ -58,7 +57,7 @@ const Events = () => {
                 </Col>
                 <Col align="right">
                     <Button className={globals.btn} onClick={handleEditFilters} style={{marginRight: "5px"}}><BsFunnelFill/></Button>
-                    <Button className={globals.btn} onClick={addEvent} style={{marginLeft: "5px"}}>Add an Event</Button>
+                    <Button className={globals.btn} onClick={() => setShow(true)} style={{marginLeft: "5px"}}>Add an Event</Button>
                 </Col>
             </Row>
 
@@ -66,12 +65,19 @@ const Events = () => {
                 <Row className='m-auto' style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
                     {events.map( (card, index) => (
                         <Col md="4" key={index+"hobbyCard"}>                       
-                            <EventCard owner={(AuthUser.id == card.ownerId)} id={card.eventId} title={card.title} description={card.description} />
+                            <EventCard owner={(AuthUser.id == card.ownerId)} id={card.eventId} title={card.title} date={card.date} time={card.time} description={card.description} />
                         </Col>
                     ))}
                 </Row>
             </Container>
         </Container>
+
+        <Row>
+        { show && (
+        <EventCreator show={show} setShow={setShow} uid={AuthUser.id} setEvents={setEvents}></EventCreator>
+        )}
+        </Row> 
+
         </>
     );
 }
