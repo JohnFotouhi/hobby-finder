@@ -4,7 +4,7 @@ import { BsPencil } from "react-icons/bs";
 import { useRouter } from "next/router";
 
 
-export default function eventCard({owner, id, title, date, time, description}){
+export default function EventCard({owner, id, title, date, time, description}){
 
     const router = useRouter();
 
