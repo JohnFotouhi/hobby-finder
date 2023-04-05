@@ -7,14 +7,13 @@ import { useRouter } from "next/router";
 
 const Messages = () => {
     const AuthUser = useAuthUser();
-    const params = new URLSearchParams(window.location.search);
-    const chatId = params.get('chatId');
-    const name : any = params.get('name');
     const exampleIcon = pic.src;
     const router = useRouter();
     const [messages, setMessages] = useState<any>([]);
     const [chats, setChats] = useState<any>([]);
     const [messageInputValue, setMessageInputValue] = useState("");
+    const [chatId, setChatId] = useState("");
+    const [nameOfRecipient, setNameOfRecipient] = useState("");
     const target = useRef(null);
 
     function sendMessage(){
@@ -37,14 +36,16 @@ const Messages = () => {
         });
     }
 
-    function openChat(chatId, theirName){
-        router.push({
+    async function openChat(chatId, theirName){
+        await router.push({
             pathname: "/messages",
             query: {chatId: chatId, name: theirName}
         });
+        setChatId(chatId);
     }
 
     useEffect(() => {
+        // Get list of user's chats
         fetch("/api/getChats", { 
             method: "POST",
             headers: {'Content-Type': 'application/json'},
@@ -58,12 +59,21 @@ const Messages = () => {
     }, []);
 
     useEffect(() => {
-        if(typeof(chatId) !== "undefined"){
-            console.log(chatId);
+        // This is triggered on load and when the user clicks on a chat and changes the messages to be shown in the main window
+        const params = new URLSearchParams(window.location.search);
+        let newChatId = params.get('chatId');
+        if(newChatId === null) newChatId = "";
+        setChatId(newChatId);
+        let newName = params.get('name');
+        if(newName === null) newName = "";
+        setNameOfRecipient(newName);
+
+        // Get list of messages for the chat that is currently opened (if any)
+        if(typeof(newChatId) !== "undefined"){
             fetch("/api/getMessages", { 
                 method: "POST",
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({chatId: chatId})
+                body: JSON.stringify({chatId: newChatId})
             })
                 .then((res) => res.json())
                 .then((data) => {
@@ -71,10 +81,10 @@ const Messages = () => {
                     setMessages(data.messages);
             });
         }
-    },[]);
+    }, [chatId]);
 
     return(
-        <div style={{ position:"relative", height: "500px" }}>
+        <div style={{ position:"relative", height: "500px" }} >
         <MainContainer responsive>                
               <Sidebar position="left" scrollable={true}>
                 {/* <Search placeholder="Search..." /> */}
@@ -92,8 +102,8 @@ const Messages = () => {
               <ChatContainer>
                 <ConversationHeader>
                   <ConversationHeader.Back />
-                  <Avatar src={exampleIcon} name={name} />
-                  <ConversationHeader.Content userName={name} info="" />
+                  <Avatar src={exampleIcon} name={nameOfRecipient} />
+                  <ConversationHeader.Content userName={nameOfRecipient} info="" />
                   <ConversationHeader.Actions>
                     <EllipsisButton orientation="vertical" />
                   </ConversationHeader.Actions>          
@@ -114,18 +124,6 @@ const Messages = () => {
                             </>
                         ))
                     }
-
-                  {/* <MessageSeparator  />
-                  <Message model={{
-                        message: "most recent",
-                        sentTime: "1 min ago",
-                        sender: "Zoe",
-                        direction: "incoming",
-                        position: "single"
-                    }}>
-                    <Avatar src={exampleIcon} name="Zoe" />
-                </Message> */}
-
                 </MessageList>
                 <MessageInput autoFocus onSend={sendMessage} attachDisabled placeholder="Type message here" value={messageInputValue} onChange={val => setMessageInputValue(val)} />
               </ChatContainer>                         
