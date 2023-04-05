@@ -13,11 +13,17 @@ import pic from "@/public/User_images/jon.jpg";
 const Friends = () => {
     const [requests, setRequests] = useState<any[]>([]);
     const [friends, setFriends] = useState<any[]>([]);
+    const [chats, setChats] = useState<any[]>([]);
     const [overlayRefs, setOverlayRefs] = useState<any[]>([]);
     const AuthUser = useAuthUser();
     const router = useRouter();
     const storage = getStorage(firebaseApp);
     const exampleProfilePic = pic.src;
+
+    function redirectToChat(theirKey, theirName){
+        let chat : any = chats.find(currentChat => currentChat.userKeys.includes(theirKey));
+        router.push({pathname: "/messages", query: {chatId: chat.id, name: theirName}})
+    }
 
     useEffect(() => {
         fetch("/api/allRelationshipsRetrieval", { 
@@ -32,6 +38,15 @@ const Friends = () => {
                 setRequests(newRequests);
                 let newFriends = data.relationships.filter(relationship => relationship.status == "friends" || relationship.status == "pending");
                 setFriends(newFriends);
+        });
+        fetch("/api/getChats", { 
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({userKey: AuthUser.id})
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                setChats(data.chats);
         });
     }, [])
 
@@ -144,7 +159,7 @@ const Friends = () => {
                                                 <Col xs={4} className="pt-2">
                                                     { friend.status === "friends" &&
                                                     <>
-                                                    {/* <BsFillChatFill className="mx-1 ml-auto" onClick={() => {router.push({pathname: "/messages", query: {chatId: , name: friend.name}})}} /> */}
+                                                    <BsFillChatFill className="mx-1 ml-auto" onClick={() => {redirectToChat(friend.key, friend.name)}} />
                                                     <Button className="p-0 m-1" variant="outline-danger" onClick={() => {handleChoice("unfriend", friend.key)}}>Unfriend</Button>
                                                     </>
                                                     }
