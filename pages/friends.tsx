@@ -6,7 +6,7 @@ import globals from '../styles/Home.module.css';
 import { useRouter } from "next/router";
 import { getDownloadURL, getStorage } from "firebase/storage";
 import firebaseApp from "@/config";
-import { BsFillChatFill, BsPersonCircle, BsThreeDotsVertical } from "react-icons/bs";
+import { BsClockHistory, BsFillChatFill, BsPersonCircle, BsThreeDotsVertical } from "react-icons/bs";
 import pic from "@/public/User_images/jon.jpg";
 
 
@@ -35,15 +35,15 @@ const Friends = () => {
         });
     }, [])
 
-    useEffect(() => {
-        const newOverlayRefs = overlayRefs;
-        for(let i = overlayRefs.length; i < requests.length; i++){
-            console.log("HIII");
-            let newRef : any = createRef();
-            newOverlayRefs.push(newRef);
-        }
-        setOverlayRefs(newOverlayRefs);
-    }, [requests]);
+    // useEffect(() => {
+    //     const newOverlayRefs = overlayRefs;
+    //     for(let i = overlayRefs.length; i < requests.length; i++){
+    //         console.log("HIII");
+    //         let newRef : any = createRef();
+    //         newOverlayRefs.push(newRef);
+    //     }
+    //     setOverlayRefs(newOverlayRefs);
+    // }, [requests]);
  
     function handleChoice(choice, otherId){
         fetch("/api/relationshipUpdate", { 
@@ -54,9 +54,14 @@ const Friends = () => {
             .then((res) => res.json())
             .then((data) => {
                 console.log(data);
+                let newFriend = requests.find(relationship => relationship.key === otherId);
                 let newRequests = requests.filter(relationship => relationship.key !== otherId);
                 setRequests(newRequests);
                 let newFriends = friends.filter(relationship => relationship.key !== otherId);
+                if(choice === "accept"){
+                    newFriend['status'] = "friends";
+                    newFriends.push(newFriend);
+                }
                 setFriends(newFriends);
         });
     }
@@ -137,8 +142,20 @@ const Friends = () => {
                                                     {friend.name}
                                                 </Col>
                                                 <Col xs={4} className="pt-2">
-                                                    <BsFillChatFill className="mx-1 ml-auto" onClick={() => {router.push({pathname: "/messages", query: {uid: friend.key, name: friend.name}})}} />
+                                                    { friend.status === "friends" &&
+                                                    <>
+                                                    {/* <BsFillChatFill className="mx-1 ml-auto" onClick={() => {router.push({pathname: "/messages", query: {chatId: , name: friend.name}})}} /> */}
                                                     <Button className="p-0 m-1" variant="outline-danger" onClick={() => {handleChoice("unfriend", friend.key)}}>Unfriend</Button>
+                                                    </>
+                                                    }
+                                                    { friend.status === "pending" &&
+                                                        <div className="text-center">
+                                                            <BsClockHistory />
+                                                            <div className="fs-6"> 
+                                                                {"pending"}
+                                                            </div>
+                                                        </div>
+                                                    }
                                                 </Col>
                                             </Row>
                                         </Container>

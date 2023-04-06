@@ -5,9 +5,14 @@ const database = getFirestore(firebaseApp);
 export default async (req, res) =>{
     if(req.method === 'POST'){
         const messagesCollection = collection(database, "chats", req.body.chatId, "messages");
-        const messagesRef = collectionGroup(database, "messages");
-
         const currentDateTime = new Date();
+
+        updateDoc(doc(database, "chats", req.body.chatId), {
+            recentMessageSender: req.body.senderName,
+            recentMessageText: req.body.text,
+            recentMessageTime: currentDateTime
+        })
+
         console.log(currentDateTime);
         const newMessage = {
             text: req.body.text,
