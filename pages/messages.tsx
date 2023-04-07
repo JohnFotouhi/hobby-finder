@@ -5,6 +5,8 @@ import { MainContainer, ChatContainer, MessageList, Message, MessageInput, Avata
 import pic from "@/public/User_images/jon.jpg";
 import { useRouter } from "next/router";
 import { Button } from "react-bootstrap";
+import { collectionGroup, getFirestore, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import firebaseApp from "@/config";
 
 const Messages = () => {
     const AuthUser = useAuthUser();
@@ -60,7 +62,6 @@ const Messages = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data.chats);
                 setChats(data.chats);
         });
     }, []);
@@ -74,20 +75,25 @@ const Messages = () => {
         let newName = params.get('name');
         if(newName === null) newName = "";
         setNameOfRecipient(newName);
-
         // Get list of messages for the chat that is currently opened (if any)
         if(typeof(newChatId) !== "undefined"){
-            fetch("/api/getMessages", { 
-                method: "POST",
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({chatId: newChatId})
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    console.log(data);
-                    setMessages(data.messages);
-            });
+            if(typeof(newChatId) !== "undefined"){
+                const database = getFirestore(firebaseApp);
+                const messagesRef = collectionGroup(database, "messages");
+                const messageQuery = query(messagesRef, where("chatId", "==", chatId), orderBy("time"));
+                setMessages(messages);
+                let unsubscribe = onSnapshot(messageQuery, (snapshot) => {
+                    let newMessages : any[] = [];
+                    snapshot.forEach(doc => {
+                        let messageData = doc.data();
+                        newMessages.push(messageData);
+                    });
+                    setMessages(newMessages);
+                });
+                return unsubscribe;
+            }
         }
+
     }, [chatId]);
 
     return(
