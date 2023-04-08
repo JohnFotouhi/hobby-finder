@@ -5,8 +5,9 @@ import { MainContainer, ChatContainer, MessageList, Message, MessageInput, Avata
 import pic from "@/public/User_images/jon.jpg";
 import { useRouter } from "next/router";
 import { Button } from "react-bootstrap";
-import { collectionGroup, getFirestore, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import { collection, collectionGroup, getDocs, getFirestore, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import firebaseApp from "@/config";
+import { BsPersonCircle } from "react-icons/bs";
 
 const Messages = () => {
     const AuthUser = useAuthUser();
@@ -32,17 +33,8 @@ const Messages = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                let chat = chats.find(chat => chat.id === chatId);
-                let newChats = chats.filter(chat => chat.id !== chatId);
-                chat['recentMessageText'] = messageInputValue;
-                chat['recentMessageSender'] = AuthUser.displayName;
-                newChats.push(chat);
-                setChats(newChats);
                 setMessageInputValue("");
-                let newMessages = messages;
-                newMessages.push(data.message);
-                setMessages(newMessages);
-        });
+            });
     }
 
     async function openChat(chatId, theirName){
@@ -55,15 +47,19 @@ const Messages = () => {
 
     useEffect(() => {
         // Get list of user's chats
-        fetch("/api/getChats", { 
-            method: "POST",
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({userKey: AuthUser.id})
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                setChats(data.chats);
-        });
+            const database = getFirestore(firebaseApp);
+            const chatsRef = collection(database, "chats");
+            const chats = query(chatsRef, where("userKeys", "array-contains", AuthUser.id), orderBy("recentMessageTime"));
+            const unsubscribe = onSnapshot(chats, (snapshot) => {
+                let newChats : any[] = [];
+                snapshot.forEach(doc => {
+                    let chatData = (doc.data());
+                    chatData["id"] = doc.id;
+                    newChats.push(chatData);
+                });
+                setChats(newChats);
+            })
+            return unsubscribe;
     }, []);
 
     useEffect(() => {
@@ -77,21 +73,19 @@ const Messages = () => {
         setNameOfRecipient(newName);
         // Get list of messages for the chat that is currently opened (if any)
         if(typeof(newChatId) !== "undefined"){
-            if(typeof(newChatId) !== "undefined"){
-                const database = getFirestore(firebaseApp);
-                const messagesRef = collectionGroup(database, "messages");
-                const messageQuery = query(messagesRef, where("chatId", "==", chatId), orderBy("time"));
-                setMessages(messages);
-                let unsubscribe = onSnapshot(messageQuery, (snapshot) => {
-                    let newMessages : any[] = [];
-                    snapshot.forEach(doc => {
-                        let messageData = doc.data();
-                        newMessages.push(messageData);
-                    });
-                    setMessages(newMessages);
+            const database = getFirestore(firebaseApp);
+            const messagesRef = collectionGroup(database, "messages");
+            const messageQuery = query(messagesRef, where("chatId", "==", chatId), orderBy("time"));
+            setMessages(messages);
+            let unsubscribe = onSnapshot(messageQuery, (snapshot) => {
+                let newMessages : any[] = [];
+                snapshot.forEach(doc => {
+                    let messageData = doc.data();
+                    newMessages.push(messageData);
                 });
-                return unsubscribe;
-            }
+                setMessages(newMessages);
+            });
+            return unsubscribe;
         }
 
     }, [chatId]);
@@ -115,11 +109,12 @@ const Messages = () => {
               <ChatContainer>
                 <ConversationHeader>
                   <ConversationHeader.Back />
-                  <Avatar src={exampleIcon} name={nameOfRecipient} />
+                  {chatId !== "" && <Avatar src={exampleIcon} name={nameOfRecipient} />}
+                  {chatId === "" && <Avatar src={exampleIcon} name={nameOfRecipient} />}
                   <ConversationHeader.Content userName={nameOfRecipient} info="" />
                   <ConversationHeader.Actions>
                     {/* <EllipsisButton orientation="vertical" /> */}
-                    <Button onClick={() => {router.push({pathname: "/user", query: {uid: AuthUser.id}})}}>Visit Profile</Button>
+                    {chatId !== "" && <Button onClick={() => {router.push({pathname: "/user", query: {uid: AuthUser.id}})}}>Visit Profile</Button> }
                   </ConversationHeader.Actions>          
                 </ConversationHeader>
                 <MessageList>
