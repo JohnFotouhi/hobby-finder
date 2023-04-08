@@ -17,7 +17,7 @@ export default async (req, res) =>{
             messageList.push(messageData);         
         });
         res.status(200).json({
-            messages: messageList
+            messages: messageList,
         })
     }
 }

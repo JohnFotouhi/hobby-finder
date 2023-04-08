@@ -40,7 +40,7 @@ export default function SearchCard(props){
             <Card.Body className="mx-auto">
                 <div className="text-center">
                     <BsPersonCircle size="128" className="mb-2"/>
-                    <Card.Title>{props.name} ({props.pronouns})</Card.Title>
+                    <Card.Title>{props.name} {props.pronouns !== "" && "(" + props.pronouns + ")"}</Card.Title>
                 </div>
                 <Card.Text className="text-center">
                     {props.bio}
@@ -48,7 +48,6 @@ export default function SearchCard(props){
                 <ListGroup variant="flush">
                     <ListGroup.Item>Instruments: {cards.join(', ')}</ListGroup.Item>
                     <ListGroup.Item>Genres: {genres.join(', ')}</ListGroup.Item>
-                    <ListGroup.Item>Availability: {availability.join(', ')}</ListGroup.Item>
                 </ListGroup>
             </Card.Body>
         </Card>
