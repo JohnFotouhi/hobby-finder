@@ -30,10 +30,13 @@ export default async function writeData(req, res){
     });
     docRef.id
     console.log(docRef);
+    console.log("good!");
+    res.status(200).json({ref: docRef});
     //const hobbyRef = await addDoc(collection(docRef, 'hobbies'), {});
     //console.log(hobbyRef);
   }catch(e){
     console.error("Error adding document: ", e);
+    res.status(450).end({error: e});
   }
 }
 

@@ -1,13 +1,14 @@
 import FullPageLoader from "@/components/FullPageLoader";
 import { useAuthUser, withAuthUser, AuthAction } from "next-firebase-auth";
 import { createRef, useEffect, useMemo, useRef, useState } from "react";
-import { Button, Card, Col, Container, ListGroup, ListGroupItem, Row, Image, Overlay } from "react-bootstrap";
+import { Button, Card, Col, Container, ListGroup, ListGroupItem, Row, Image, Overlay, Form, InputGroup } from "react-bootstrap";
 import globals from '../styles/Home.module.css';
 import { useRouter } from "next/router";
 import { getDownloadURL, getStorage } from "firebase/storage";
 import firebaseApp from "@/config";
 import { BsClockHistory, BsFillChatFill, BsPersonCircle, BsThreeDotsVertical } from "react-icons/bs";
 import pic from "@/public/User_images/jon.jpg";
+import { useMediaQuery } from "react-responsive";
 
 
 const Friends = () => {
@@ -15,15 +16,34 @@ const Friends = () => {
     const [friends, setFriends] = useState<any[]>([]);
     const [chats, setChats] = useState<any[]>([]);
     const [overlayRefs, setOverlayRefs] = useState<any[]>([]);
+    const [searchValue, setSearchValue] = useState("");
+    const [filteredFriends, setFilteredFriends] = useState<any[]>([]);
+    const [filteredRequests, setFilteredRequests] = useState<any[]>([]);
     const AuthUser = useAuthUser();
     const router = useRouter();
     const storage = getStorage(firebaseApp);
     const exampleProfilePic = pic.src;
+    const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
 
     function redirectToChat(theirKey, theirName){
         let chat : any = chats.find(currentChat => currentChat.userKeys.includes(theirKey));
         router.push({pathname: "/messages", query: {chatId: chat.id, name: theirName}})
     }
+
+    useEffect(() => {
+        let newFilteredFriends;
+        let newFilteredRequests;
+        if(searchValue === ""){
+            newFilteredFriends = friends;
+            newFilteredRequests = requests;
+        }
+        else{
+            newFilteredFriends = friends.filter(friend => friend.name.toLowerCase().includes(searchValue.toLowerCase()) );
+            newFilteredRequests = requests.filter(request => request.name.toLowerCase().includes(searchValue.toLowerCase()));
+        }
+        setFilteredFriends(newFilteredFriends);
+        setFilteredRequests(newFilteredRequests);
+    }, [searchValue])
 
     useEffect(() => {
         fetch("/api/allRelationshipsRetrieval", { 
@@ -36,8 +56,10 @@ const Friends = () => {
                 console.log(data.relationships);
                 let newRequests = data.relationships.filter(relationship => relationship.status == "respond");
                 setRequests(newRequests);
+                setFilteredRequests(newRequests);
                 let newFriends = data.relationships.filter(relationship => relationship.status == "friends" || relationship.status == "pending");
                 setFriends(newFriends);
+                setFilteredFriends(newFriends);
         });
         fetch("/api/getChats", { 
             method: "POST",
@@ -71,13 +93,17 @@ const Friends = () => {
                 console.log(data);
                 let newFriend = requests.find(relationship => relationship.key === otherId);
                 let newRequests = requests.filter(relationship => relationship.key !== otherId);
+                let newFilteredRequests = filteredRequests.filter(relationship => relationship.key !== otherId);
                 setRequests(newRequests);
+                setFilteredRequests(newFilteredRequests);
                 let newFriends = friends.filter(relationship => relationship.key !== otherId);
+                let newFilteredFriends = filteredFriends.filter(relationship => relationship.key !== otherId);
                 if(choice === "accept"){
                     newFriend['status'] = "friends";
                     newFriends.push(newFriend);
                 }
                 setFriends(newFriends);
+                setFilteredFriends(newFilteredFriends);
         });
     }
     
@@ -98,12 +124,29 @@ const Friends = () => {
     }
 
     return(
+        <>
+        <Container fluid className='bg-light pb-3 mt-0' >
+            <div className="mx-auto" style={{width: isMobile ? "60%" : '400px'}}>
+                <Row>
+                    <InputGroup className="justify-content-center">
+                        <Form.Control
+                        placeholder="Search for friends"
+                        value={searchValue}
+                        onChange={(event) => {setSearchValue(event.target.value)}}
+                        />
+                        <Button variant="outline-secondary" id="button-addon2" >
+                        Search
+                        </Button>
+                    </InputGroup>
+                </Row>
+            </div>
+        </Container>
         <Container fluid>
             <Row className="">
                 <Col xs={6}>
                     <ListGroup variant="flush" className="mt-3">
                         <ListGroup.Item as="li" active className="text-center">Friend Requests</ListGroup.Item>
-                        {requests.map( (request, i) => (
+                        {filteredRequests.map( (request, i) => (
                             <ListGroup.Item as="li" className="" key={request.key}>
                                 <Card className="">
                                     <Card.Title className=" p-2">
@@ -146,7 +189,7 @@ const Friends = () => {
                 <Col xs={6} className="">
                 <ListGroup variant="flush" className="mt-3">
                         <ListGroup.Item as="li" active className="text-center">Friends</ListGroup.Item>
-                        {friends.map( (friend, i) => (
+                        {filteredFriends.map( (friend, i) => (
                             <ListGroup.Item as="li" className="" key={friend.key}>
                                 <Card className="">
                                     <Card.Title className="p-2">
@@ -187,6 +230,7 @@ const Friends = () => {
                 </Col>
             </Row>
         </Container>
+        </>
     );
 }
 
