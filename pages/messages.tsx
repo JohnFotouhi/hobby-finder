@@ -15,9 +15,11 @@ const Messages = () => {
     const router = useRouter();
     const [messages, setMessages] = useState<any>([]);
     const [chats, setChats] = useState<any>([]);
+    const [filteredChats, setFilteredChats] = useState<any>([]);
     const [messageInputValue, setMessageInputValue] = useState("");
     const [chatId, setChatId] = useState("");
     const [nameOfRecipient, setNameOfRecipient] = useState("");
+    const [chatSearch, setChatSearch] = useState("");
     const target = useRef(null);
 
     function sendMessage(){
@@ -44,6 +46,17 @@ const Messages = () => {
         });
         setChatId(chatId);
     }
+
+    useEffect(() => {
+        if(chatSearch === ""){
+            setFilteredChats(chats);
+        }
+        else{
+            let lowerCaseSearch = chatSearch.toLowerCase();
+            let newFilteredChats = chats.filter(chat => chat.users[0].name.toLowerCase().includes(lowerCaseSearch) && chat.users[0].key !== AuthUser.id || chat.users[1].name.toLowerCase().includes(lowerCaseSearch) && chat.users[1].key !== AuthUser.id);
+            setFilteredChats(newFilteredChats);
+        }
+    }, [chatSearch, chats])
 
     useEffect(() => {
         // Get list of user's chats
@@ -94,12 +107,12 @@ const Messages = () => {
         <div style={{ position:"relative", height: "500px" }} >
         <MainContainer responsive>                
               <Sidebar position="left" scrollable={true}>
-                {/* <Search placeholder="Search..." /> */}
+                <Search placeholder="Search..." value={chatSearch} onChange={setChatSearch}/>
                 <ConversationList>
                     {
-                        chats.map((chat, i) => (
+                        filteredChats.map((chat, i) => (
                             <Conversation key={"conversation" + i} name={chat.users[0].key === AuthUser.id ? chat.users[1].name : chat.users[0].name} lastSenderName={chat.recentMessageSender} info={chat.recentMessageText} onClick={() => {openChat(chat.id, chat.users[0].key === AuthUser.id ? chat.users[1].name : chat.users[0].name)}}>
-                                <Avatar src={exampleIcon} name="Lilly" />
+                                <Avatar key={"chatImage" + i} src={exampleIcon} name="Lilly" />
                             </Conversation>
                         ))
                     }                                                                         
@@ -128,7 +141,7 @@ const Messages = () => {
                                 direction: message.senderKey === AuthUser.id ? "outgoing" : "incoming",
                                 position: "single"
                             }} avatarSpacer>
-                                {message.senderKey !== AuthUser.id && <Avatar src={exampleIcon} name="Zoe" />}
+                                {message.senderKey !== AuthUser.id && <Avatar key={"messageImage" + i} src={exampleIcon} name="Zoe" />}
                             </Message> 
                             </>
                         ))
