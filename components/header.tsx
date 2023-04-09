@@ -18,20 +18,23 @@ const Header = () => {
     return (
         <>
         {showHeader &&
-            <Navbar bg="light" className="mx-0">
-                <Navbar.Brand className="p-0 mx-3"><Image src={logo.src} height="22" width="22" className="mb-1" roundedCircle></Image>Jam</Navbar.Brand>
-                <Container className="mx-0 px-0" fluid>   
-                <Nav className="mr-auto"> 
+            <Navbar bg="light" className="mx-0" expand="md">
+                <Container fluid>
+                <Navbar.Toggle aria-controls="navbarScroll" />
+                <Navbar.Collapse id="navbarScroll">
+                <Nav className="me-auto"> 
+                    <Navbar.Brand className="p-0"><Image src={logo.src} height="22" width="22" roundedCircle></Image>Jam</Navbar.Brand>
                     <Nav.Link href="/about">About</Nav.Link>
                     <Nav.Link href="/search">Search</Nav.Link>
                     <Nav.Link href="/events">Events</Nav.Link>
                 </Nav>
-                <Nav className="ml-auto mx-2">
-                    <Nav.Link href="/messages" className="ml-auto"><BsFillChatFill size="24"/></Nav.Link>
-                    <Nav.Link href="/friends" className="ml-auto"><BsPersonFillAdd size="24"/></Nav.Link>
-                    <Nav.Link href="/profile" className="ml-auto"><BsPersonCircle size="24"/></Nav.Link>
-                    <Nav.Link onClick={() => setConfirmLogout(true)} className="ml-auto">Logout</Nav.Link>
+                <Nav className="">
+                    <Nav.Link href="/messages" className=""><BsFillChatFill size="24"/></Nav.Link>
+                    <Nav.Link href="/friends" className=""><BsPersonFillAdd size="24"/></Nav.Link>
+                    <Nav.Link href="/profile" className=""><BsPersonCircle size="24"/></Nav.Link>
+                    <Nav.Link onClick={() => setConfirmLogout(true)} className="">Logout</Nav.Link>
                 </Nav>
+                </Navbar.Collapse>
                 </Container>
             </Navbar>
         }
