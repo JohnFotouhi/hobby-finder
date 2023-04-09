@@ -173,7 +173,7 @@ function Event(){
         <Container style={{marginTop:"10px"}}>
             <Row>
                 <Col>Attendees:</Col>
-                {owner? undefined: <Col><Button onClick={toggleAttending}>{attending? "Count me out": "I'm in!"}</Button></Col>}
+                {owner? <span></span>: <Col><Button onClick={toggleAttending}>{attending? "Count me out": "I'm in!"}</Button></Col>}
             </Row>
             <Row>{attendees}</Row>
         </Container>

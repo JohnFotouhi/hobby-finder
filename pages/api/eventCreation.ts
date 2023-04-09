@@ -3,8 +3,13 @@ import firebaseApp from "../../config";
 
 const database = getFirestore(firebaseApp);
 
+type Attendee = {
+    id: string,
+    name: string
+}
+
 type Event = {
-    Attendees: [],
+    Attendees: Attendee[],
     Title: string,
     Description: string,
     Date: string,
@@ -14,7 +19,7 @@ type Event = {
     OwnerId: string
   }
 
-  type EventCard = {
+type EventCard = {
     eventId: string,
     ownerId: string,
     title: string,
@@ -42,7 +47,7 @@ type Event = {
         });
 
         const newEvent : Event = {
-            Attendees: [],
+            Attendees: [{id: req.body.ownerId, name: userName}],
             Title: req.body.title,
             Description: req.body.description,
             Date: req.body.date,
