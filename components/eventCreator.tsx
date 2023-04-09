@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal, Card, Row, Button, Col } from "react-bootstrap";
 import globals from '../styles/Home.module.css'
 import Form from 'react-bootstrap/Form';
 
-export default function EventCreator({show, setShow, uid, setEvents}){
+export default function EventCreator({show, setShow, uid, setEvents, getInfo, newEvent, oldTitle, oldDate, oldTime, oldLocation, oldDescription}){
 
 
     const [title, setTitle] = useState("");
@@ -17,6 +17,21 @@ export default function EventCreator({show, setShow, uid, setEvents}){
     const [noTime, setNoTime] = useState(false);
     const [noLocation, setNoLocation] = useState(false);
     const [noDescription, setNoDescription] = useState(false);
+
+    useEffect(() => {
+        setDefaults();
+    }, [description]);
+
+    function setDefaults(){
+        if(!newEvent){
+            if(title==""){setTitle(oldTitle)};
+            console.log(oldDate);
+            if(date==""){setDate(oldDate)};
+            if(time==""){setTime(oldTime)};
+            if(location==""){setLocation(oldLocation)};
+            if(description==""){setDescription(oldDescription)};
+        }
+    }
 
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(event.target.value);
@@ -76,7 +91,8 @@ export default function EventCreator({show, setShow, uid, setEvents}){
                     date: date,
                     time: time,
                     location: location,
-                    description: description})
+                    description: description,
+                    newEvent: newEvent})
               })
                 .then((res) => {
                     status = res.status;
@@ -85,7 +101,9 @@ export default function EventCreator({show, setShow, uid, setEvents}){
                 .then((data) => {
                     if(status == 200){
                         console.log("SUCESSFUL CREATION");
-                        setEvents(data)
+                        if(setEvents != undefined){
+                            setEvents(data)
+                        }
                         setShow(false);
                     }
                     else if(status == 409){
@@ -105,31 +123,31 @@ export default function EventCreator({show, setShow, uid, setEvents}){
                 <Card.Body>
                     <Card.Title> 
                         <Form.Label>Event Title</Form.Label>
-                        <Form.Control type="text" onChange={handleTitleChange} placeholder="Title..."/>
+                        <Form.Control type="text" defaultValue={oldTitle} onChange={handleTitleChange} placeholder="Title..."/>
                     </Card.Title>
                     {noTitle && (<p style={{color:"red", fontSize:13}}>Please name your event.</p>)}
                     <Col style={{marginTop:"10px"}}>
                         <Form.Label>Date</Form.Label>
-                        <Form.Control type="date" onChange={handleDateChange}/>
+                        <Form.Control type="date" defaultValue={oldDate} onChange={handleDateChange}/>
                     </Col>
                     {noDate && (<p style={{color:"red", fontSize:13}}>Please select a date.</p>)}
                     <Col style={{marginTop:"10px"}}> 
                         <Form.Label>Start Time</Form.Label>
-                        <Form.Control type="time" onChange={handleTimeChange}/>
+                        <Form.Control type="time" defaultValue={oldTime} onChange={handleTimeChange}/>
                     </Col>
                     {noTime && (<p style={{color:"red", fontSize:13}}>Please select a time.</p>)}
                     <Col style={{marginTop:"10px"}}>
                         <Form.Label>Location</Form.Label>
-                        <Form.Control type="text" onChange={handleLocationChange} placeholder="123 Jamming Ave..."/>
+                        <Form.Control type="text" defaultValue={oldLocation} onChange={handleLocationChange} placeholder="123 Jamming Ave..."/>
                     </Col>
                     {noLocation && (<p style={{color:"red", fontSize:13}}>Please name your location.</p>)}
                     <Col style={{marginTop:"10px"}}>
                         <Form.Label>Description</Form.Label>
-                        <Form.Control type="text" onChange={handleDescriptionChange} as="textarea" rows={3} placeholder="Description..."/>
+                        <Form.Control type="text" defaultValue={oldDescription} onChange={handleDescriptionChange} as="textarea" rows={3} placeholder="Description..."/>
                     </Col>
                     {noDescription && (<p style={{color:"red", fontSize:13}}>Please describe your event.</p>)}
                     <Col style={{marginTop:"10px"}}>
-                        <Button className={globals.btn} style={{marginRight:"5px"}} onClick={createCard}>Create</Button>
+                        <Button className={globals.btn} style={{marginRight:"5px"}} onClick={createCard}>{newEvent ? "Create" : "Save"}</Button>
                         <Button variant="secondary" onClick={() => setShow(false)}>Cancel</Button>
                     </Col>
                 </Card.Body>

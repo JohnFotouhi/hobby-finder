@@ -30,6 +30,8 @@ type Event = {
 
         const usersRef = collection(database, "users");
         const user = query(usersRef, where("key", "==", req.body.ownerId))
+        const eventsRef = collection(database, "events");
+        const isNew = req.body.newEvent;
 
         const querySnapshot = await getDocs(user);
         let userName;
@@ -50,8 +52,21 @@ type Event = {
             OwnerId: req.body.ownerId
         };
 
-        const docRef = await addDoc(collection(database, "events"), newEvent);
-        console.log("Document written with ID: ", docRef.id);
+        const existingEvent = query(eventsRef, where("OwnerId", "==", req.body.ownerId))   
+        const querySnapshot2 = await getDocs(existingEvent);
+
+        if(isNew){
+            const docRef = await addDoc(collection(database, "events"), newEvent);
+            console.log("Document written with ID: ", docRef.id);
+        }
+        else{            
+            let eventId;
+            querySnapshot2.forEach((doc) => {
+                eventId = doc.id;
+            });
+
+            updateDoc(doc(eventsRef, eventId), newEvent);
+        }
 
         const eventCards = await getDocs(collection(database, "events"));
             let eventArray: EventCard[] = [];
@@ -68,7 +83,13 @@ type Event = {
                 }
                 eventArray.push(newCard);
             });
+        
+        if(isNew){
             res.status(200).json(eventArray);
+        }
+        else{ 
+            res.status(200).json(newEvent);
+        }
 
     } else {     
         res.status(405).end()

@@ -1,4 +1,5 @@
 import FullPageLoader from "@/components/FullPageLoader";
+import EventCreator from "@/components/eventCreator";
 import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth";
 import Link from "next/link";
 import router from "next/router";
@@ -11,6 +12,7 @@ function Event(){
     
     const AuthUser = useAuthUser();
 
+    const [show, setShow] = useState(false);
     const [owner, setOwner] = useState(false);
     const [attending, setAttending] = useState(false);
 
@@ -30,7 +32,6 @@ function Event(){
 
         console.log(eventId)
         getEventInfo(eventId);
-
     }, [])
 
     const getEventInfo = (eventId) => {
@@ -45,14 +46,14 @@ function Event(){
             console.log(data) 
             
             setTitle(data.Title);
-            setDate(formatDate(data.Date));
-            setTime(formatTime(data.Time));
+            setDate(data.Date);
+            setTime(data.Time);
             setLocation(data.Location);
             setDescription(data.Description);
             setHostName(data.OwnerName);
             setHostId(data.OwnerId);
 
-            if(hostId == AuthUser.id){
+            if(data.OwnerId == AuthUser.id){
                 setOwner(true);
             }
 
@@ -95,7 +96,7 @@ function Event(){
     }
 
     const editEvent = () => {
-
+        setShow(true);
     }
 
     const deleteEvent = () => {
@@ -124,7 +125,7 @@ function Event(){
         </Container>
         <Container style={{marginTop:"10px"}}>
             <Row>
-                <Col><h4>{date}, {time}</h4></Col>
+                <Col><h4>{formatDate(date)},  {formatTime(time)}</h4></Col>
                 <Col><h4>{location}</h4></Col>
             </Row>
         </Container>
@@ -138,6 +139,12 @@ function Event(){
             </Row>
             <Row>{attendees}</Row>
         </Container>
+
+        <Row>
+        { show && (
+        <EventCreator show={show} setShow={setShow} uid={AuthUser.id} setEvents={undefined} getInfo={getEventInfo} newEvent={false} oldTitle={title} oldDate={date} oldTime={time} oldLocation={location} oldDescription={description}></EventCreator>
+        )}
+        </Row> 
         </>
     );
 }

@@ -74,7 +74,7 @@ const Events = () => {
 
         <Row>
         { show && (
-        <EventCreator show={show} setShow={setShow} uid={AuthUser.id} setEvents={setEvents}></EventCreator>
+        <EventCreator show={show} setShow={setShow} uid={AuthUser.id} setEvents={setEvents} getInfo={undefined} newEvent={true} oldTitle={undefined} oldDate={undefined} oldTime={undefined} oldLocation={undefined} oldDescription={undefined}></EventCreator>
         )}
         </Row> 
 
