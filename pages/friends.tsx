@@ -143,7 +143,7 @@ const Friends = () => {
         </Container>
         <Container fluid>
             <Row className="">
-                <Col xs={6}>
+                <Col md={6}>
                     <ListGroup variant="flush" className="mt-3">
                         <ListGroup.Item as="li" active className="text-center">Friend Requests</ListGroup.Item>
                         {filteredRequests.map( (request, i) => (
@@ -186,7 +186,7 @@ const Friends = () => {
                         }
                     </ListGroup>
                 </Col>
-                <Col xs={6} className="">
+                <Col md={6} className="">
                 <ListGroup variant="flush" className="mt-3">
                         <ListGroup.Item as="li" active className="text-center">Friends</ListGroup.Item>
                         {filteredFriends.map( (friend, i) => (
