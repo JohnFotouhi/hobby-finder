@@ -2,19 +2,23 @@ import FullPageLoader from "@/components/FullPageLoader";
 import EventCreator from "@/components/eventCreator";
 import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth";
 import Link from "next/link";
-import router from "next/router";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Row, Col, Button, Container, Card } from "react-bootstrap";
+import { Row, Col, Button, Container, Card, Modal } from "react-bootstrap";
 import { BsPencil, BsTrash } from "react-icons/bs";
 
 
 function Event(){
     
+    const router = useRouter();
     const AuthUser = useAuthUser();
 
     const [show, setShow] = useState(false);
+    const [confirmDelete, setConfirmDelete] = useState(false);
+
     const [owner, setOwner] = useState(false);
     const [attending, setAttending] = useState(false);
+    const [event, setEvent] = useState<any>();
 
     const [title, setTitle] = useState("");
     const [date, setDate] = useState("");
@@ -32,7 +36,7 @@ function Event(){
 
         console.log(eventId)
         getEventInfo(eventId);
-    }, [])
+    }, [event])
 
     const getEventInfo = (eventId) => {
         console.log("GETTING EVENT INFO")
@@ -100,6 +104,22 @@ function Event(){
     }
 
     const deleteEvent = () => {
+        const params = new URLSearchParams(window.location.search);
+        const eventId = params.get('eventId');
+
+        console.log("DELETING EVENT")
+        fetch("/api/eventDeletion", { 
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({id: eventId})
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log("event deleted")
+                router.push({
+                    pathname: "/events",
+                });
+        });
 
     }
 
@@ -117,7 +137,7 @@ function Event(){
             <Row>
                 <Col><h1>{title}</h1></Col>
                 {owner?<Col><Button onClick={editEvent}><BsPencil/></Button>
-                <Button onClick={deleteEvent}><BsTrash/></Button></Col>:null}
+                <Button onClick={() => setConfirmDelete(true)}><BsTrash/></Button></Col>:null}
             </Row>
             <Row>
                 <h5>Event hosted by <Link href="#" onClick={visitProfile} >{hostName}</Link></h5>
@@ -142,9 +162,21 @@ function Event(){
 
         <Row>
         { show && (
-        <EventCreator show={show} setShow={setShow} uid={AuthUser.id} setEvents={undefined} getInfo={getEventInfo} newEvent={false} oldTitle={title} oldDate={date} oldTime={time} oldLocation={location} oldDescription={description}></EventCreator>
+        <EventCreator show={show} setShow={setShow} uid={AuthUser.id} setEvents={undefined} setEvent={setEvent} newEvent={false} oldTitle={title} oldDate={date} oldTime={time} oldLocation={location} oldDescription={description}></EventCreator>
         )}
-        </Row> 
+        </Row>
+
+        <Modal show={confirmDelete} onHide={() => setConfirmDelete(false)}>
+            <Modal.Header> <Modal.Title>Are you sure you want to delete this Event?</Modal.Title></Modal.Header>
+            <Modal.Footer>
+                <Button variant="danger" onClick={deleteEvent}>
+                    Delete
+                </Button>
+                <Button variant="secondary" onClick={() => setConfirmDelete(false)}>
+                    Cancel
+                </Button>
+            </Modal.Footer>
+        </Modal> 
         </>
     );
 }

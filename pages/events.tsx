@@ -14,8 +14,6 @@ import EventCreator from "../components/eventCreator";
 
 const Events = () => {
 
-    const router = useRouter();
-
     //user credentials
     const AuthUser = useAuthUser();
     const storage = getStorage(firebaseApp);
@@ -74,7 +72,7 @@ const Events = () => {
 
         <Row>
         { show && (
-        <EventCreator show={show} setShow={setShow} uid={AuthUser.id} setEvents={setEvents} getInfo={undefined} newEvent={true} oldTitle={undefined} oldDate={undefined} oldTime={undefined} oldLocation={undefined} oldDescription={undefined}></EventCreator>
+        <EventCreator show={show} setShow={setShow} uid={AuthUser.id} setEvents={setEvents} setEvent={undefined} newEvent={true} oldTitle={undefined} oldDate={undefined} oldTime={undefined} oldLocation={undefined} oldDescription={undefined}></EventCreator>
         )}
         </Row> 
 

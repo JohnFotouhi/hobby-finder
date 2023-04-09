@@ -3,7 +3,7 @@ import { Modal, Card, Row, Button, Col } from "react-bootstrap";
 import globals from '../styles/Home.module.css'
 import Form from 'react-bootstrap/Form';
 
-export default function EventCreator({show, setShow, uid, setEvents, getInfo, newEvent, oldTitle, oldDate, oldTime, oldLocation, oldDescription}){
+export default function EventCreator({show, setShow, uid, setEvents, setEvent, newEvent, oldTitle, oldDate, oldTime, oldLocation, oldDescription}){
 
 
     const [title, setTitle] = useState("");
@@ -101,8 +101,11 @@ export default function EventCreator({show, setShow, uid, setEvents, getInfo, ne
                 .then((data) => {
                     if(status == 200){
                         console.log("SUCESSFUL CREATION");
-                        if(setEvents != undefined){
+                        if(newEvent){
                             setEvents(data)
+                        }
+                        else{
+                            setEvent(data)
                         }
                         setShow(false);
                     }
