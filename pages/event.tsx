@@ -123,6 +123,24 @@ function Event(){
 
     }
 
+    const toggleAttending = () => {
+        setAttending(!attending)
+        const params = new URLSearchParams(window.location.search);
+        const eventId = params.get('eventId');
+
+        console.log("TOGGLING ATTENDANCE")
+        fetch("/api/attendEvent", { 
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({id: eventId, uid: AuthUser.id, attending:attending})
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log("attendance toggled")
+                setAttendees(data);
+        });
+    }
+
     const visitProfile = () => {
         router.push({
             pathname: "/user",
@@ -155,7 +173,7 @@ function Event(){
         <Container style={{marginTop:"10px"}}>
             <Row>
                 <Col>Attendees:</Col>
-                {owner? undefined: <Col><Button>{attending? "Count me out": "I'm in!"}</Button></Col>}
+                {owner? undefined: <Col><Button onClick={toggleAttending}>{attending? "Count me out": "I'm in!"}</Button></Col>}
             </Row>
             <Row>{attendees}</Row>
         </Container>
