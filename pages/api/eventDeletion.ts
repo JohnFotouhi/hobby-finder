@@ -7,7 +7,8 @@ export default async (req, res) =>{
     if(req.method === 'POST'){
 
         await deleteDoc(doc(database, "events", req.body.id));
-        res.status(200).json();
+        
+        res.status(200).json("");
 
     } else {
         res.status(405).end()

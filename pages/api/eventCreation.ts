@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, getFirestore, updateDoc, query, where, addDoc } from "firebase/firestore"; 
+import { collection, doc, getDocs, getFirestore, updateDoc, query, where, addDoc, getDoc } from "firebase/firestore"; 
 import firebaseApp from "../../config";
 
 const database = getFirestore(firebaseApp);
@@ -57,20 +57,21 @@ type EventCard = {
             OwnerId: req.body.ownerId
         };
 
-        const existingEvent = query(eventsRef, where("OwnerId", "==", req.body.ownerId))   
-        const querySnapshot2 = await getDocs(existingEvent);
 
         if(isNew){
             const docRef = await addDoc(collection(database, "events"), newEvent);
             console.log("Document written with ID: ", docRef.id);
         }
         else{            
-            let eventId;
-            querySnapshot2.forEach((doc) => {
-                eventId = doc.id;
-            });
+            const docRef = doc(database, "events", req.body.eventId);
+            const docSnap = await getDoc(docRef);
 
-            updateDoc(doc(eventsRef, eventId), newEvent);
+            if (docSnap.exists()) {
+                updateDoc(doc(eventsRef, req.body.eventId), newEvent);
+            } else {
+                console.log("No such document!");
+            }
+
         }
 
         const eventCards = await getDocs(collection(database, "events"));

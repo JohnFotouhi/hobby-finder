@@ -27,7 +27,7 @@ function Event(){
     const [description, setDescription] = useState("");
     const [hostName, setHostName] = useState("");
     const [hostId, setHostId] = useState("");
-    const [attendees, setAttendees] = useState([]);
+    const [attendees, setAttendees] = useState<any[]>([]);
 
 
     useEffect(() => {
@@ -62,6 +62,11 @@ function Event(){
             }
 
             setAttendees(data.Attendees);
+
+            const i = data.Attendees.findIndex( e => e.id==AuthUser.id)
+            if(i >= 0){
+                setAttending(true);
+            } 
         });
     }
 
@@ -107,24 +112,38 @@ function Event(){
         const params = new URLSearchParams(window.location.search);
         const eventId = params.get('eventId');
 
+        let status;
         console.log("DELETING EVENT")
         fetch("/api/eventDeletion", { 
             method: "POST",
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({id: eventId})
         })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log("event deleted")
+        .then((res) => {
+            status = res.status;
+            return (res.json());           
+        })
+        .then((data) => {
+            console.log(status)
+            if(status == 200){
+                console.log("SUCESSFUL DELETION");
                 router.push({
                     pathname: "/events",
                 });
+            }
         });
 
     }
 
+    const getEventId = () => {
+        const params = new URLSearchParams(window.location.search);
+        const eventId = params.get('eventId');
+        return eventId
+    }
+
     const toggleAttending = () => {
         setAttending(!attending)
+        console.log(attending)
         const params = new URLSearchParams(window.location.search);
         const eventId = params.get('eventId');
 
@@ -141,10 +160,10 @@ function Event(){
         });
     }
 
-    const visitProfile = () => {
+    const visitProfile = (id) => {
         router.push({
             pathname: "/user",
-            query: {uid: hostId}
+            query: {uid: id}
         });
     }
 
@@ -158,7 +177,7 @@ function Event(){
                 <Button onClick={() => setConfirmDelete(true)}><BsTrash/></Button></Col>:null}
             </Row>
             <Row>
-                <h5>Event hosted by <Link href="#" onClick={visitProfile} >{hostName}</Link></h5>
+                <h5>Event hosted by <Link href="#" onClick={() => visitProfile(hostId)} >{hostName}</Link></h5>
             </Row>
         </Container>
         <Container style={{marginTop:"10px"}}>
@@ -172,15 +191,23 @@ function Event(){
         </Container>
         <Container style={{marginTop:"10px"}}>
             <Row>
-                <Col>Attendees:</Col>
-                {owner? <span></span>: <Col><Button onClick={toggleAttending}>{attending? "Count me out": "I'm in!"}</Button></Col>}
+                <Col>Attendees:</Col> 
+                <Col position="right"> {owner? <span></span>: <Button onClick={toggleAttending}>{attending? "Count me out": "I'm in!"}</Button>} </Col>
+                <Row className='m-auto' style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
+                    {attendees.map( (person, index) => (
+                        <Col md="3" key={index+"hobbyCard"}>                       
+                            <Link href="#" onClick={() => visitProfile(person.id)} >{person.name}</Link>
+                        </Col>
+                    ))}
+                </Row>
+                
             </Row>
-            <Row>{attendees}</Row>
+            <Row>Attendees</Row>
         </Container>
 
         <Row>
         { show && (
-        <EventCreator show={show} setShow={setShow} uid={AuthUser.id} setEvents={undefined} setEvent={setEvent} newEvent={false} oldTitle={title} oldDate={date} oldTime={time} oldLocation={location} oldDescription={description}></EventCreator>
+        <EventCreator show={show} setShow={setShow} uid={AuthUser.id} eventId={getEventId()} setEvents={undefined} setEvent={setEvent} newEvent={false} oldTitle={title} oldDate={date} oldTime={time} oldLocation={location} oldDescription={description}></EventCreator>
         )}
         </Row>
 

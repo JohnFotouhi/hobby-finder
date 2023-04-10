@@ -12,7 +12,7 @@ const database = getFirestore(firebaseApp);
 export default async (req, res) => {
     if(req.method === 'POST'){
 
-        const docRef = doc(database, "events", req.body.eventId);
+        const docRef = doc(database, "events", req.body.id);
         const docSnap = await getDoc(docRef);
 
         type Attendee = {
@@ -23,12 +23,14 @@ export default async (req, res) => {
         let attendees: Attendee[] = [];
         if (docSnap.exists()) {
             attendees = docSnap.data().Attendees;
+            console.log(attendees)
         } else {
             // doc.data() will be undefined in this case
             console.log("No such document!");
         }
 
-        if(req.body.attending){ //being added to list
+
+        if(!req.body.attending){ //being added to list
             const usersRef = collection(database, "users");
             const user = query(usersRef, where("key", "==", req.body.uid))
 
@@ -42,8 +44,9 @@ export default async (req, res) => {
             attendees.push(newAttendee);
         }
         else{ //being remove from list
-            const i =  attendees.map((e) => { return e.id; }).indexOf(req.body.uid); 
-            if(i != undefined){
+            const i = attendees.findIndex( e => e.id==req.body.uid)
+            console.log(i)
+            if(i >= 0){
                 attendees.splice(i, 1);
             }
         }
