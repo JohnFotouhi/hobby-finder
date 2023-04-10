@@ -38,14 +38,18 @@ export default function Filters({show, setShow, setFilters, setEvents}){
         }
         setFilters(filters);
         console.log(filters)
-        if(dateMin > dateMax){
-            setDateErr(true);
+        if(dateMin != "" && dateMax != "" ){
+            if(dateMin > dateMax){
+                setDateErr(true);
+            }
         }
-        if(timeMin > timeMax){
-            setTimeErr(true);
+        if(timeMin != "" && timeMax != "" ){
+            if(timeMin > timeMax){
+                setTimeErr(true);
+            }
         }
-        if((dateMin <= dateMax) && (timeMin <= timeMax)){
-            //handleFiltering(filters)
+        if(!timeErr && !dateErr){
+            handleFiltering(filters)
             setShow(false);
         }
     }
