@@ -26,7 +26,7 @@ export default async (req, res) =>{
             await updateDoc(userRef, {location: new GeoPoint(req.body.lat, req.body.long)})
         }
 
-        res.status(200).json();
+        res.status(200).json({});
 
     } else {
         res.status(405).end()

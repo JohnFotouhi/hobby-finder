@@ -17,7 +17,6 @@ export default async (req, res) => {
     if(req.method === 'POST'){
         
         const newCard = req.body.newCard;
-        const uid = req.body.uid;
 
         const usersRef = collection(database, "users");
         const user = query(usersRef, where("key", "==", req.body.uid))

@@ -35,26 +35,15 @@ export default async (req, res) =>{
         rel = relationships.find(e => e.key === req.body.theirKey);
         console.log(rel)
 
-        let responseCode = 0;
-        //if not there
-        if(rel == undefined){
-            //display "reach out" button (option 1)
-            responseCode = 1;
+        let status = "";
+        if(typeof(rel) == "undefined"){
+            status = "none";
         }
-        //if pending, display "waiting for reply" (option 2)
-        else if( rel.status == "pending"){
-            responseCode = 2;
-        }
-        //if respond, display button to accept
-        else if( rel.status == "respond"){
-            responseCode = 3;
-        }
-        //if friends, display email (for now)
-        else if( rel.status == "friends"){
-            responseCode = 4;
+        else{
+            status = rel.status;
         }
 
-        res.status(200).json({code: responseCode, email: theirEmail})
+        res.status(200).json({status: status, email: theirEmail})
 
     } else {
         res.status(405).end()

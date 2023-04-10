@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chatscope/chat-ui-kit-react": "^1.10.1",
+    "@chatscope/chat-ui-kit-styles": "^1.4.0",
     "@next/font": "13.1.6",
     "@types/node": "18.11.18",
     "@types/react": "18.0.27",
@@ -26,7 +28,7 @@
     "react-dom": "^18.2.0",
     "react-firebaseui": "^6.0.0",
     "react-geolocated": "^4.0.3",
-    "react-icons": "^4.7.1",
+    "react-icons": "^4.8.0",
     "react-images-uploading": "^3.1.7",
     "react-responsive": "^9.0.2",
     "react-select": "^5.7.0",
