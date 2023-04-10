@@ -96,12 +96,12 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
                     
                 </Col>
                 <Col className="col-md-4" >
-                    <Row style={{padding: 25}}>
+                    <Row style={{paddingLeft: 25, paddingRight: 25}}>
                         <Form style = {{height: "100%"}}>
                                 <FormInput controlId="name" label="Update profile name" type="text" placeholder={oldName} text="" setValue={setName} value={oldName}/> 
                             </Form> 
                         </Row>
-                    <Row style={{padding: 20}}>
+                    <Row style={{paddingLeft: 25, paddingRight: 25, paddingTop: 25, }}>
                         <Form>
                         {/* <textarea name="bio" rows={4} cols={40} value={oldBio}></textarea> */}
                             <FormInput controlId="bio" label="Share a little about yourself" type="text" placeholder={oldBio} text="" setValue={setBio} value={oldBio}/>
@@ -168,8 +168,11 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
                             </tr>
                         </tbody>
                     </Table>
-                    <Row style={{padding: 20}}>
-                        <Col>
+                    
+                </Col> 
+            </Row>
+            <Row style={{paddingLeft: "60px", paddingRight: "65px" }}>
+                        <Col className = "col-md-3">
                             <Form>
                                 <FormInput controlId="host" label="Capacity to host" type="number" text="" setValue={setCapacity} value={oldCapacity} placeholder={undefined}/>
                                 <Form.Text className="text-muted">
@@ -177,9 +180,9 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
                                 </Form.Text>
                             </Form> 
                         </Col>
-                    </Row>
-                    <Row style={{padding: 20}}>
-                        <Col>
+                        <Col className = "col-md-4">
+                        </Col>
+                        <Col className = "col-md-5">
                             <Form> 
                                 <FormInput controlId="equipment" label="Equipment" type="text" placeholder={oldEquipment} text="" setValue={setEquipment} value={oldEquipment}/>
                                 <Form.Text className="text-muted">
@@ -187,8 +190,6 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
                                 </Form.Text>
                             </Form> 
                         </Col>
-                    </Row> 
-                </Col> 
             </Row>
 
           
