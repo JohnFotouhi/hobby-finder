@@ -6,23 +6,31 @@ import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth";
 import { useEffect, useState } from "react";
 import { Row, Col, Button, Container } from "react-bootstrap";
 import globals from '../styles/Home.module.css'
-import { BsFunnelFill, BsSearch } from "react-icons/bs";
+import { BsFunnel } from "react-icons/bs";
 import EventCard from "../components/eventCard";
 import { useRouter } from "next/router";
 import EventCreator from "../components/eventCreator";
-
+import EventFilters from "../components/eventFilters";
 
 const Events = () => {
-
-    const router = useRouter();
 
     //user credentials
     const AuthUser = useAuthUser();
     const storage = getStorage(firebaseApp);
 
+    //event filtering
+    const emptyFilters = {
+        dateMin: "",
+        dateMax: "",
+        timeMin: "",
+        timeMax: ""
+    }
+    const [filters, setFilters] = useState(emptyFilters);
+
     //event status
     const [events, setEvents] = useState<any[]>([]);
     const [show, setShow] = useState(false);
+    const [editFilters, setEditFilters] = useState(false);
 
     useEffect(() => {
         getEvents();
@@ -44,9 +52,12 @@ const Events = () => {
     }
 
     function handleEditFilters(){
-       
+        setEditFilters(!editFilters);
     }
 
+    function updateFilters(filters){
+        setFilters(filters);
+    }
 
     return(
         <>
@@ -56,7 +67,7 @@ const Events = () => {
                     <h1>Events</h1>                
                 </Col>
                 <Col align="right">
-                    <Button className={globals.btn} onClick={handleEditFilters} style={{marginRight: "5px"}}><BsFunnelFill/></Button>
+                    <Button className={globals.btn} onClick={handleEditFilters} style={{marginRight: "5px"}}><BsFunnel/></Button>
                     <Button className={globals.btn} onClick={() => setShow(true)} style={{marginLeft: "5px"}}>Add an Event</Button>
                 </Col>
             </Row>
@@ -74,9 +85,11 @@ const Events = () => {
 
         <Row>
         { show && (
-        <EventCreator show={show} setShow={setShow} uid={AuthUser.id} setEvents={setEvents}></EventCreator>
+        <EventCreator show={show} setShow={setShow} uid={AuthUser.id} eventId={undefined} setEvents={setEvents} setEvent={undefined} newEvent={true} oldTitle={undefined} oldDate={undefined} oldTime={undefined} oldLocation={undefined} oldDescription={undefined}></EventCreator>
         )}
         </Row> 
+
+        <EventFilters show={editFilters} setShow={setEditFilters} setFilters={updateFilters} setEvents={setEvents}/>
 
         </>
     );
