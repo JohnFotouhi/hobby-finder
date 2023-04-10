@@ -28,14 +28,39 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
     function changeAvailability(dayIndex, timeIndex, value)  {
         //each checkbox sends a string on check
         //checked against a switch
-        console.log(oldAvailability)
-        const dayUpdate = oldAvailability[dayIndex];
-        console.log(dayUpdate);
-        console.log(value);
-        dayUpdate.timeIndex = value;
-        oldAvailability[0].timeIndex = value
-        console.log(oldAvailability[0].timeIndex);
-        console.log(oldAvailability)
+        console.log(oldAvailability);
+        console.log('---');
+        const dayMap = oldAvailability[dayIndex];
+        console.log(dayMap);
+        dayMap[timeIndex] = value;
+        console.log(dayMap);
+        oldAvailability[dayIndex] = dayMap;
+        console.log('---');
+        console.log(oldAvailability);
+
+        setAvailability(oldAvailability);
+
+        // console.log(timeIndex);
+        // // console.log(timeIndex)
+        // console.log("break");
+        // console.log(oldAvailability[dayIndex]);
+        
+
+        // const dayUpdate = oldAvailability[dayIndex];
+        // dayUpdate.timeIndex = value;
+        // console.log(oldAvailability.keys(dayIndex));
+        // (oldAvailability[dayIndex]).set(timeIndex, value);
+        // const n_map = new Map(Object.entries(oldAvailability[dayIndex]));
+        // console.log(n_map);
+        // console.log(oldAvailability[dayIndex]);
+        // n_map.set(timeIndex, value);
+        // console.log(n_map);
+        // oldAvailability[dayIndex] = n_map;
+        // console.log(oldAvailability[dayIndex]);
+        
+
+        // console.log(oldAvailability[0].timeIndex);
+        // console.log(oldAvailability)
 
         
     }
@@ -71,12 +96,12 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
                     
                 </Col>
                 <Col className="col-md-4" >
-                    <Row style={{padding: 25}}>
+                    <Row style={{paddingLeft: 25, paddingRight: 25}}>
                         <Form style = {{height: "100%"}}>
                                 <FormInput controlId="name" label="Update profile name" type="text" placeholder={oldName} text="" setValue={setName} value={oldName}/> 
                             </Form> 
                         </Row>
-                    <Row style={{padding: 20}}>
+                    <Row style={{paddingLeft: 25, paddingRight: 25, paddingTop: 25, }}>
                         <Form>
                         {/* <textarea name="bio" rows={4} cols={40} value={oldBio}></textarea> */}
                             <FormInput controlId="bio" label="Share a little about yourself" type="text" placeholder={oldBio} text="" setValue={setBio} value={oldBio}/>
@@ -143,8 +168,11 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
                             </tr>
                         </tbody>
                     </Table>
-                    <Row style={{padding: 20}}>
-                        <Col>
+                    
+                </Col> 
+            </Row>
+            <Row style={{paddingLeft: "60px", paddingRight: "65px" }}>
+                        <Col className = "col-md-3">
                             <Form>
                                 <FormInput controlId="host" label="Capacity to host" type="number" text="" setValue={setCapacity} value={oldCapacity} placeholder={undefined}/>
                                 <Form.Text className="text-muted">
@@ -152,9 +180,9 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
                                 </Form.Text>
                             </Form> 
                         </Col>
-                    </Row>
-                    <Row style={{padding: 20}}>
-                        <Col>
+                        <Col className = "col-md-4">
+                        </Col>
+                        <Col className = "col-md-5">
                             <Form> 
                                 <FormInput controlId="equipment" label="Equipment" type="text" placeholder={oldEquipment} text="" setValue={setEquipment} value={oldEquipment}/>
                                 <Form.Text className="text-muted">
@@ -162,8 +190,6 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
                                 </Form.Text>
                             </Form> 
                         </Col>
-                    </Row> 
-                </Col> 
             </Row>
 
           
