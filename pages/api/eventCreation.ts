@@ -1,10 +1,15 @@
-import { collection, doc, getDocs, getFirestore, updateDoc, query, where, addDoc } from "firebase/firestore"; 
+import { collection, doc, getDocs, getFirestore, updateDoc, query, where, addDoc, getDoc } from "firebase/firestore"; 
 import firebaseApp from "../../config";
 
 const database = getFirestore(firebaseApp);
 
+type Attendee = {
+    id: string,
+    name: string
+}
+
 type Event = {
-    Attendees: [],
+    Attendees: Attendee[],
     Title: string,
     Description: string,
     Date: string,
@@ -14,7 +19,7 @@ type Event = {
     OwnerId: string
   }
 
-  type EventCard = {
+type EventCard = {
     eventId: string,
     ownerId: string,
     title: string,
@@ -30,6 +35,8 @@ type Event = {
 
         const usersRef = collection(database, "users");
         const user = query(usersRef, where("key", "==", req.body.ownerId))
+        const eventsRef = collection(database, "events");
+        const isNew = req.body.newEvent;
 
         const querySnapshot = await getDocs(user);
         let userName;
@@ -40,7 +47,7 @@ type Event = {
         });
 
         const newEvent : Event = {
-            Attendees: [],
+            Attendees: [{id: req.body.ownerId, name: userName}],
             Title: req.body.title,
             Description: req.body.description,
             Date: req.body.date,
@@ -50,8 +57,22 @@ type Event = {
             OwnerId: req.body.ownerId
         };
 
-        const docRef = await addDoc(collection(database, "events"), newEvent);
-        console.log("Document written with ID: ", docRef.id);
+
+        if(isNew){
+            const docRef = await addDoc(collection(database, "events"), newEvent);
+            console.log("Document written with ID: ", docRef.id);
+        }
+        else{            
+            const docRef = doc(database, "events", req.body.eventId);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                updateDoc(doc(eventsRef, req.body.eventId), newEvent);
+            } else {
+                console.log("No such document!");
+            }
+
+        }
 
         const eventCards = await getDocs(collection(database, "events"));
             let eventArray: EventCard[] = [];
@@ -68,7 +89,13 @@ type Event = {
                 }
                 eventArray.push(newCard);
             });
+        
+        if(isNew){
             res.status(200).json(eventArray);
+        }
+        else{ 
+            res.status(200).json(newEvent);
+        }
 
     } else {     
         res.status(405).end()
