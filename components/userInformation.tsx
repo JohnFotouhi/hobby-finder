@@ -48,7 +48,7 @@ export default function UserInformation({owner, name, pronouns, bio, equipment, 
                 
                 <Col className="col-md-3">
                     <Row> 
-                        <Image className= "square bg-light rounded-pill" src={profilePicture} alt="profile_picture" width="200" height = "200"></Image>
+                        <Image className= "rounded-circle border border-secondary" style = {{borderWidth: "20px", borderStyle: "solid"}} src={profilePicture} alt="profile_picture" width="200" height = "250"></Image>
                     </Row>
                     
                     <Row>

@@ -7,15 +7,15 @@ import { valueContainerCSS } from 'react-select/dist/declarations/src/components
 const database = getFirestore(firebaseApp);
 
 type Day = {
-  morn: boolean,
-  aft: boolean,
-  eve: boolean,
-  night: boolean,
+  "morn": boolean,
+  "aft": boolean,
+  "eve": boolean,
+  "night": boolean,
 }
 
 export default async function writeData(req, res){
   try{
-    var emptyDay = {morn: false, aft: false, eve: false, night: false}
+    var emptyDay = {"morn": false, "aft": false, "eve": false, "night": false}
     const avail : [Day, Day, Day, Day, Day, Day, Day] = [emptyDay,emptyDay,emptyDay,emptyDay,emptyDay,emptyDay,emptyDay];
     const docRef = await addDoc(collection(database, 'users'), {
       key: req.body.uid,

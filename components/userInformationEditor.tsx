@@ -28,14 +28,39 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
     function changeAvailability(dayIndex, timeIndex, value)  {
         //each checkbox sends a string on check
         //checked against a switch
-        console.log(oldAvailability)
-        const dayUpdate = oldAvailability[dayIndex];
-        console.log(dayUpdate);
-        console.log(value);
-        dayUpdate.timeIndex = value;
-        oldAvailability[0].timeIndex = value
-        console.log(oldAvailability[0].timeIndex);
-        console.log(oldAvailability)
+        console.log(oldAvailability);
+        console.log('---');
+        const dayMap = oldAvailability[dayIndex];
+        console.log(dayMap);
+        dayMap[timeIndex] = value;
+        console.log(dayMap);
+        oldAvailability[dayIndex] = dayMap;
+        console.log('---');
+        console.log(oldAvailability);
+
+        setAvailability(oldAvailability);
+
+        // console.log(timeIndex);
+        // // console.log(timeIndex)
+        // console.log("break");
+        // console.log(oldAvailability[dayIndex]);
+        
+
+        // const dayUpdate = oldAvailability[dayIndex];
+        // dayUpdate.timeIndex = value;
+        // console.log(oldAvailability.keys(dayIndex));
+        // (oldAvailability[dayIndex]).set(timeIndex, value);
+        // const n_map = new Map(Object.entries(oldAvailability[dayIndex]));
+        // console.log(n_map);
+        // console.log(oldAvailability[dayIndex]);
+        // n_map.set(timeIndex, value);
+        // console.log(n_map);
+        // oldAvailability[dayIndex] = n_map;
+        // console.log(oldAvailability[dayIndex]);
+        
+
+        // console.log(oldAvailability[0].timeIndex);
+        // console.log(oldAvailability)
 
         
     }
