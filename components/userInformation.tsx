@@ -6,6 +6,7 @@ import { BsPencil, BsInfoCircle} from "react-icons/bs";
 import UserInfoModal from "./userInfoModal";
 import FormInput from "./formInput";
 import styles from "styles/schedule.module.css";
+import { BsPersonCircle } from "react-icons/bs";
 import Table from 'react-bootstrap/Table';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
@@ -48,7 +49,12 @@ export default function UserInformation({owner, name, pronouns, bio, equipment, 
                 
                 <Col className="col-md-3">
                     <Row> 
-                        <Image className= "rounded-circle border border-secondary" style = {{borderWidth: "20px", borderStyle: "solid"}} src={profilePicture} alt="profile_picture" width="200" height = "250"></Image>
+                        {profilePicture ? (
+                            <Image src={profilePicture} width={300} height={180} alt="Profile Picture" className="rounded-circle border border-secondary" />
+                        ) : (
+                            <BsPersonCircle size={200} />
+                        )}
+                        {/* <Image className= "rounded-circle border border-secondary" style = {{borderWidth: "20px", borderStyle: "solid"}} src={profilePicture} alt="profile_picture" width="200" height = "250"></Image> */}
                     </Row>
                     
                     <Row>
@@ -61,7 +67,7 @@ export default function UserInformation({owner, name, pronouns, bio, equipment, 
                     <Col>
                         <span className="fw-bold fs-2">{name}</span>
                     </Col>
-                    <Col style = {{height: "100%"}}>
+                    <Col style = {{height: "74%", backgroundColor: "whitesmoke"}}>
                         <span>{bio}</span>
                     </Col>
                     {/* <div className="fluid square border border-dark" style={{maxHeight: "100%"}}>
@@ -131,23 +137,27 @@ export default function UserInformation({owner, name, pronouns, bio, equipment, 
                         </tbody>
                     </Table> 
 
-                    <Row style={{padding: 20}}>
-                        <Col className="col-md-12" style={{backgroundColor: "wheat", paddingRight: 10}}>
-                            <OverlayTrigger placement='top' overlay={<Tooltip> How many people you would feel comfortable gathering at your place.</Tooltip>}>
-                                <Button style={{backgroundColor:"transparent", borderColor:"transparent"}}><BsInfoCircle style={{color:"black"}}/></Button>
-                            </OverlayTrigger>
-                            <span> Host Capacity: {capacity} people</span>
-                        </Col>
-                    </Row> 
-                    <Row style={{padding: 20}}>
-                        <Col className="col-md-12" style={{backgroundColor: "wheat"}} >
-                            <OverlayTrigger placement='top' overlay={<Tooltip> Any musical equipment you'd feel comfortable sharing, like mics or amps.</Tooltip>}>
-                                <Button style={{backgroundColor:"transparent", borderColor:"transparent"}}><BsInfoCircle style={{color:"black"}}/></Button>
-                            </OverlayTrigger>
-                            <span>Equipment: {equipment}</span>
-                        </Col>
-                    </Row>
+                    
                 </Col>      
+            </Row>
+            <Row style={{paddingLeft: "60px", paddingRight: "65px" }}>
+            
+                <Col className="col-md-3" style={{backgroundColor: "wheat", paddingRight: 10}}>
+                    <OverlayTrigger placement='top' overlay={<Tooltip> How many people you would feel comfortable gathering at your place.</Tooltip>}>
+                        <Button style={{backgroundColor:"transparent", borderColor:"transparent"}}><BsInfoCircle style={{color:"black"}}/></Button>
+                    </OverlayTrigger>
+                    <span> Host Capacity: {capacity} people</span>
+                </Col>
+                <Col className="col-md-4" style={{paddingRight: "10px"}}>
+                </Col>
+
+                <Col className="col-md-5" style={{backgroundColor: "wheat", backgroundOrigin: "content-box", paddingLeft: "10px"}} >
+                    <OverlayTrigger placement='top' overlay={<Tooltip> Any musical equipment you'd feel comfortable sharing, like mics or amps.</Tooltip>}>
+                        <Button style={{backgroundColor:"transparent", borderColor:"transparent"}}><BsInfoCircle style={{color:"black"}}/></Button>
+                    </OverlayTrigger>
+                    <span>Equipment: {equipment}</span>
+                </Col>
+
             </Row>
 
                 
