@@ -2,7 +2,7 @@ import { Button, Form, InputGroup } from "react-bootstrap";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { BsSearch, BsFunnelFill } from "react-icons/bs";
+import { BsSearch, BsFunnelFill, BsFunnel } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import SearchCard from "../components/SearchCard";
 import FullPageLoader from "../components/FullPageLoader";
@@ -69,7 +69,6 @@ function Search() {
     }
 
     function handleSearch(){
-        console.log(filters);
         fetch("/api/search", {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
@@ -103,7 +102,7 @@ function Search() {
                             />
                         </div>
                         <Button className={globals.btn} onClick={handleSearch} style={{height: '38px', width: isMobile ? "70px" : ''}} >Search <BsSearch /></Button>
-                        <Button className={globals.btn} onClick={handleEditFilters} style={{height: '38px', width: isMobile ? "70px" : ''}}>Filter<BsFunnelFill /></Button>
+                        <Button className={globals.btn} onClick={handleEditFilters} style={{height: '38px', width: isMobile ? "70px" : ''}}>Filter<BsFunnel /></Button>
                     </InputGroup>
                 </Row>
             </Container>
