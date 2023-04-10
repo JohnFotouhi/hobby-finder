@@ -1,7 +1,6 @@
 import { collection, collectionGroup, getDoc, getDocs, getFirestore, query, where } from "firebase/firestore"; 
 import firebaseApp from "../../config";
 import { getAuth } from "firebase/auth";
-import { experienceList } from "@/lists";
 
 const auth = getAuth(firebaseApp);
 const database = getFirestore(firebaseApp);
@@ -35,6 +34,18 @@ export default async (req, res) =>{
         let filters = req.body.filters;
         let myCoords = req.body.coordinates;
         let myKey = req.body.uid;        
+
+        if(typeof(myCoords.latitude) === "undefined" || typeof(myCoords.longitude) === "undefined"){
+            console.log("fetching previous location");
+            var user = query(collectionGroup(database, "users"), where("key", "==", myKey));
+            var myDoc = await getDocs(user);
+            myDoc.forEach((doc) => {
+                let userData = doc.data();
+                myCoords.latitude = userData.location.latitude;
+                myCoords.longitude = userData.location.longitude;
+            });
+         }
+
         let queryList = [ where('instrument', '==', `${req.body.search}`) ];
         if(filters.genres.length !== 0){
             queryList.push(where("genres", "array-contains-any", stringifyObject(filters.genres)));
@@ -67,14 +78,24 @@ export default async (req, res) =>{
         let users: any[] = [];
         docList.forEach((doc) => {
             let userData = doc.data();
-            let distance = calculateDistance(userData.location.latitude, userData.location.longitude, myCoords.latitude, myCoords.longitude);
-            console.log(distance);
-            if(distance < filters.distance && userData.key !== myKey){
-                let userId = doc.id;
-                let userInstruments = instruments.filter(instrument => instrument.userId === userId);
-                let user = doc.data();
-                user["instruments"] = userInstruments;
-                users.push(user);
+            if(typeof(userData.location.latitude) === "undefined" || typeof(userData.location.longitude) === "undefined"){
+                if(userData.key !== myKey){
+                    let userId = doc.id;
+                    let userInstruments = instruments.filter(instrument => instrument.userId === userId);
+                    let user = doc.data();
+                    user["instruments"] = userInstruments;
+                    users.push(user);
+                }
+            }
+            else{
+                let distance = calculateDistance(userData.location.latitude, userData.location.longitude, myCoords.latitude, myCoords.longitude);
+                if(distance < filters.distance && userData.key !== myKey){
+                    let userId = doc.id;
+                    let userInstruments = instruments.filter(instrument => instrument.userId === userId);
+                    let user = doc.data();
+                    user["instruments"] = userInstruments;
+                    users.push(user);
+                }
             }
         })
         res.status(200).json(users)
