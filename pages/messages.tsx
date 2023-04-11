@@ -47,15 +47,6 @@ const Messages = () => {
             });
     }
 
-    function onResolve(foundURL) {
-        console.log('FOUND IMAGE')
-        setImageRef(foundURL)
-    }
-    
-    function onReject(error) {
-        console.log(error.code);
-    }
-
     async function openChat(chatId, theirName, theirKey){
         if (sidebarVisible) {
             setSidebarVisible(false);
@@ -79,7 +70,12 @@ const Messages = () => {
             setFilteredChats(newFilteredChats);
         }
     }, [chatSearch, chats]);
-
+    function onResolve(foundURL){
+        return foundURL;
+    }
+    function onReject(error){
+        return pic.src;
+    }
     useEffect(() => {
         // Get list of user's chats
             const database = getFirestore(firebaseApp);
@@ -95,8 +91,7 @@ const Messages = () => {
                     const profileRef = ref(storage, `Profile Pictures/${chatData.users[0].key === AuthUser.id ? chatData.users[1].key : chatData.users[0].key}`); 
                     
                     const fetchData = async () => {
-                        console.log("profile ref", getDownloadURL(profileRef));
-                        chatData["profileURL"] = await getDownloadURL(profileRef);  
+                        chatData["profileURL"] = await getDownloadURL(profileRef).then(onResolve, onReject);  
                         newChats.push(chatData);
                         setChats(newChats);
                     }
@@ -105,14 +100,7 @@ const Messages = () => {
                     
                 });
                 
-            })
-
-            // console.log("chats ", chats.);
-            // const imageRef = ref(storage, `Profile Pictures/${chats.chatId.userKeys[1]}`); 
-            // console.log("desired id", chats.chatId.userKeys[1])
-            // if(imageRef != undefined){
-            //     getDownloadURL(imageRef).then(onResolve, onReject);          
-            // }
+            });
             return unsubscribe;
     }, []);
 
@@ -154,12 +142,7 @@ const Messages = () => {
         let newUserKey = params.get('key');
         if(newUserKey === null) newUserKey = "";
 
-     
-        const imageRef = ref(storage, `Profile Pictures/${newUserKey}`); 
-     
-        if(imageRef != undefined){
-            getDownloadURL(imageRef).then(onResolve, onReject);          
-        }
+             
         // Get list of messages for the chat that is currently opened (if any)
         if(typeof(newChatId) !== "undefined"){
             const database = getFirestore(firebaseApp);
