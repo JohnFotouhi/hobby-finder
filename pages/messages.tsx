@@ -201,7 +201,7 @@ const Messages = () => {
               </Sidebar>
               
               <ChatContainer style={chatContainerStyle}>
-                <ConversationHeader>
+                <ConversationHeader style={{marginBottom:"15px"}}>
                   <ConversationHeader.Back onClick={handleBackClick}/>
                   {chatId !== "" && <Avatar src={imageRef} name={nameOfRecipient} />}
                   {chatId === "" && <Avatar src={imageRef} name={nameOfRecipient} />}

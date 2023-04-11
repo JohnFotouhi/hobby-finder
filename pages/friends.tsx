@@ -146,16 +146,17 @@ const Friends = () => {
 
     return(
         <>
-        <Container fluid className='bg-light pb-3 mt-0' >
+        <Container fluid className='pb-3 mt-0' style={{backgroundColor:"white", paddingTop:"30px"}}>
             <div className="mx-auto" style={{width: isMobile ? "60%" : '400px'}}>
                 <Row>
                     <InputGroup className="justify-content-center">
                         <Form.Control
+                        style={{borderColor:"gray"}}
                         placeholder="Search for friends"
                         value={searchValue}
                         onChange={(event) => {setSearchValue(event.target.value)}}
                         />
-                        <Button variant="outline-secondary" id="button-addon2" >
+                        <Button variant="outline-secondary" id="button-addon2" style={{backgroundColor:"#e5f3d8"}}>
                         Search
                         </Button>
                     </InputGroup>
@@ -166,7 +167,7 @@ const Friends = () => {
             <Row className="">
                 <Col md={6}>
                     <ListGroup variant="flush" className="mt-3">
-                        <ListGroup.Item as="li" active className="text-center">Friend Requests</ListGroup.Item>
+                        <ListGroup.Item as="li" active className="text-center" style={{backgroundColor:"white", color:"black", borderColor:"#8AC853", borderBottom:"2px solid #8AC853"}}><h2>Friend Requests</h2></ListGroup.Item>
                         {filteredRequests.map( (request, i) => (
                             <ListGroup.Item as="li" className="" key={request.key}>
                                 <Card className="">
@@ -203,13 +204,13 @@ const Friends = () => {
                         ))}
                         {
                             requests.length === 0 &&
-                            <div className="text-center mt-2 fs-5 fw-bolder">You don't have any friend requests right now</div>
+                            <div className="text-center mt-2 fs-5 fw-bolder" style={{color:"gray"}}>You don't have any friend requests right now</div>
                         }
                     </ListGroup>
                 </Col>
                 <Col md={6} className="">
                 <ListGroup variant="flush" className="mt-3">
-                        <ListGroup.Item as="li" active className="text-center">Friends</ListGroup.Item>
+                        <ListGroup.Item as="li" active className="text-center" style={{backgroundColor:"white", color:"black", borderColor:"#8AC853", borderBottom:"2px solid #8AC853"}}><h2>Friends</h2></ListGroup.Item>
                         {filteredFriends.map( (friend, i) => (
                             <ListGroup.Item as="li" className="" key={friend.key}>
                                 <Card className="">

@@ -169,7 +169,7 @@ export default function SearchCard(props){
                     {props.bio}
                 </Card.Text>
                 <ListGroup variant="flush">
-                    <ListGroup.Item className="text-center">{distance !== "" && distance + " miles away"}<Button variant={relButtonVariant} disabled={relButtonDisabled} onClick={() => {updateRelationshipStatus(relButtonAction)}}>{relButtonText}</Button></ListGroup.Item>
+                    <ListGroup.Item className="text-center">{distance !== "" && distance + " miles away"}<br/><Button variant={relButtonVariant} disabled={relButtonDisabled} onClick={() => {updateRelationshipStatus(relButtonAction)}}>{relButtonText}</Button></ListGroup.Item>
                     <ListGroup.Item>Instruments: {cards.join(', ')}</ListGroup.Item>
                     <ListGroup.Item>Genres: {genres.join(', ')}</ListGroup.Item>
                 </ListGroup>

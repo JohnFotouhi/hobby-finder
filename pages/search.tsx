@@ -116,9 +116,9 @@ function Search() {
             </Container>
             {users.length === 0 ?
             <Container className="align-items-center mx-auto text-center"> 
-                <h1 className="mt-5" >
+                <h3 className="mt-5" >
                     {failedSearch ? "No musicians matched your search" : "Search for musicians near you"}
-                </h1>
+                </h3>
                 {isMobile ? 
                     <Image src={logo.src} className={globals.searchLogo}></Image> :
                     <Image src={logo.src}  className={globals.searchLogo}></Image>
