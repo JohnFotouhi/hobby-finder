@@ -12,6 +12,7 @@ import firebaseApp from "../config";
 import { getDownloadURL, getStorage, listAll, ref, uploadBytes} from "firebase/storage";
 import { BsChatRight, BsPlusLg} from "react-icons/bs";
 import EventCard from "../components/eventCard";
+import Link from "next/link";
 
 
 const Profile = () => {
@@ -288,7 +289,7 @@ const Profile = () => {
                 <Container className="mt-3" style={{marginBottom:"30px"}}>
                     <Row>
                         <h2>My Events</h2>
-                        <p style={{fontSize:"14px", color:"gray"}}>Upcoming events for which you have marked yourself attending. Visible to other users.</p>
+                        <p style={{fontSize:"14px", color:"gray"}}>Upcoming events for which you have marked yourself attending. You can find new events on the <Link href="/events">Events</Link> page.</p>
                     </Row>
                     <Row className='m-auto' style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
                         {events.map( (card, index) => (
