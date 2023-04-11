@@ -23,7 +23,7 @@ const Header = () => {
                 <Navbar.Toggle aria-controls="navbarScroll" />
                 <Navbar.Collapse id="navbarScroll">
                 <Nav className="me-auto"> 
-                    <Navbar.Brand className="p-0"><Image src={logo.src} height="22" width="22" roundedCircle></Image>Jam</Navbar.Brand>
+                    <Navbar.Brand className="p-0"><Nav.Link href="/about" style={{color:"black"}}><Image src={logo.src} height="22" width="22" roundedCircle></Image>Jam</Nav.Link></Navbar.Brand>
                     <Nav.Link href="/about">About</Nav.Link>
                     <Nav.Link href="/search">Search</Nav.Link>
                     <Nav.Link href="/events">Events</Nav.Link>

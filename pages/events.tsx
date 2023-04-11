@@ -68,6 +68,7 @@ const Events = () => {
                 </Col>
                 <Col align="right">
                     <Button className={globals.btn} onClick={handleEditFilters} style={{marginRight: "5px"}}><BsFunnel/></Button>
+                    </Col><Col>
                     <Button className={globals.btn} onClick={() => setShow(true)} style={{marginLeft: "5px"}}>Add an Event</Button>
                 </Col>
             </Row>

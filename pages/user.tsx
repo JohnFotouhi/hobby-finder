@@ -11,7 +11,7 @@ import { DatabaseService } from "firebase-admin/lib/database/database";
 //import perry from "../public/User_images/perry.png";
 import { getDownloadURL, getStorage, listAll, ref, uploadBytes} from "firebase/storage";
 import FullPageLoader from "../components/FullPageLoader";
-
+import EventCard from "../components/eventCard";
 
 
 function User() {
@@ -38,6 +38,7 @@ function User() {
 
     //user's cards
     const [cards, setCards] = useState<any[]>([]);
+    const [events, setEvents] = useState<any[]>([]);
     const [status, setStatus] = useState<any>();
     const params = new URLSearchParams(window.location.search);
     const uid = params.get('uid');
@@ -74,6 +75,7 @@ function User() {
 
         getRelationshipStatus(uid);
         getPicture();
+        getEvents(uid);
     }, [])
 
     useEffect(() => {
@@ -118,6 +120,21 @@ function User() {
             console.log('Could not parse relationship, status is: ' + relationshipStatus);
         }
     }, [relationshipStatus])
+
+    const getEvents = (uid) => {
+        let dateTime = new Date();
+        const today = dateTime.toISOString().slice(0,10);
+        console.log("getting events")
+        fetch("/api/personalEventsRetrieval", { 
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({uid: uid, today: today})
+        })
+            .then((res) => res.json())
+            .then((data) => {
+            setEvents(data);
+        });      
+    }
 
     const getRelationshipStatus = (theirId) => {
 
@@ -206,6 +223,18 @@ function User() {
                     ))}
                 </Row>
             </Container>
+            <Container className="mt-3" style={{marginBottom:"30px"}}>
+                    <Row>
+                        <h2>Events</h2>
+                    </Row>
+                    <Row className='m-auto' style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
+                        {events.map( (card, index) => (
+                            <Col md="4" key={index+"hobbyCard"}>                       
+                                <EventCard owner={(AuthUser.id == card.ownerId)} id={card.eventId} title={card.title} date={card.date} time={card.time} description={card.description} />
+                            </Col>
+                        ))}
+                    </Row>
+                </Container>
         </Container> }      
         </>
     );

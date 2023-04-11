@@ -17,7 +17,7 @@ export default async (req, res) =>{
         return deg * (Math.PI/180);
     }
     function calculateDistance(lat1, long1, lat2, long2){ // Calculate distance in kilometers between points
-        var R = 6371; // Radius of the earth in km
+        var R = 3958.756; // Radius of the earth in miles
         var dLat = deg2rad(lat2-lat1);
         var dLon = deg2rad(long2-long1); 
         var a = 
@@ -78,7 +78,7 @@ export default async (req, res) =>{
         let users: any[] = [];
         docList.forEach((doc) => {
             let userData = doc.data();
-            if(typeof(userData.location.latitude) === "undefined" || typeof(userData.location.longitude) === "undefined"){
+            if(typeof(userData.location.latitude) === "undefined" || typeof(userData.location.longitude) === "undefined" || typeof(myCoords.latitude) === "undefined" || typeof(myCoords.longitude) === "undefined" ){
                 if(userData.key !== myKey){
                     let userId = doc.id;
                     let userInstruments = instruments.filter(instrument => instrument.userId === userId);
