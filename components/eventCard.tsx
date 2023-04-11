@@ -53,7 +53,7 @@ export default function EventCard({owner, id, title, date, time, description}){
 
     return(
         <>
-        <Card style={{marginBottom:"10px", border:"2px solid #8ac853", backgroundColor:"#f2f9ec"}} onClick={visitEvent}>
+        <Card style={{marginBottom:"20px", border:"2px solid #8ac853", backgroundColor:"#f2f9ec", height:"90%"}} onClick={visitEvent}>
             <Card.Body>
                 <Card.Title>
                     <Row>

@@ -179,9 +179,9 @@ const Friends = () => {
                                                     {request.name}
                                                 </Col>
                                                 <Col xs={4}>
-                                                    <Button className={"p-0 m-1 " + globals.btn} onClick={() => {handleChoice("accept", request.key)}}>Accept</Button>
-                                                    <Button className="p-0 m-1"  variant="outline-secondary" onClick={() => {handleChoice("ignore", request.key)}}>Ignore</Button>
-                                                    <Button className="p-0 m-1" variant="outline-danger" onClick={() => {handleChoice("block", request.key)}}>Block</Button>
+                                                    <Button className={"m-1 " + globals.btn} onClick={() => {handleChoice("accept", request.key)}}>Accept</Button>
+                                                    <Button className="m-1"  variant="outline-secondary" onClick={() => {handleChoice("ignore", request.key)}}>Ignore</Button>
+                                                    <Button className="m-1" variant="outline-danger" onClick={() => {handleChoice("block", request.key)}}>Block</Button>
                                                     {/* <Button ref={overlayRefs[i]} className="mb-3">
                                                         <BsThreeDotsVertical className="mt-3"/>
                                                     </Button>
@@ -225,7 +225,7 @@ const Friends = () => {
                                                     { friend.status === "friends" &&
                                                     <>
                                                     <BsFillChatFill className="mx-1 ml-auto" onClick={() => {redirectToChat(friend.key, friend.name)}} />
-                                                    <Button className="p-0 m-1" variant="outline-danger" onClick={() => {handleChoice("unfriend", friend.key)}}>Unfriend</Button>
+                                                    <Button className="m-1" variant="outline-danger" onClick={() => {handleChoice("unfriend", friend.key)}}>Unfriend</Button>
                                                     </>
                                                     }
                                                     { friend.status === "pending" &&
