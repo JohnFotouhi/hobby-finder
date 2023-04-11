@@ -80,6 +80,7 @@ export default function UserInformation({owner, name, pronouns, bio, equipment, 
                 </Col>
                 <Col className="col-md-5" style ={{height: "100%"}}>
                     <span>Availability</span>
+                    {availability.length == 0 ? <span> Error</span> :
                     <Table style={{backgroundColor: "whitesmoke", borderRadius: 5}}>
                         <thead>
                             <tr>
@@ -136,8 +137,7 @@ export default function UserInformation({owner, name, pronouns, bio, equipment, 
                             </tr>
                         </tbody>
                     </Table> 
-
-                    
+                    }                       
                 </Col>      
             </Row>
             <Row style={{paddingLeft: "60px", paddingRight: "65px" }}>

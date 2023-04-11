@@ -1,7 +1,7 @@
 import HobbyCardEditor from "../components/hobbyCardEditor";
 import { useEffect, useState } from "react";
 import { AuthAction, init, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
-import { Button, Col, Container, Row, Form, Stack, Alert, Navbar, Modal } from "react-bootstrap";
+import { Button, Col, Container, Row, Form, Stack, Alert, Navbar, Modal, Spinner } from "react-bootstrap";
 import FullPageLoader from "../components/FullPageLoader";
 import HobbyCard from "../components/hobbyCard";
 import UserInformation from "../components/userInformation";
@@ -19,6 +19,10 @@ const Profile = () => {
     //user credentials
     const AuthUser = useAuthUser();
     const storage = getStorage(firebaseApp);
+
+    //loading states
+    const [loadingCards, setLoadingCards] = useState(true);
+    const [loadingData, setLoadingData] = useState(true);
 
     //Profile states
     const [isEditing, setIsEditing] = useState(false);
@@ -68,6 +72,7 @@ const Profile = () => {
             .then((res) => res.json())
             .then((data) => {
             setCards(data);
+            setLoadingCards(false);
         });
     }
 
@@ -86,10 +91,12 @@ const Profile = () => {
             //set pronouns to be the object version.
             setPronouns(data.pronouns)
             setBio(data.bio);
+            console.log(data.availability)
             setAvailability(data.availability);
             setCapacity(data.host);
             setEquipment(data[4]);
-        });       
+            setLoadingData(false);
+        });               
     }
 
     const getEvents = () => {
@@ -233,6 +240,10 @@ const Profile = () => {
 
     return(
         <>  
+            { loadingCards || loadingData ? 
+            <Container className="align-items-center mt-5 text-center">
+                <Spinner animation="border" role="status"></Spinner>
+            </Container> :
             <Container>
                 <Row style = {{padding: 20, justifyContent: "right"}}>
                     <Col className = "col-md-1">
@@ -290,7 +301,8 @@ const Profile = () => {
                 )}
                 </Row> 
 
-            </Container>           
+            </Container>  
+            }         
         </>
     );
 }
