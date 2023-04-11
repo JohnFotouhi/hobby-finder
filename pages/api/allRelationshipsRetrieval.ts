@@ -15,7 +15,7 @@ function getPicUrl(ref){
         console.log(error);
         console.log("no profile image");
         return(
-            {url: "@/public/User_images/jon.jpg"}
+            {url: "@/public/User_images/person-fill.svg"}
         )
     })
 }

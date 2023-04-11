@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import firebaseApp from "@/config";
 import { BsClockHistory, BsFillChatFill, BsPersonCircle, BsThreeDotsVertical } from "react-icons/bs";
-import pic from "@/public/User_images/jon.jpg";
+import pic from "@/public/User_images/person-fill.svg";
 import { useMediaQuery } from "react-responsive";
 
 
@@ -45,6 +45,21 @@ const Friends = () => {
         setFilteredRequests(newFilteredRequests);
     }, [searchValue])
 
+    async function getPicture(key) {
+        //get prof pic
+        let result;
+        const imageRef = ref(storage, `Profile Pictures/${key}`);
+        result = await getDownloadURL(imageRef).then(onResolve, onReject);
+        console.log(result);
+        return (result);      
+    }
+    function onResolve(foundURL){
+        return foundURL;
+    }
+    function onReject(error){
+        return pic.src;
+    }
+
     useEffect(() => {
         fetch("/api/allRelationshipsRetrieval", { 
             method: "POST",
@@ -53,16 +68,28 @@ const Friends = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data.relationships);
-                let newRequests = data.relationships.filter(relationship => relationship.status == "respond");
-                // (data.relationships).forEach(function (request)){
-
-                // }
-                setRequests(newRequests);
-                setFilteredRequests(newRequests);
-                let newFriends = data.relationships.filter(relationship => relationship.status == "friends" || relationship.status == "pending");
-                setFriends(newFriends);
-                setFilteredFriends(newFriends);
+                const getRelationships = async (data) => {
+                    console.log(data.relationships);
+                    let newRequests : any[] = [];
+                    let newFriends : any[] = [];
+                    for (let i = 0; i < data.relationships.length; i++){
+                        let newRelationship = data.relationships[i];
+                        newRelationship["profileURL"] = await getPicture(newRelationship.key);
+                        console.log(newRelationship.profileURL);
+                        if(newRelationship.status === "respond"){
+                            newRequests.push(newRelationship);
+                        }
+                        if(newRelationship.status === "friends" || newRelationship.status === "pending"){
+                            newFriends.push(newRelationship);
+                        }
+                    }
+                    setRequests(newRequests);
+                    setFilteredRequests(newRequests);
+                    setFriends(newFriends);
+                    setFilteredFriends(newFriends);
+                }
+                getRelationships(data);
+                
         });
         fetch("/api/getChats", { 
             method: "POST",
@@ -117,24 +144,6 @@ const Friends = () => {
         });
     }
 
-    function getProfilePic(ref){
-        console.log(ref);
-        getDownloadURL(ref).then((url) => {
-            return(
-                {url: url}
-            )
-        })
-    }
-
-    // const getPicture = async (key) => {
-    //     //get prof pic
-    //     const imageRef = ref(storage, `Profile Pictures/${key}`); 
-
-    //     const result = await Promise.getDownloadURL(imageRef)
-    //     return ();      
-        
-    // }
-
     return(
         <>
         <Container fluid className='pb-3 mt-0' style={{backgroundColor:"white", paddingTop:"30px"}}>
@@ -166,7 +175,7 @@ const Friends = () => {
                                         <Container fluid>
                                             <Row >
                                                 <Col xs={8} onClick={() => {navigateToProfile(request.key)}}>
-                                                    <Image className= "square bg-light rounded-pill mx-2" src={undefined} alt="profile_picture" width="50" height = "50"></Image>
+                                                    <Image className= "square bg-light rounded-pill mx-2" src={request.profileURL} alt="profile_picture" width="50" height = "50"></Image>
                                                     {request.name}
                                                 </Col>
                                                 <Col xs={4}>
@@ -209,7 +218,7 @@ const Friends = () => {
                                         <Container>
                                             <Row>
                                                 <Col xs={8} onClick={() => {navigateToProfile(friend.key)}}>
-                                                    <Image className= "square bg-light rounded-pill mx-2" src={exampleProfilePic} alt="profile_picture" width="50" height = "50"></Image>
+                                                    <Image className= "square bg-light rounded-pill mx-2" src={friend.profileURL} alt="profile_picture" width="50" height = "50"></Image>
                                                     {friend.name}
                                                 </Col>
                                                 <Col xs={4} className="pt-2">
