@@ -98,10 +98,11 @@ const Messages = () => {
                         console.log("profile ref", getDownloadURL(profileRef));
                         chatData["profileURL"] = await getDownloadURL(profileRef);  
                         newChats.push(chatData);
+                        setChats(newChats);
                     }
                
                     fetchData();
-                    setChats(newChats);
+                    
                 });
                 
             })
