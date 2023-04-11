@@ -4,14 +4,16 @@ import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Row, Col, Button, Container, Card, Modal } from "react-bootstrap";
+import { Row, Col, Button, Container, Card, Modal, Spinner } from "react-bootstrap";
 import { BsPencil, BsTrash } from "react-icons/bs";
-
+import globals from '../styles/Home.module.css'
 
 function Event(){
     
     const router = useRouter();
     const AuthUser = useAuthUser();
+
+    const [loadingData, setLoadingData] = useState(true);
 
     const [show, setShow] = useState(false);
     const [confirmDelete, setConfirmDelete] = useState(false);
@@ -67,6 +69,7 @@ function Event(){
             if(i >= 0){
                 setAttending(true);
             } 
+            setLoadingData(false);
         });
     }
 
@@ -169,41 +172,45 @@ function Event(){
 
     return(
         <>
-
-        <Container style={{borderBottom:"1px solid gray", marginTop:"50px", paddingBottom:"5px"}}>
+        { loadingData ? 
+        <Container className="align-items-center mt-5 text-center">
+            <Spinner animation="border" role="status"></Spinner>
+        </Container> :
+        <Container style={{backgroundColor:"#fff1cc", border:"1px solid black", marginTop:"20px", borderRadius:"25px", paddingBottom:"20px"}}>
+        <Container style={{marginTop:"20px", paddingBottom:"5px"}}>
             <Row>
                 <Col><h1>{title}</h1></Col>
                 {owner?<Col><Button onClick={editEvent}><BsPencil/></Button>
                 <Button onClick={() => setConfirmDelete(true)}><BsTrash/></Button></Col>:null}
             </Row>
             <Row>
-                <h5>Event hosted by <Link href="#" onClick={() => visitProfile(hostId)} >{hostName}</Link></h5>
+                <h5>Event hosted by <Link style={{color:"black"}} href="#" onClick={() => visitProfile(hostId)} >{hostName}</Link></h5>
             </Row>
         </Container>
-        <Container style={{marginTop:"10px"}}>
+
+        <Container style={{padding:"10px", backgroundColor:"#fff8e6", border:"1px solid black", borderRadius:"15px",}}>
             <Row>
                 <Col><h4>{formatDate(date)},  {formatTime(time)}</h4></Col>
                 <Col><h4>{location}</h4></Col>
             </Row>
+            <Row style={{marginLeft:"4px"}}>{description}</Row>
         </Container>
-        <Container style={{marginTop:"10px"}}>
-            <Row>{description}</Row>
-        </Container>
+
         <Container style={{marginTop:"10px"}}>
             <Row>
-                <Col>Attendees:</Col> 
-                <Col position="right"> {owner? <span></span>: <Button onClick={toggleAttending}>{attending? "Count me out": "I'm in!"}</Button>} </Col>
+                <Col><h5>Attendees:</h5></Col> 
+                <Col align="right"> {owner? <span></span>: <Button style={{backgroundColor:"#fff8e6", color:"black", border:"1px solid black"}} onClick={toggleAttending}>{attending? "Count me out": "I'm in!"}</Button>} </Col>
                 <Row className='m-auto' style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
                     {attendees.map( (person, index) => (
-                        <Col md="3" key={index+"hobbyCard"}>                       
-                            <Link href="#" onClick={() => visitProfile(person.id)} >{person.name}</Link>
+                        <Col md="2" key={index+"hobbyCard"}>                       
+                            <Link style={{color:"black"}} href="#" onClick={() => visitProfile(person.id)} >{person.name}</Link>
                         </Col>
                     ))}
                 </Row>
                 
             </Row>
-            <Row>Attendees</Row>
         </Container>
+        </Container> }
 
         <Row>
         { show && (

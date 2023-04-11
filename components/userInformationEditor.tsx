@@ -1,6 +1,6 @@
 import { Button, Col, Container, Row, Form, Card, Modal, Dropdown} from "react-bootstrap";
 import MultiselectInput from "./multiselectInput";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import SingleselectInput from "./singleselectinput";
 import FormInput from "./formInput";
 import { optionCSS } from "react-select/dist/declarations/src/components/Option";
@@ -9,14 +9,20 @@ import UploadFile from "./uploadFile";
 import Table from "react-bootstrap/Table";
 import Image from 'next/image';
 import Checkbox from "./checkBox";
+import { BsPersonCircle } from "react-icons/bs";
+import { v4 as uuid } from 'uuid';
+import { table } from "console";
+import event from "@/pages/event";
 
-export default function UserInformationEditor({setShowProfileEditor, showProfileEditor, oldName, setName, oldPronouns, setPronouns, oldCapacity, setCapacity, oldBio, setBio, oldEquipment, setEquipment, oldAvailability, setAvailability, setImage, profilePicture}) {
+
+export default function UserInformationEditor({setShowProfileEditor, showProfileEditor, oldName, setName, oldPronouns, setPronouns, oldCapacity, setCapacity, oldBio, setBio, oldEquipment, setEquipment, oldAvailability, setAvailability, setImage, profilePicture, capacityError, setCapacityError}) {
     
 
     const capacity = [{label: "1", value: "capacity1"}, {label: "2", value: "capacity2"}, {label: "3", value: "capacity3"}, {label: "4", value: "capacity4"}, {label: "5", value: "capacity5"},
                             {label: "6", value: "capacity6"}, {label: "7", value: "capacity7"}, {label: "8+", value: "capacity8"},]
     const pronounList = [{label: "she/her", value: "she/her"}, {label: "he/him", value: "he/him"}, {label: "they/them", value: "they/them"}]
 
+    const ref = useRef(null);
 
     type Day = {
         m: boolean,
@@ -34,33 +40,19 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
         console.log(dayMap);
         dayMap[timeIndex] = value;
         console.log(dayMap);
+        console.log("day index ", dayIndex)
         oldAvailability[dayIndex] = dayMap;
         console.log('---');
         console.log(oldAvailability);
+        value = !value;
+        // const tableId = (dayIndex.toString()).concat(timeIndex);
+        // console.log(tableId);
+        // const elem = document.getElementById(tableId);
+        // console.log(elem?.children);
+
+        // console.log(ref.current);
 
         setAvailability(oldAvailability);
-
-        // console.log(timeIndex);
-        // // console.log(timeIndex)
-        // console.log("break");
-        // console.log(oldAvailability[dayIndex]);
-        
-
-        // const dayUpdate = oldAvailability[dayIndex];
-        // dayUpdate.timeIndex = value;
-        // console.log(oldAvailability.keys(dayIndex));
-        // (oldAvailability[dayIndex]).set(timeIndex, value);
-        // const n_map = new Map(Object.entries(oldAvailability[dayIndex]));
-        // console.log(n_map);
-        // console.log(oldAvailability[dayIndex]);
-        // n_map.set(timeIndex, value);
-        // console.log(n_map);
-        // oldAvailability[dayIndex] = n_map;
-        // console.log(oldAvailability[dayIndex]);
-        
-
-        // console.log(oldAvailability[0].timeIndex);
-        // console.log(oldAvailability)
 
         
     }
@@ -75,8 +67,11 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
                 <Col className="col-md-3">
                     <Col>
                         <Row>
-                            <Image className= "square bg-light rounded-pill" src={profilePicture} alt="profile_picture" width="200" height = "200"></Image>
-
+                            {profilePicture ? (
+                                <Image src={profilePicture} width={300} height={180} alt="Profile Picture" className="rounded-circle border border-secondary" />
+                            ) : (
+                                <BsPersonCircle size={200} />
+                            )}
                         </Row>
                         <Row style={{padding: 10}}>
                                 <Col className="col-md-8" style={{justifyContent: "center", alignContent: "center"}}>
@@ -128,43 +123,43 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
                         <tbody>
                             <tr>
                                 <td>Morning</td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(0, "morn", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(1, "morn", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(2, "morn", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(3, "morn", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(4, "morn", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(5, "morn", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(6, "morn", e.target.checked)}/></td>
+                                <td id="0morn"><Checkbox label={undefined} isSelected={oldAvailability[0].morn} onCheckboxChange={e => changeAvailability(0, "morn", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[1].morn} onCheckboxChange={e => changeAvailability(1, "morn", e.isSelected)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[2].morn} onCheckboxChange={e => changeAvailability(2, "morn", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[3].morn} onCheckboxChange={e => changeAvailability(3, "morn", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[4].morn} onCheckboxChange={e => changeAvailability(4, "morn", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[5].morn} onCheckboxChange={e => changeAvailability(5, "morn", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[6].morn} onCheckboxChange={e => changeAvailability(6, "morn", e.target.checked)}/></td>
                             </tr>
                             <tr>
                                 <td>Afternoon</td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(0, "aft", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(1, "aft", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(2, "aft", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(3, "aft", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(4, "aft", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(5, "aft", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(6, "aft", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[0].aft} onCheckboxChange={e => changeAvailability(0, "aft", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[1].aft} onCheckboxChange={e => changeAvailability(1, "aft", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[2].aft} onCheckboxChange={e => changeAvailability(2, "aft", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[3].aft} onCheckboxChange={e => changeAvailability(3, "aft", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[4].aft} onCheckboxChange={e => changeAvailability(4, "aft", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[5].aft} onCheckboxChange={e => changeAvailability(5, "aft", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[6].aft} onCheckboxChange={e => changeAvailability(6, "aft", e.target.checked)}/></td>
                             </tr>
                             <tr>
                                 <td>Evening</td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(0, "eve", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(1, "eve", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(2, "eve", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(3, "eve", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(4, "eve", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(5, "eve", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(6, "eve", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[0].eve} onCheckboxChange={e => changeAvailability(0, "eve", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[1].eve} onCheckboxChange={e => changeAvailability(1, "eve", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[2].eve} onCheckboxChange={e => changeAvailability(2, "eve", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[3].eve} onCheckboxChange={e => changeAvailability(3, "eve", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[4].eve} onCheckboxChange={e => changeAvailability(4, "eve", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[5].eve} onCheckboxChange={e => changeAvailability(5, "eve", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[6].eve} onCheckboxChange={e => changeAvailability(6, "eve", e.target.checked)}/></td>
                             </tr>
                             <tr>
                                 <td>Night</td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(0, "night", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(1, "night", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(2, "night", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(3, "night", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(4, "night", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(5, "night", e.target.checked)}/></td>
-                                <td><Checkbox label={undefined} isSelected={undefined} onCheckboxChange={e => changeAvailability(6, "night", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[0].night} onCheckboxChange={e => changeAvailability(0, "night", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[1].night} onCheckboxChange={e => changeAvailability(1, "night", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[2].night} onCheckboxChange={e => changeAvailability(2, "night", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[3].night} onCheckboxChange={e => changeAvailability(3, "night", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[4].night} onCheckboxChange={e => changeAvailability(4, "night", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[5].night} onCheckboxChange={e => changeAvailability(5, "night", e.target.checked)}/></td>
+                                <td><Checkbox label={undefined} isSelected={oldAvailability[6].night} onCheckboxChange={e => changeAvailability(6, "night", e.target.checked)}/></td>
                             </tr>
                         </tbody>
                     </Table>
@@ -178,6 +173,7 @@ export default function UserInformationEditor({setShowProfileEditor, showProfile
                                 <Form.Text className="text-muted">
                                     Would you want to host musician friends? If so, how many?
                                 </Form.Text>
+                                {capacityError && (<p style={{color:"red", fontSize:13}}>Your capacity to host cannot be lower than 0</p>)}
                             </Form> 
                         </Col>
                         <Col className = "col-md-4">
