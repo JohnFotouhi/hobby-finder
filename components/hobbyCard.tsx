@@ -47,7 +47,7 @@ export default function HobbyCard({uid, setCards, index, instrument, genre, expe
     }
 
     return(
-        <><Card className={globals.card}>
+        <><Card className={globals.card} style={{height:"90%"}}>
             <Card.Body>
                 <Card.Title>
                     <Row>
