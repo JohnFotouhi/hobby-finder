@@ -1,7 +1,7 @@
 import HobbyCardEditor from "../components/hobbyCardEditor";
 import { useEffect, useState } from "react";
 import { AuthAction, init, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
-import { Button, Col, Container, Row, Form, Stack, Alert, Navbar, Modal, Spinner } from "react-bootstrap";
+import { Button, Col, Container, Row, Spinner, Form, Stack, Alert, Navbar, Modal } from "react-bootstrap";
 import FullPageLoader from "../components/FullPageLoader";
 import HobbyCard from "../components/hobbyCard";
 import UserInformation from "../components/userInformation";
@@ -12,6 +12,7 @@ import firebaseApp from "../config";
 import { getDownloadURL, getStorage, listAll, ref, uploadBytes} from "firebase/storage";
 import { BsChatRight, BsPlusLg} from "react-icons/bs";
 import EventCard from "../components/eventCard";
+import Link from "next/link";
 
 
 const Profile = () => {
@@ -22,7 +23,6 @@ const Profile = () => {
 
     //loading states
     const [loadingCards, setLoadingCards] = useState(true);
-    const [loadingData, setLoadingData] = useState(true);
 
     //Profile states
     const [isEditing, setIsEditing] = useState(false);
@@ -51,6 +51,7 @@ const Profile = () => {
     const [oldInfo, setOldInfo] = useState("");
 
     const [capacityError, setCapacityError] = useState(false);
+    const [loadingData, setLoadingData] = useState(true);
 
     //get user's hobby cards and profile information
     useEffect(() => {
@@ -60,6 +61,7 @@ const Profile = () => {
         getPicture();
         getEvents();
         //console.log(imageRef)
+        //setLoadingData(false);
     }, [oldInfo]);
 
     const getCards = () => {
@@ -112,6 +114,7 @@ const Profile = () => {
             .then((data) => {
                 console.log(data)
                 setEvents(data);
+            setLoadingData(false);
         });      
     }
 
@@ -240,7 +243,7 @@ const Profile = () => {
 
     return(
         <>  
-            { loadingCards || loadingData ? 
+        { loadingData ? 
             <Container className="align-items-center mt-5 text-center">
                 <Spinner animation="border" role="status"></Spinner>
             </Container> :
@@ -288,7 +291,7 @@ const Profile = () => {
                 <Container className="mt-3" style={{marginBottom:"30px"}}>
                     <Row>
                         <h2>My Events</h2>
-                        <p style={{fontSize:"14px", color:"gray"}}>Upcoming events for which you have marked yourself attending. Visible to other users.</p>
+                        <p style={{fontSize:"14px", color:"gray"}}>Upcoming events for which you have marked yourself attending. You can find new events on the <Link href="/events">Events</Link> page.</p>
                     </Row>
                     <Row className='m-auto' style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
                         {events.map( (card, index) => (
@@ -305,8 +308,8 @@ const Profile = () => {
                 )}
                 </Row> 
 
-            </Container>  
-            }         
+            </Container>
+            }           
         </>
     );
 }

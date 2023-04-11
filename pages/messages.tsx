@@ -2,7 +2,7 @@ import FullPageLoader from "@/components/FullPageLoader"
 import { withAuthUser, AuthAction, useAuthUser } from "next-firebase-auth"
 import { useEffect, useRef, useState } from "react";
 import { MainContainer, ChatContainer, MessageList, Message, MessageInput, Avatar, Conversation, ConversationHeader, ConversationList, EllipsisButton, MessageSeparator, Search, Sidebar, TypingIndicator, VideoCallButton, VoiceCallButton } from '@chatscope/chat-ui-kit-react';
-import pic from "@/public/User_images/person-fill.svg";
+import pic from "@/public/User_images/bsPersonFill.png";
 import { useRouter } from "next/router";
 import { Button } from "react-bootstrap";
 import { collection, collectionGroup, getDocs, getFirestore, onSnapshot, orderBy, query, where } from "firebase/firestore";
@@ -56,13 +56,13 @@ const Messages = () => {
         console.log(error.code);
     }
 
-    async function openChat(chatId, theirName){
+    async function openChat(chatId, theirName, theirKey){
         if (sidebarVisible) {
             setSidebarVisible(false);
         }
         await router.push({
             pathname: "/messages",
-            query: {chatId: chatId, name: theirName}
+            query: {chatId: chatId, name: theirName, key: theirKey}
         });
         setChatId(chatId);
     }
@@ -90,15 +90,29 @@ const Messages = () => {
                 snapshot.forEach(doc => {
                     let chatData = (doc.data());
                     chatData["id"] = doc.id;
-                    newChats.push(chatData);
+   
+                    
+                    const profileRef = ref(storage, `Profile Pictures/${chatData.users[0].key === AuthUser.id ? chatData.users[1].key : chatData.users[0].key}`); 
+                    
+                    const fetchData = async () => {
+                        console.log("profile ref", getDownloadURL(profileRef));
+                        chatData["profileURL"] = await getDownloadURL(profileRef);  
+                        newChats.push(chatData);
+                        setChats(newChats);
+                    }
+               
+                    fetchData();
+                    
                 });
-                setChats(newChats);
+                
             })
 
-            const imageRef = ref(storage, `Profile Pictures/${AuthUser.id}`); 
-            if(imageRef != undefined){
-                getDownloadURL(imageRef).then(onResolve, onReject);          
-            }
+            // console.log("chats ", chats.);
+            // const imageRef = ref(storage, `Profile Pictures/${chats.chatId.userKeys[1]}`); 
+            // console.log("desired id", chats.chatId.userKeys[1])
+            // if(imageRef != undefined){
+            //     getDownloadURL(imageRef).then(onResolve, onReject);          
+            // }
             return unsubscribe;
     }, []);
 
@@ -129,6 +143,7 @@ const Messages = () => {
 
     useEffect(() => {
         // This is triggered on load and when the user clicks on a chat and changes the messages to be shown in the main window
+        console.log("changing windows");
         const params = new URLSearchParams(window.location.search);
         let newChatId = params.get('chatId');
         if(newChatId === null) newChatId = "";
@@ -136,6 +151,15 @@ const Messages = () => {
         let newName = params.get('name');
         if(newName === null) newName = "";
         setNameOfRecipient(newName);
+        let newUserKey = params.get('key');
+        if(newUserKey === null) newUserKey = "";
+
+     
+        const imageRef = ref(storage, `Profile Pictures/${newUserKey}`); 
+     
+        if(imageRef != undefined){
+            getDownloadURL(imageRef).then(onResolve, onReject);          
+        }
         // Get list of messages for the chat that is currently opened (if any)
         if(typeof(newChatId) !== "undefined"){
             const database = getFirestore(firebaseApp);
@@ -152,6 +176,9 @@ const Messages = () => {
             return unsubscribe;
         }
 
+        
+        
+
     }, [chatId]);
 
     return(
@@ -159,11 +186,11 @@ const Messages = () => {
         <MainContainer responsive>                
               <Sidebar position="left" scrollable={true} style={sidebarStyle}>
                 <Search placeholder="Search..." value={chatSearch} onChange={setChatSearch} onClearClick={() => {setChatSearch("")}}/>
-                <ConversationList>
+                <ConversationList >
                     {
                         filteredChats.map((chat, i) => (
-                            <Conversation key={"conversation" + i} onClick={() => {openChat(chat.id, chat.users[0].key === AuthUser.id ? chat.users[1].name : chat.users[0].name)}}>
-                                <Avatar key={"chatImage" + i} src={exampleIcon} name="Lilly" style={conversationAvatarStyle}/>
+                            <Conversation key={"conversation" + i} onClick={() => {openChat(chat.id, chat.users[0].key === AuthUser.id ? chat.users[1].name : chat.users[0].name, chat.users[0].key === AuthUser.id ? chat.users[1].key : chat.users[0].key)}}>
+                                <Avatar key={"chatImage" + i} src={chat.profileURL} name="Lilly" style={conversationAvatarStyle}/>
                                 <Conversation.Content name={chat.users[0].key === AuthUser.id ? chat.users[1].name : chat.users[0].name} lastSenderName={chat.recentMessageSender} info={chat.recentMessageText} style={conversationContentStyle} />
                             </Conversation>
                         ))
@@ -176,8 +203,8 @@ const Messages = () => {
               <ChatContainer style={chatContainerStyle}>
                 <ConversationHeader>
                   <ConversationHeader.Back onClick={handleBackClick}/>
-                  {chatId !== "" && <Avatar src={exampleIcon} name={nameOfRecipient} />}
-                  {chatId === "" && <Avatar src={exampleIcon} name={nameOfRecipient} />}
+                  {chatId !== "" && <Avatar src={imageRef} name={nameOfRecipient} />}
+                  {chatId === "" && <Avatar src={imageRef} name={nameOfRecipient} />}
                   <ConversationHeader.Content userName={nameOfRecipient} info="" />
                   <ConversationHeader.Actions>
                     {/* <EllipsisButton orientation="vertical" /> */}
@@ -195,7 +222,7 @@ const Messages = () => {
                                 direction: message.senderKey === AuthUser.id ? "outgoing" : "incoming",
                                 position: "single"
                             }} avatarSpacer>
-                                {message.senderKey !== AuthUser.id && <Avatar key={"messageImage" + i} src={exampleIcon} name="Zoe" />}
+                                {message.senderKey !== AuthUser.id && <Avatar key={"messageImage" + i} src= {imageRef} name="Zoe" />}
                             </Message> 
                             </>
                         ))
