@@ -118,7 +118,7 @@ export default function SearchCard(props){
         }
         setAvailability(days);
 
-        const imageRef = ref(storage, `Profile Pictures/${props.id}`); 
+        const imageRef = ref(storage, `Profile Pictures/${props.authId}`); 
         if(imageRef != undefined){
             getDownloadURL(imageRef).then(onResolve, onReject);          
         }

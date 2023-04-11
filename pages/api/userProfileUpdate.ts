@@ -45,7 +45,7 @@ export default async (req, res) => {
         if( newPronouns != undefined ) { updateDoc(userRef, {pronouns: newPronouns}); }
         if( newBio != undefined ) { updateDoc(userRef, {bio: newBio}); }
         if( newEquipment != undefined ) { updateDoc(userRef, {equipment: newEquipment}); }
-        if( newAvailability != undefined ) { updateDoc(userRef, {availability: {}}); }
+        if( newAvailability != undefined ) { updateDoc(userRef, {availability: newAvailability}); }
         if( newHost != undefined ) { updateDoc(userRef, {host: newHost}); }
 
 

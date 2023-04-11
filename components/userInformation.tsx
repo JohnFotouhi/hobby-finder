@@ -6,24 +6,28 @@ import { BsPencil, BsInfoCircle} from "react-icons/bs";
 import UserInfoModal from "./userInfoModal";
 import FormInput from "./formInput";
 import styles from "styles/schedule.module.css";
-import { BsPersonCircle } from "react-icons/bs";
+import { BsPersonCircle, BsMusicNoteBeamed, BsDot } from "react-icons/bs";
+import { IconContext } from "react-icons";
 import Table from 'react-bootstrap/Table';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import globals from '../styles/schedule.module.css'
+import { colors } from "react-select/dist/declarations/src/theme";
 
 export default function UserInformation({owner, name, pronouns, bio, equipment, availability, capacity, profilePicture}){
     const [file, setFile] = useState("");
 
-    type Day = {
-        morn: boolean,
-        aft: boolean,
-        eve: boolean,
-        night: boolean,
-      }
+    // type Day = {
+    //     morn: boolean,
+    //     aft: boolean,
+    //     eve: boolean,
+    //     night: boolean,
+    //   }
 
-    var emptyDay = {morn: false, aft: false, eve: false, night: false}
-    const avail : [Day, Day, Day, Day, Day, Day, Day] = [emptyDay,emptyDay,emptyDay,emptyDay,emptyDay,emptyDay,emptyDay];
-    console.log(avail);
+    // var emptyDay = {morn: false, aft: false, eve: false, night: false}
+    // const avail : [Day, Day, Day, Day, Day, Day, Day] = [emptyDay,emptyDay,emptyDay,emptyDay,emptyDay,emptyDay,emptyDay];
+    // console.log(avail);
+    console.log(availability)
 
     const [showEquipmentInfo, setShowEquipmentInfo] = useState(false);
     const [showScheduleInfo, setShowScheduleInfo] = useState(false);
@@ -41,7 +45,7 @@ export default function UserInformation({owner, name, pronouns, bio, equipment, 
         setShowScheduleInfo(true);
     }
 
-
+    
 
     return (
         <Container style={{padding: 10}}>
@@ -92,47 +96,43 @@ export default function UserInformation({owner, name, pronouns, bio, equipment, 
                         <tbody>
                             <tr>
                                 <td>Morning</td>
-                                {/* <td className={availability[0].morn? "styles/isAvail" : "" }>{availability[0].morn? "Y" : "N"}</td>
-                                <td className={availability[0].morn? "styles/isAvail" : "" }></td>
-                                <td className={availability[0].morn? "styles/isAvail" : "" }></td> */}
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>{availability[0].morn?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td> 
+                                <td>{availability[1].morn?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
+                                <td>{availability[2].morn?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
+                                <td>{availability[3].morn?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
+                                <td>{availability[4].morn?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
+                                <td>{availability[5].morn?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
+                                <td>{availability[6].morn?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
                             </tr>
                             <tr>
                                 <td>Afternoon</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>{availability[0].aft?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td> 
+                                <td>{availability[1].aft?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
+                                <td>{availability[2].aft?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
+                                <td>{availability[3].aft?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
+                                <td>{availability[4].aft?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
+                                <td>{availability[5].aft?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
+                                <td>{availability[6].aft?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
                             </tr>
                             <tr>
                                 <td>Evening</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>{availability[0].eve?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td> 
+                                <td>{availability[1].eve?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
+                                <td>{availability[2].eve?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
+                                <td>{availability[3].eve?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
+                                <td>{availability[4].eve?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
+                                <td>{availability[5].eve?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
+                                <td>{availability[6].eve?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
                             </tr>
                             <tr>
                                 <td>Night</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>{availability[0].night?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td> 
+                                <td>{availability[1].night?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
+                                <td>{availability[2].night?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
+                                <td>{availability[3].night?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
+                                <td>{availability[4].night?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
+                                <td>{availability[5].night?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
+                                <td>{availability[6].night?  (<BsMusicNoteBeamed style={{color: "82C14B"}}/>) : (<BsDot/>)}</td>
                             </tr>
                         </tbody>
                     </Table> 
