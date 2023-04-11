@@ -1,7 +1,6 @@
 import HobbyCardEditor from "../components/hobbyCardEditor";
 import { useEffect, useState } from "react";
 import { AuthAction, init, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
-import { Button, Col, Container, Row, Form, Stack, Alert, Navbar, Modal, Spinner } from "react-bootstrap";
 import { Button, Col, Container, Row, Spinner, Form, Stack, Alert, Navbar, Modal } from "react-bootstrap";
 import FullPageLoader from "../components/FullPageLoader";
 import HobbyCard from "../components/hobbyCard";
@@ -24,7 +23,6 @@ const Profile = () => {
 
     //loading states
     const [loadingCards, setLoadingCards] = useState(true);
-    const [loadingData, setLoadingData] = useState(true);
 
     //Profile states
     const [isEditing, setIsEditing] = useState(false);
