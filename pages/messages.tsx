@@ -2,7 +2,7 @@ import FullPageLoader from "@/components/FullPageLoader"
 import { withAuthUser, AuthAction, useAuthUser } from "next-firebase-auth"
 import { useEffect, useRef, useState } from "react";
 import { MainContainer, ChatContainer, MessageList, Message, MessageInput, Avatar, Conversation, ConversationHeader, ConversationList, EllipsisButton, MessageSeparator, Search, Sidebar, TypingIndicator, VideoCallButton, VoiceCallButton } from '@chatscope/chat-ui-kit-react';
-import pic from "@/public/User_images/jon.jpg";
+import pic from "@/public/User_images/person-fill.svg";
 import { useRouter } from "next/router";
 import { Button } from "react-bootstrap";
 import { collection, collectionGroup, getDocs, getFirestore, onSnapshot, orderBy, query, where } from "firebase/firestore";

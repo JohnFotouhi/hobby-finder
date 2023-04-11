@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { getDownloadURL, getStorage } from "firebase/storage";
 import firebaseApp from "@/config";
 import { BsClockHistory, BsFillChatFill, BsPersonCircle, BsThreeDotsVertical } from "react-icons/bs";
-import pic from "@/public/User_images/jon.jpg";
+import pic from "@/public/User_images/person-fill.svg";
 import { useMediaQuery } from "react-responsive";
 
 
