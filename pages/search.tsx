@@ -2,7 +2,7 @@ import { Button, Form, InputGroup } from "react-bootstrap";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { BsSearch, BsFunnelFill } from "react-icons/bs";
+import { BsSearch, BsFunnelFill, BsFunnel } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import SearchCard from "../components/SearchCard";
 import FullPageLoader from "../components/FullPageLoader";
@@ -32,6 +32,7 @@ function Search() {
     const [instrument, setInstrument] = useState({value: "", label: ""});
     const [users, setUsers] = useState<any[]>([]);
     const [failedSearch, setFailedSearch] = useState(false);
+    const [firstLoad, setFirstLoad] = useState(true);
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
     const AuthUser = useAuthUser();
     //const [coords, setCoords] = useState();
@@ -69,7 +70,6 @@ function Search() {
     }
 
     function handleSearch(){
-        console.log(filters);
         fetch("/api/search", {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
@@ -86,6 +86,13 @@ function Search() {
     function setSearch(newInstrument){
         setInstrument(newInstrument);
     }
+
+    useEffect(() => {
+        if(! firstLoad){
+            handleSearch();
+        }
+        setFirstLoad(false);
+    }, [filters, instrument])
     return(
         <>  
             <Container fluid className='bg-light pb-3 mt-0' >
@@ -103,7 +110,7 @@ function Search() {
                             />
                         </div>
                         <Button className={globals.btn} onClick={handleSearch} style={{height: '38px', width: isMobile ? "70px" : ''}} >Search <BsSearch /></Button>
-                        <Button className={globals.btn} onClick={handleEditFilters} style={{height: '38px', width: isMobile ? "70px" : ''}}>Filter<BsFunnelFill /></Button>
+                        <Button className={globals.btn} onClick={handleEditFilters} style={{height: '38px', width: isMobile ? "70px" : ''}}>Filter<BsFunnel /></Button>
                     </InputGroup>
                 </Row>
             </Container>
@@ -122,7 +129,7 @@ function Search() {
                 <Row className='m-auto'>
                     {users.map((user, index )=>(
                         <Col md="4" key={index + "userCard"}>
-                            <SearchCard {...user} authId={user.key} />
+                            <SearchCard {...user} authId={user.key} myLocation={coords}/>
                         </Col>
                     ))}
                 </Row>
