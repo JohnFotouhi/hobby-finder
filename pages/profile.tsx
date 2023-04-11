@@ -1,7 +1,7 @@
 import HobbyCardEditor from "../components/hobbyCardEditor";
 import { useEffect, useState } from "react";
 import { AuthAction, init, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
-import { Button, Col, Container, Row, Form, Stack, Alert, Navbar, Modal } from "react-bootstrap";
+import { Button, Col, Container, Row, Form, Stack, Alert, Navbar, Modal, Spinner } from "react-bootstrap";
 import FullPageLoader from "../components/FullPageLoader";
 import HobbyCard from "../components/hobbyCard";
 import UserInformation from "../components/userInformation";
@@ -11,6 +11,7 @@ import globals from '../styles/Home.module.css'
 import firebaseApp from "../config";
 import { getDownloadURL, getStorage, listAll, ref, uploadBytes} from "firebase/storage";
 import { BsChatRight, BsPlusLg} from "react-icons/bs";
+import EventCard from "../components/eventCard";
 
 
 const Profile = () => {
@@ -19,7 +20,9 @@ const Profile = () => {
     const AuthUser = useAuthUser();
     const storage = getStorage(firebaseApp);
 
-    //console.log(AuthUser);
+    //loading states
+    const [loadingCards, setLoadingCards] = useState(true);
+    const [loadingData, setLoadingData] = useState(true);
 
     //Profile states
     const [isEditing, setIsEditing] = useState(false);
@@ -33,6 +36,7 @@ const Profile = () => {
 
     //user's cards
     const [cards, setCards] = useState<any[]>([]);
+    const [events, setEvents] = useState<any[]>([]);
 
     //Hobby Card States
     const [show, setShow] = useState(false);
@@ -54,6 +58,7 @@ const Profile = () => {
         getCards();
         getProfile();
         getPicture();
+        getEvents();
         //console.log(imageRef)
     }, [oldInfo]);
 
@@ -66,8 +71,8 @@ const Profile = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-            console.log(data)
             setCards(data);
+            setLoadingCards(false);
         });
     }
 
@@ -86,10 +91,28 @@ const Profile = () => {
             //set pronouns to be the object version.
             setPronouns(data.pronouns)
             setBio(data.bio);
+            console.log(data.availability)
             setAvailability(data.availability);
             setCapacity(data.host);
             setEquipment(data[4]);
-        });       
+            setLoadingData(false);
+        });               
+    }
+
+    const getEvents = () => {
+        let dateTime = new Date();
+        const today = dateTime.toISOString().slice(0,10);
+        console.log("getting events")
+        fetch("/api/personalEventsRetrieval", { 
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({uid: AuthUser.id, today: today})
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data)
+                setEvents(data);
+        });      
     }
 
     const getPicture = () => {
@@ -217,6 +240,10 @@ const Profile = () => {
 
     return(
         <>  
+            { loadingCards || loadingData ? 
+            <Container className="align-items-center mt-5 text-center">
+                <Spinner animation="border" role="status"></Spinner>
+            </Container> :
             <Container>
                 <Row style = {{padding: 20, justifyContent: "right"}}>
                     <Col className = "col-md-1">
@@ -242,6 +269,9 @@ const Profile = () => {
                         <Col md={{ span: 1, offset: 7 }}>
                         <Button className={globals.btn} onClick={handleCreate}><BsPlusLg/></Button> 
                         </Col>
+                        <p style={{fontSize:"14px", color:"gray"}}>Create a hobby card for any instrument you play! Users will be able to find you when
+                            searching for someone with skills like yours.
+                        </p>
                     </Row>
                     <Row className='m-auto' style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
                         {cards.map( (card, index) => (
@@ -255,13 +285,28 @@ const Profile = () => {
                     </Row>
                 </Container>
 
+                <Container className="mt-3" style={{marginBottom:"30px"}}>
+                    <Row>
+                        <h2>My Events</h2>
+                        <p style={{fontSize:"14px", color:"gray"}}>Upcoming events for which you have marked yourself attending. Visible to other users.</p>
+                    </Row>
+                    <Row className='m-auto' style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
+                        {events.map( (card, index) => (
+                            <Col md="4" key={index+"hobbyCard"}>                       
+                                <EventCard owner={(AuthUser.id == card.ownerId)} id={card.eventId} title={card.title} date={card.date} time={card.time} description={card.description} />
+                            </Col>
+                        ))}
+                    </Row>
+                </Container>
+
                 <Row>
                 { show && (
                 <HobbyCardEditor uid={AuthUser.id} setCards={setCards} setShow={setShow} show={show} newCard={newCard} oldInstrument={oldInstrumentId} oldGenre={oldGenres} oldGenreStrings={oldGenreStrings} oldExperience={oldExperience} oldCommitMin={oldCommitMin} oldCommitMax={oldCommitMax} oldInfo={oldInfo}></HobbyCardEditor>
                 )}
                 </Row> 
 
-            </Container>           
+            </Container>  
+            }         
         </>
     );
 }
