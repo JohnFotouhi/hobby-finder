@@ -4,21 +4,27 @@ import { useAuthUser, AuthAction, withAuthUser } from "next-firebase-auth";
 import UploadImage from "../components/uploadImage";
 import UserInformation from "../components/userInformation";
 import { useEffect, useState } from "react";
+import firebaseApp from "../config";
 import { getAuth } from "firebase/auth";
 import { APP_BUILD_MANIFEST } from "next/dist/shared/lib/constants";
 import { DatabaseService } from "firebase-admin/lib/database/database";
 //import perry from "../public/User_images/perry.png";
+import { getDownloadURL, getStorage, listAll, ref, uploadBytes} from "firebase/storage";
 import FullPageLoader from "../components/FullPageLoader";
 
 
 
 function User() {
+
+    const storage = getStorage(firebaseApp);
+
     const [capacity, setCapacity] = useState("");
     const [bio, setBio] = useState("");
     const [equipment, setEquipment] = useState("");
-    const [schedule, setSchedule] = useState({});
+    const [availability, setAvailability] = useState([]);
     const [displayName, setDisplayName] = useState("");
-    //const [userKey, setUserKey] = useState("");
+    const [imageRef, setImageRef] = useState("");
+    const [userKey, setUserKey] = useState("");
 
     const [loadingCards, setLoadingCards] = useState(true);
     const [loadingData, setLoadingData] = useState(true);
@@ -35,7 +41,7 @@ function User() {
     const [status, setStatus] = useState<any>();
     const params = new URLSearchParams(window.location.search);
     const uid = params.get('uid');
-    console.log(uid);
+    console.log("uid", uid);
 
     useEffect(() => {
 
@@ -59,13 +65,15 @@ function User() {
             .then((data) => {
             setDisplayName(data.name);
             setBio(data.bio);
-            //setAvailability(data.availability);
+            setAvailability(data.availability);
             setCapacity(data.host);
             setEquipment(data[4]);
+            setUserKey(data.key)
             setLoadingData(false);
         });
 
         getRelationshipStatus(uid);
+        getPicture();
     }, [])
 
     useEffect(() => {
@@ -140,6 +148,24 @@ function User() {
         });     
     }
 
+    function onResolve(foundURL) {
+        console.log('FOUND IMAGE')
+        setImageRef(foundURL)
+    }
+    
+    function onReject(error) {
+        console.log(error.code);
+    }
+
+    const getPicture = () => {
+        //get prof pic
+        const imageRef = ref(storage, `Profile Pictures/${uid}`); 
+
+        if(imageRef != undefined){
+            getDownloadURL(imageRef).then(onResolve, onReject);          
+        }
+    }
+
     //https://careerkarma.com/blog/converting-circular-structure-to-json/
     const replacerFunc = () => {
         const visited = new WeakSet();
@@ -164,7 +190,7 @@ function User() {
         <Container>
             <Row>
                 <Col>
-                    <UserInformation owner={true} name={displayName} pronouns={""} bio={bio} equipment={equipment} capacity={capacity} availability={undefined} profilePicture={undefined}></UserInformation>
+                    <UserInformation owner={true} name={displayName} pronouns={""} bio={bio} equipment={equipment} capacity={capacity} availability={availability} profilePicture={imageRef}></UserInformation>
                 </Col>
             </Row>
             <Container className="mt-3">
