@@ -61,7 +61,7 @@ export default function EventCard({owner, id, title, date, time, description}){
                             {title}
                         </Col>
                         <Col align="right">
-                            {owner ? <Button className={globals.btn} onClick={visitEvent} style={{margin:1, height:"40px", alignSelf:"right"}}><BsPencil /></Button> : null}
+                            {owner ? <Button className={globals.btn} onClick={visitEvent} style={{margin:1, height:"40px"}}><BsPencil /></Button> : null}
                         </Col>
                     </Row>
                 </Card.Title>

@@ -269,6 +269,9 @@ const Profile = () => {
                         <Col md={{ span: 1, offset: 7 }}>
                         <Button className={globals.btn} onClick={handleCreate}><BsPlusLg/></Button> 
                         </Col>
+                        <p style={{fontSize:"14px", color:"gray"}}>Create a hobby card for any instrument you play! Users will be able to find you when
+                            searching for someone with skills like yours.
+                        </p>
                     </Row>
                     <Row className='m-auto' style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
                         {cards.map( (card, index) => (
@@ -285,6 +288,7 @@ const Profile = () => {
                 <Container className="mt-3" style={{marginBottom:"30px"}}>
                     <Row>
                         <h2>My Events</h2>
+                        <p style={{fontSize:"14px", color:"gray"}}>Upcoming events for which you have marked yourself attending. Visible to other users.</p>
                     </Row>
                     <Row className='m-auto' style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
                         {events.map( (card, index) => (
