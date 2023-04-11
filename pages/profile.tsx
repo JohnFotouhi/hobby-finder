@@ -23,11 +23,10 @@ const Profile = () => {
 
     //Profile states
     const [isEditing, setIsEditing] = useState(false);
-    const [capacity, setCapacity] = useState("");
+    const [capacity, setCapacity] = useState(0);
     const [bio, setBio] = useState("");
-    const [availability, setAvailability] = useState({})
+    const [availability, setAvailability] = useState([])
     const [equipment, setEquipment] = useState("");
-    const [schedule, setSchedule] = useState({});
     const [displayName, setDisplayName] = useState("");
     const [pronouns, setPronouns] = useState("")
     const [imageRef, setImageRef] = useState("");
@@ -46,6 +45,8 @@ const Profile = () => {
     const [oldCommitMin, setOldCommitMin] = useState(0);
     const [oldCommitMax, setOldCommitMax] = useState(0);
     const [oldInfo, setOldInfo] = useState("");
+
+    const [capacityError, setCapacityError] = useState(false);
 
     //get user's hobby cards and profile information
     useEffect(() => {
@@ -167,6 +168,12 @@ const Profile = () => {
         if(!isEditing){
             setIsEditing(true);
         }
+        else if(+capacity < 0){
+            console.log("Set Capacity is less than 0")
+            console.log("state of capacity error", capacityError);
+            setCapacityError(true);
+            setCapacity(0);
+        }
         else{ //user has saved new information
             let status;
             getPicture();
@@ -182,7 +189,7 @@ const Profile = () => {
                     name: displayName,
                     pronouns: pronouns,
                     bio: bio,
-                    availability: schedule,
+                    availability: availability,
                     host: capacity,
                     equipment: equipment
                     })
@@ -222,7 +229,7 @@ const Profile = () => {
                         {isEditing?
                         <UserInformationEditor setShowProfileEditor={setShowProfileEditor} showProfileEditor={showProfileEditor} oldCapacity={capacity} oldBio={bio} 
                         oldEquipment={equipment} oldAvailability={availability} oldName={displayName} setName={setDisplayName} setCapacity={setCapacity} setAvailability={setAvailability} setBio={setBio} 
-                        setEquipment={setEquipment} oldPronouns={pronouns} setPronouns={setPronouns} setImage={setImageRef} profilePicture={imageRef}></UserInformationEditor>
+                        setEquipment={setEquipment} oldPronouns={pronouns} setPronouns={setPronouns} setImage={setImageRef} profilePicture={imageRef} capacityError={capacityError} setCapacityError={setCapacityError}></UserInformationEditor>
                         :  <UserInformation owner={true} name={displayName} pronouns={pronouns} bio={bio} equipment={equipment} capacity={capacity} availability={availability} profilePicture={imageRef}></UserInformation> }
                     </Col>
                 </Row>

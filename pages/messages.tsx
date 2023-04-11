@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { Button } from "react-bootstrap";
 import { collection, collectionGroup, getDocs, getFirestore, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import firebaseApp from "@/config";
+import { getDownloadURL, getStorage, ref} from "firebase/storage";
 import { BsPersonCircle } from "react-icons/bs";
 
 const Messages = () => {
@@ -20,7 +21,9 @@ const Messages = () => {
     const [chatId, setChatId] = useState("");
     const [nameOfRecipient, setNameOfRecipient] = useState("");
     const [chatSearch, setChatSearch] = useState("");
+    const [imageRef, setImageRef] = useState("");
     const target = useRef(null);
+    const storage = getStorage(firebaseApp);
 
     function sendMessage(){
         fetch("/api/sendMessage", { 
@@ -37,6 +40,15 @@ const Messages = () => {
             .then((data) => {
                 setMessageInputValue("");
             });
+    }
+
+    function onResolve(foundURL) {
+        console.log('FOUND IMAGE')
+        setImageRef(foundURL)
+    }
+    
+    function onReject(error) {
+        console.log(error.code);
     }
 
     async function openChat(chatId, theirName){
@@ -72,6 +84,11 @@ const Messages = () => {
                 });
                 setChats(newChats);
             })
+
+            const imageRef = ref(storage, `Profile Pictures/${AuthUser.id}`); 
+            if(imageRef != undefined){
+                getDownloadURL(imageRef).then(onResolve, onReject);          
+            }
             return unsubscribe;
     }, []);
 
