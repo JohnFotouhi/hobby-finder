@@ -3,6 +3,8 @@ import FormInput from "./formInput";
 import { useState } from "react";
 import MultiselectInput from "./multiselectInput";
 import { genreList, experienceList } from "../lists";
+import globals from '@/styles/Home.module.css'
+
 
 export default function Filters({show, setShow, filters, setFilters, ...props}){
     
@@ -42,6 +44,15 @@ export default function Filters({show, setShow, filters, setFilters, ...props}){
         }
         setFilters(filters);
         setShow(false);
+    }
+
+    function handleClear(){
+        setCommitMax(0);
+        setCommitMin(0);
+        setCommitmentLevels([]);
+        setGenre([]);
+        setExperienceLevels([]);
+        setDistance(10);
     }
 
  return(
@@ -90,8 +101,9 @@ export default function Filters({show, setShow, filters, setFilters, ...props}){
             </Form>
         </Modal.Body>
         <Modal.Footer>
+          <Button variant="danger" onClick={handleClear}>Clear</Button>
           <Button variant="secondary" onClick={handleClose}>Close</Button>
-          <Button variant="primary" onClick={handleSave}>Save</Button>
+          <Button className={globals.btn} variant="primary" onClick={handleSave}>Save</Button>
         </Modal.Footer>
     </Modal>
  );

@@ -32,6 +32,7 @@ function Search() {
     const [instrument, setInstrument] = useState({value: "", label: ""});
     const [users, setUsers] = useState<any[]>([]);
     const [failedSearch, setFailedSearch] = useState(false);
+    const [firstLoad, setFirstLoad] = useState(true);
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
     const AuthUser = useAuthUser();
     //const [coords, setCoords] = useState();
@@ -85,6 +86,13 @@ function Search() {
     function setSearch(newInstrument){
         setInstrument(newInstrument);
     }
+
+    useEffect(() => {
+        if(! firstLoad){
+            handleSearch();
+        }
+        setFirstLoad(false);
+    }, [filters, instrument])
     return(
         <>  
             <Container fluid className='bg-light pb-3 mt-0' >
@@ -121,7 +129,7 @@ function Search() {
                 <Row className='m-auto'>
                     {users.map((user, index )=>(
                         <Col md="4" key={index + "userCard"}>
-                            <SearchCard {...user} authId={user.key} />
+                            <SearchCard {...user} authId={user.key} myLocation={coords}/>
                         </Col>
                     ))}
                 </Row>

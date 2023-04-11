@@ -20,6 +20,11 @@ const Messages = () => {
     const [chatId, setChatId] = useState("");
     const [nameOfRecipient, setNameOfRecipient] = useState("");
     const [chatSearch, setChatSearch] = useState("");
+    const [sidebarVisible, setSidebarVisible] = useState(false);
+    const [sidebarStyle, setSidebarStyle] = useState({});
+    const [chatContainerStyle, setChatContainerStyle] = useState({});
+    const [conversationContentStyle, setConversationContentStyle] = useState({});
+    const [conversationAvatarStyle, setConversationAvatarStyle] = useState({});
     const target = useRef(null);
 
     function sendMessage(){
@@ -40,12 +45,17 @@ const Messages = () => {
     }
 
     async function openChat(chatId, theirName){
+        if (sidebarVisible) {
+            setSidebarVisible(false);
+        }
         await router.push({
             pathname: "/messages",
             query: {chatId: chatId, name: theirName}
         });
         setChatId(chatId);
     }
+
+    const handleBackClick = () => setSidebarVisible(!sidebarVisible);
 
     useEffect(() => {
         if(chatSearch === ""){
@@ -56,7 +66,7 @@ const Messages = () => {
             let newFilteredChats = chats.filter(chat => chat.users[0].name.toLowerCase().includes(lowerCaseSearch) && chat.users[0].key !== AuthUser.id || chat.users[1].name.toLowerCase().includes(lowerCaseSearch) && chat.users[1].key !== AuthUser.id);
             setFilteredChats(newFilteredChats);
         }
-    }, [chatSearch, chats])
+    }, [chatSearch, chats]);
 
     useEffect(() => {
         // Get list of user's chats
@@ -76,6 +86,31 @@ const Messages = () => {
     }, []);
 
     useEffect(() => {
+        if (sidebarVisible) {
+          setSidebarStyle({
+            display: "flex",
+            flexBasis: "auto",
+            width: "100%",
+            maxWidth: "100%"
+          });
+          setConversationContentStyle({
+            display: "flex"
+          });
+          setConversationAvatarStyle({
+            marginRight: "1em"
+          });
+          setChatContainerStyle({
+            display: "none"
+          });
+        } else {
+          setSidebarStyle({});
+          setConversationContentStyle({});
+          setConversationAvatarStyle({});
+          setChatContainerStyle({});
+        }
+      }, [sidebarVisible, setSidebarVisible, setConversationContentStyle, setConversationAvatarStyle, setSidebarStyle, setChatContainerStyle]);
+
+    useEffect(() => {
         // This is triggered on load and when the user clicks on a chat and changes the messages to be shown in the main window
         const params = new URLSearchParams(window.location.search);
         let newChatId = params.get('chatId');
@@ -89,7 +124,6 @@ const Messages = () => {
             const database = getFirestore(firebaseApp);
             const messagesRef = collectionGroup(database, "messages");
             const messageQuery = query(messagesRef, where("chatId", "==", chatId), orderBy("time"));
-            setMessages(messages);
             let unsubscribe = onSnapshot(messageQuery, (snapshot) => {
                 let newMessages : any[] = [];
                 snapshot.forEach(doc => {
@@ -106,22 +140,25 @@ const Messages = () => {
     return(
         <div style={{ position:"relative", height: "500px" }} >
         <MainContainer responsive>                
-              <Sidebar position="left" scrollable={true}>
-                <Search placeholder="Search..." value={chatSearch} onChange={setChatSearch}/>
+              <Sidebar position="left" scrollable={true} style={sidebarStyle}>
+                <Search placeholder="Search..." value={chatSearch} onChange={setChatSearch} onClearClick={() => {setChatSearch("")}}/>
                 <ConversationList>
                     {
                         filteredChats.map((chat, i) => (
-                            <Conversation key={"conversation" + i} name={chat.users[0].key === AuthUser.id ? chat.users[1].name : chat.users[0].name} lastSenderName={chat.recentMessageSender} info={chat.recentMessageText} onClick={() => {openChat(chat.id, chat.users[0].key === AuthUser.id ? chat.users[1].name : chat.users[0].name)}}>
-                                <Avatar key={"chatImage" + i} src={exampleIcon} name="Lilly" />
+                            <Conversation key={"conversation" + i} onClick={() => {openChat(chat.id, chat.users[0].key === AuthUser.id ? chat.users[1].name : chat.users[0].name)}}>
+                                <Avatar key={"chatImage" + i} src={exampleIcon} name="Lilly" style={conversationAvatarStyle}/>
+                                <Conversation.Content name={chat.users[0].key === AuthUser.id ? chat.users[1].name : chat.users[0].name} lastSenderName={chat.recentMessageSender} info={chat.recentMessageText} style={conversationContentStyle} />
                             </Conversation>
                         ))
-                    }                                                                         
+                    }     
+                    { filteredChats.length === 0 && chats.length !== 0 && <div className="text-center">No chats matched your search</div>}         
+                    { chats.length === 0 && <div className="text-center">You can only message your friends. Head to <Button className=" mb-1 p-0" variant="link" onClick={() => {router.push({pathname: "/search"})}}>search</Button> to make some!</div>}                                                           
                 </ConversationList>
               </Sidebar>
               
-              <ChatContainer>
+              <ChatContainer style={chatContainerStyle}>
                 <ConversationHeader>
-                  <ConversationHeader.Back />
+                  <ConversationHeader.Back onClick={handleBackClick}/>
                   {chatId !== "" && <Avatar src={exampleIcon} name={nameOfRecipient} />}
                   {chatId === "" && <Avatar src={exampleIcon} name={nameOfRecipient} />}
                   <ConversationHeader.Content userName={nameOfRecipient} info="" />
