@@ -4,7 +4,7 @@ import { createRef, useEffect, useMemo, useRef, useState } from "react";
 import { Button, Card, Col, Container, ListGroup, ListGroupItem, Row, Image, Overlay, Form, InputGroup } from "react-bootstrap";
 import globals from '../styles/Home.module.css';
 import { useRouter } from "next/router";
-import { getDownloadURL, getStorage } from "firebase/storage";
+import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import firebaseApp from "@/config";
 import { BsClockHistory, BsFillChatFill, BsPersonCircle, BsThreeDotsVertical } from "react-icons/bs";
 import pic from "@/public/User_images/jon.jpg";
@@ -25,9 +25,9 @@ const Friends = () => {
     const exampleProfilePic = pic.src;
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
 
-    function redirectToChat(theirKey, theirName){
+    function redirectToChat(theirKey, theirName, ){
         let chat : any = chats.find(currentChat => currentChat.userKeys.includes(theirKey));
-        router.push({pathname: "/messages", query: {chatId: chat.id, name: theirName}})
+        router.push({pathname: "/messages", query: {chatId: chat.id, name: theirName, key: theirKey}})
     }
 
     useEffect(() => {
@@ -55,6 +55,9 @@ const Friends = () => {
             .then((data) => {
                 console.log(data.relationships);
                 let newRequests = data.relationships.filter(relationship => relationship.status == "respond");
+                // (data.relationships).forEach(function (request)){
+
+                // }
                 setRequests(newRequests);
                 setFilteredRequests(newRequests);
                 let newFriends = data.relationships.filter(relationship => relationship.status == "friends" || relationship.status == "pending");
@@ -123,6 +126,15 @@ const Friends = () => {
         })
     }
 
+    // const getPicture = async (key) => {
+    //     //get prof pic
+    //     const imageRef = ref(storage, `Profile Pictures/${key}`); 
+
+    //     const result = await Promise.getDownloadURL(imageRef)
+    //     return ();      
+        
+    // }
+
     return(
         <>
         <Container fluid className='bg-light pb-3 mt-0' >
@@ -153,7 +165,7 @@ const Friends = () => {
                                         <Container fluid>
                                             <Row >
                                                 <Col xs={8} onClick={() => {navigateToProfile(request.key)}}>
-                                                    <Image className= "square bg-light rounded-pill mx-2" src={exampleProfilePic} alt="profile_picture" width="50" height = "50"></Image>
+                                                    <Image className= "square bg-light rounded-pill mx-2" src={undefined} alt="profile_picture" width="50" height = "50"></Image>
                                                     {request.name}
                                                 </Col>
                                                 <Col xs={4}>

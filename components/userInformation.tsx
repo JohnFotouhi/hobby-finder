@@ -17,6 +17,8 @@ import { colors } from "react-select/dist/declarations/src/theme";
 export default function UserInformation({owner, name, pronouns, bio, equipment, availability, capacity, profilePicture}){
     const [file, setFile] = useState("");
 
+    
+
     // type Day = {
     //     morn: boolean,
     //     aft: boolean,
@@ -54,13 +56,13 @@ export default function UserInformation({owner, name, pronouns, bio, equipment, 
                 <Col className="col-md-3">
                     <Row> 
                         {profilePicture ? (
-                            <Image src={profilePicture} width={300} height={180} alt="Profile Picture" className="rounded-circle border border-secondary" />
+                            <Image src={profilePicture}  width={200} height={200} alt="Profile Picture" className="rounded-circle border-secondary"/>
                         ) : (
                             <BsPersonCircle size={200} />
                         )}
                         {/* <Image className= "rounded-circle border border-secondary" style = {{borderWidth: "20px", borderStyle: "solid"}} src={profilePicture} alt="profile_picture" width="200" height = "250"></Image> */}
                     </Row>
-                    
+                    {/* className="rounded-circle border border-secondary" */}
                     <Row>
                         <span>{pronouns}</span>
                     </Row>
