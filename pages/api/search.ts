@@ -78,7 +78,7 @@ export default async (req, res) =>{
         let users: any[] = [];
         docList.forEach((doc) => {
             let userData = doc.data();
-            if(typeof(userData.location.latitude) === "undefined" || typeof(userData.location.longitude) === "undefined"){
+            if(typeof(userData.location.latitude) === "undefined" || typeof(userData.location.longitude) === "undefined" || typeof(myCoords.latitude) === "undefined" || typeof(myCoords.longitude) === "undefined" ){
                 if(userData.key !== myKey){
                     let userId = doc.id;
                     let userInstruments = instruments.filter(instrument => instrument.userId === userId);
