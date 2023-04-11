@@ -11,6 +11,7 @@ import globals from '../styles/Home.module.css'
 import firebaseApp from "../config";
 import { getDownloadURL, getStorage, listAll, ref, uploadBytes} from "firebase/storage";
 import { BsChatRight, BsPlusLg} from "react-icons/bs";
+import EventCard from "../components/eventCard";
 
 
 const Profile = () => {
@@ -18,8 +19,6 @@ const Profile = () => {
     //user credentials
     const AuthUser = useAuthUser();
     const storage = getStorage(firebaseApp);
-
-    //console.log(AuthUser);
 
     //Profile states
     const [isEditing, setIsEditing] = useState(false);
@@ -34,6 +33,7 @@ const Profile = () => {
 
     //user's cards
     const [cards, setCards] = useState<any[]>([]);
+    const [events, setEvents] = useState<any[]>([]);
 
     //Hobby Card States
     const [show, setShow] = useState(false);
@@ -53,6 +53,7 @@ const Profile = () => {
         getCards();
         getProfile();
         getPicture();
+        getEvents();
         //console.log(imageRef)
     }, [oldInfo]);
 
@@ -65,7 +66,6 @@ const Profile = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-            console.log(data)
             setCards(data);
         });
     }
@@ -89,6 +89,22 @@ const Profile = () => {
             setCapacity(data.host);
             setEquipment(data[4]);
         });       
+    }
+
+    const getEvents = () => {
+        let dateTime = new Date();
+        const today = dateTime.toISOString().slice(0,10);
+        console.log("getting events")
+        fetch("/api/personalEventsRetrieval", { 
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({uid: AuthUser.id, today: today})
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data)
+                setEvents(data);
+        });      
     }
 
     const getPicture = () => {
@@ -243,6 +259,19 @@ const Profile = () => {
                                 experience={card.experience} commitMin={card.commitMin} commitMax={card.commitMax} info={card.info} owner={true} 
                                 editCard={() => editCard(card.instrument, card.genres, card.experience, card.commitMin, card.commitMax, card.info)}
                                 />
+                            </Col>
+                        ))}
+                    </Row>
+                </Container>
+
+                <Container className="mt-3" style={{marginBottom:"30px"}}>
+                    <Row>
+                        <h2>My Events</h2>
+                    </Row>
+                    <Row className='m-auto' style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
+                        {events.map( (card, index) => (
+                            <Col md="4" key={index+"hobbyCard"}>                       
+                                <EventCard owner={(AuthUser.id == card.ownerId)} id={card.eventId} title={card.title} date={card.date} time={card.time} description={card.description} />
                             </Col>
                         ))}
                     </Row>
