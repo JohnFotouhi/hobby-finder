@@ -142,16 +142,16 @@ export default function UserInformation({owner, name, pronouns, bio, equipment, 
             </Row>
             <Row style={{paddingLeft: "60px", paddingRight: "65px" }}>
             
-                <Col className="col-md-3" style={{backgroundColor: "wheat", paddingRight: 10}}>
+                <Col  style={{backgroundColor: "wheat", paddingRight: 10}}>
                     <OverlayTrigger placement='top' overlay={<Tooltip> How many people you would feel comfortable gathering at your place.</Tooltip>}>
                         <Button style={{backgroundColor:"transparent", borderColor:"transparent"}}><BsInfoCircle style={{color:"black"}}/></Button>
                     </OverlayTrigger>
-                    <span> Host Capacity: {capacity} people</span>
+                    <span> Host Capacity: <br/> {capacity} people</span>
                 </Col>
                 <Col className="col-md-4" style={{paddingRight: "10px"}}>
                 </Col>
 
-                <Col className="col-md-5" style={{backgroundColor: "wheat", backgroundOrigin: "content-box", paddingLeft: "10px"}} >
+                <Col  style={{backgroundColor: "wheat", backgroundOrigin: "content-box", paddingLeft: "10px"}} >
                     <OverlayTrigger placement='top' overlay={<Tooltip> Any musical equipment you'd feel comfortable sharing, like mics or amps.</Tooltip>}>
                         <Button style={{backgroundColor:"transparent", borderColor:"transparent"}}><BsInfoCircle style={{color:"black"}}/></Button>
                     </OverlayTrigger>
@@ -159,7 +159,6 @@ export default function UserInformation({owner, name, pronouns, bio, equipment, 
                 </Col>
 
             </Row>
-
                 
             <hr></hr>
         </Container>

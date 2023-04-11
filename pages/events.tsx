@@ -64,7 +64,7 @@ const Events = () => {
         <Container>
             <Row style={{marginTop:"25px"}}>
                 <Col>
-                    <h1>Events</h1>                
+                    <h1 style={{marginLeft:"30px"}}>Events</h1>                
                 </Col>
                 <Col align="right">
                     <Button className={globals.btn} onClick={handleEditFilters} style={{marginRight: "5px"}}><BsFunnel/></Button>

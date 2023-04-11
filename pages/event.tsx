@@ -176,22 +176,22 @@ function Event(){
         <Container className="align-items-center mt-5 text-center">
             <Spinner animation="border" role="status"></Spinner>
         </Container> :
-        <Container style={{backgroundColor:"#fff1cc", border:"1px solid black", marginTop:"20px", borderRadius:"25px", paddingBottom:"20px"}}>
+        <Container style={{backgroundColor:"white", border:"", marginTop:"40px", borderRadius:"25px", paddingBottom:"20px"}}>
         <Container style={{marginTop:"20px", paddingBottom:"5px"}}>
             <Row>
-                <Col><h1>{title}</h1></Col>
-                {owner?<Col><Button onClick={editEvent}><BsPencil/></Button>
-                <Button onClick={() => setConfirmDelete(true)}><BsTrash/></Button></Col>:null}
+                <Col><h1 style={{textDecoration:"underline", textDecorationColor:"#8ac853"}}>{title}</h1></Col>
+                {owner?<Col align="right"><Button className={globals.btn} onClick={editEvent} style={{marginRight:"5px"}}><BsPencil/></Button>
+                <Button className={globals.btn} onClick={() => setConfirmDelete(true)}><BsTrash/></Button></Col>:null}
             </Row>
             <Row>
-                <h5>Event hosted by <Link style={{color:"black"}} href="#" onClick={() => visitProfile(hostId)} >{hostName}</Link></h5>
+                <h6>Event hosted by <Link style={{color:"black"}} href="#" onClick={() => visitProfile(hostId)} >{hostName}</Link></h6>
             </Row>
         </Container>
 
-        <Container style={{padding:"10px", backgroundColor:"#fff8e6", border:"1px solid black", borderRadius:"15px",}}>
+        <Container style={{padding:"10px", backgroundColor:"#f2f9ec", border:"1px solid #8ac853", borderRadius:"15px",}}>
             <Row>
-                <Col><h4>{formatDate(date)},  {formatTime(time)}</h4></Col>
-                <Col><h4>{location}</h4></Col>
+                <Col><h5>{formatDate(date)},  {formatTime(time)}</h5></Col>
+                <Col><h5>{location}</h5></Col>
             </Row>
             <Row style={{marginLeft:"4px"}}>{description}</Row>
         </Container>
@@ -199,7 +199,7 @@ function Event(){
         <Container style={{marginTop:"10px"}}>
             <Row>
                 <Col><h5>Attendees:</h5></Col> 
-                <Col align="right"> {owner? <span></span>: <Button style={{backgroundColor:"#fff8e6", color:"black", border:"1px solid black"}} onClick={toggleAttending}>{attending? "Count me out": "I'm in!"}</Button>} </Col>
+                <Col align="right"> {owner? <span></span>: <Button style={{color:"white"}} className={!attending? globals.btn : ""} variant={attending? "secondary" : ""} onClick={toggleAttending}>{attending? "Count me out": "I'm in!"}</Button>} </Col>
                 <Row className='m-auto' style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
                     {attendees.map( (person, index) => (
                         <Col md="2" key={index+"hobbyCard"}>                       
